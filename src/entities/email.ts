@@ -1,5 +1,6 @@
 import { Either, success, error } from '@/shared';
 import { InvalidEmailError } from '@/entities/errors/invalid-email-error';
+import { isValid } from '@/entities/email-validation';
 
 export class Email {
   readonly value: string;
@@ -9,13 +10,8 @@ export class Email {
     Object.freeze(this);
   }
 
-  public static isValid(email: string): boolean {
-    if (!email) return false;
-    return true;
-  }
-
   public static create(email: string): Either<InvalidEmailError, Email> {
-    if (this.isValid(email)) return success(new Email(email));
+    if (isValid(email)) return success(new Email(email));
     return error(new InvalidEmailError(email));
   }
 }

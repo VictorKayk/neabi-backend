@@ -10,6 +10,7 @@ export class Email {
   }
 
   public static isValid(email: string): boolean {
+    if (!email) return false;
     return true;
   }
 

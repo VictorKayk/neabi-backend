@@ -21,19 +21,19 @@
     // "camelcase": "off",
     // "consistent-return": "off",
     // "no-param-reassign": "off",
-    // "no-use-before-define": "off",
-    // "import/prefer-default-export": "off",
-    // "import/extensions": [
-    //   "error",
-    //   "ignorePackages",
-    //   {
-    //     "ts": "never",
-    //     "tsx": "never"
-    //   }
-    // ],
+    "no-use-before-define": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
     // "no-useless-constructor": "off",
-    // "class-methods-use-this": "off",
-    // "max-classes-per-file": "off"
+    "class-methods-use-this": "off",
+    "max-classes-per-file": "off"
   },
   "settings": {
     "import/resolver": {

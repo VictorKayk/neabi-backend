@@ -1,4 +1,4 @@
-import { Password } from '@/entities/password';
+import { Password } from '@/entities';
 import { InvalidPasswordError } from '@/entities/errors';
 
 describe('Password Entity', () => {

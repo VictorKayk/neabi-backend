@@ -1,4 +1,4 @@
-import { Email } from '@/entities/email';
+import { Email } from '@/entities';
 import { InvalidEmailError } from '@/entities/errors';
 
 describe('Email', () => {

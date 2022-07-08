@@ -2,7 +2,7 @@ import { Email } from '@/entities/email';
 import { InvalidEmailError } from '@/entities/errors/invalid-email-error';
 
 describe('Email', () => {
-  it('Should create if email is valid', () => {
+  it('Should create an email on success', () => {
     const email = Email.create('valid_email@it.com');
     expect(email.isSuccess()).toBe(true);
     expect(email.value).toEqual({ value: 'valid_email@it.com' });

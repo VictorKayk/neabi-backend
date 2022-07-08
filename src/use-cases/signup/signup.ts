@@ -1,6 +1,8 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { IUseCase, IUserData, IUserRepository } from '@/use-cases/interfaces';
+import {
+  IHasher, IUseCase, IUserData, IUserRepository,
+} from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { Either, error, success } from '@/shared';
 
@@ -13,7 +15,10 @@ type Response = Either<
 >;
 
 export class SignUp implements IUseCase {
-  constructor(private readonly userRepository: IUserRepository) { }
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly hasher: IHasher,
+  ) { }
 
   async execute({ name, email, password }: IUserData): Promise<Response> {
     const userOrError = User.create(name, email, password);
@@ -21,6 +26,8 @@ export class SignUp implements IUseCase {
 
     const userOrNull = await this.userRepository.findByEmail(email);
     if (userOrNull) return error(new ExistingUserError());
+
+    await this.hasher.hash(password);
 
     return new Promise((resolve) => resolve(success('')));
   }

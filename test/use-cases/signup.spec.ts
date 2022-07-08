@@ -1,7 +1,7 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import { SignUp } from '@/use-cases/signup';
-import { IUserData, IUserRepository } from '@/use-cases/interfaces';
+import { IUserData, IUserRepository, IHasher } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { UserBuilder } from '@/test/builders/user-builder';
 
@@ -14,19 +14,31 @@ const makeUserRepository = (): IUserRepository => {
   return new UserRepositoryStub();
 };
 
+const makeHasher = (): IHasher => {
+  class HasherStub implements IHasher {
+    async hash(str: string): Promise<string> {
+      return 'any_hash';
+    }
+  }
+  return new HasherStub();
+};
+
 type SutTypes = {
-  sut: SignUp,
   userRepository: IUserRepository,
+  hasher: IHasher,
+  sut: SignUp,
   user: UserBuilder,
 }
 
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
-  const sut = new SignUp(userRepository);
+  const hasher = makeHasher();
+  const sut = new SignUp(userRepository, hasher);
   const user = new UserBuilder();
   return {
-    sut,
     userRepository,
+    hasher,
+    sut,
     user,
   };
 };
@@ -83,8 +95,20 @@ describe('SignUp Use Case', () => {
     expect(error.value).toEqual(new ExistingUserError());
   });
 
-  it.todo('Should call Hasher with correct password');
-  it.todo('Should throw if Hasher throws');
+  it('Should call Hasher with correct password', async () => {
+    const { sut, user, hasher } = makeSut();
+    const hasherSpy = jest.spyOn(hasher, 'hash');
+    await sut.execute(user.build());
+    expect(hasherSpy).toHaveBeenCalledWith(user.build().password);
+  });
+
+  it('Should throw if Hasher throws', async () => {
+    const { sut, user, hasher } = makeSut();
+    jest.spyOn(hasher, 'hash').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute(user.build());
+    await expect(promise).rejects.toThrow();
+  });
+
   it.todo('Should call Encrypter with correct password');
   it.todo('Should throw if Encrypter throws');
   it.todo('Should call AddAccount with correct values');

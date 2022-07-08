@@ -3,11 +3,7 @@ import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/ent
 import { SignUp } from '@/use-cases/signup';
 import { IUserData, IUserRepository } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
-
-type SutTypes = {
-  sut: SignUp,
-  userRepository: IUserRepository
-}
+import { UserBuilder } from '@/test/builders/user-builder';
 
 const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
@@ -18,64 +14,71 @@ const makeUserRepository = (): IUserRepository => {
   return new UserRepositoryStub();
 };
 
+type SutTypes = {
+  sut: SignUp,
+  userRepository: IUserRepository,
+  user: UserBuilder,
+}
+
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
   const sut = new SignUp(userRepository);
+  const user = new UserBuilder();
   return {
     sut,
     userRepository,
+    user,
   };
 };
 
 describe('SignUp Use Case', () => {
   it('Should call user entity with correct values', async () => {
-    const { sut } = makeSut();
+    const { sut, user } = makeSut();
     const userSpy = jest.spyOn(User, 'create');
-    await sut.execute({ name: 'any_name', email: 'any_email@test.com', password: 'any_password1' });
-    expect(userSpy).toHaveBeenCalledWith('any_name', 'any_email@test.com', 'any_password1');
+    await sut.execute(user.build());
+    expect(userSpy)
+      .toHaveBeenCalledWith(user.build().name, user.build().email, user.build().password);
   });
 
   it('Should return an error if name is invalid', async () => {
-    const { sut } = makeSut();
-    const error = await sut.execute({ name: '', email: 'any_email@test.com', password: 'any_password1' });
+    const { sut, user } = makeSut();
+    const error = await sut.execute(user.emptyName().build());
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidNameError(''));
   });
 
   it('Should return an error if email is invalid', async () => {
-    const { sut } = makeSut();
-    const error = await sut.execute({ name: 'any_name', email: '', password: 'any_password1' });
+    const { sut, user } = makeSut();
+    const error = await sut.execute(user.emptyEmail().build());
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidEmailError(''));
   });
 
   it('Should return an error if password is invalid', async () => {
-    const { sut } = makeSut();
-    const error = await sut.execute({ name: 'any_name', email: 'any_email@test.com', password: '' });
+    const { sut, user } = makeSut();
+    const error = await sut.execute(user.emptyPassword().build());
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidPasswordError(''));
   });
 
   it('Should call findByEmail with correct values', async () => {
-    const { sut, userRepository } = makeSut();
+    const { sut, user, userRepository } = makeSut();
     const userRepositorySpy = jest.spyOn(userRepository, 'findByEmail');
-    await sut.execute({ name: 'any_name', email: 'any_email@test.com', password: 'any_password1' });
-    expect(userRepositorySpy).toHaveBeenCalledWith('any_email@test.com');
+    await sut.execute(user.build());
+    expect(userRepositorySpy).toHaveBeenCalledWith(user.build().email);
   });
 
   it('Should throw if findByEmail throws', async () => {
-    const { sut, userRepository } = makeSut();
+    const { sut, userRepository, user } = makeSut();
     jest.spyOn(userRepository, 'findByEmail').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute({ name: 'any_name', email: 'any_email@test.com', password: 'any_password1' });
+    const promise = sut.execute(user.build());
     await expect(promise).rejects.toThrow();
   });
 
   it('Should return an error if user already exists', async () => {
-    const { sut, userRepository } = makeSut();
-    jest.spyOn(userRepository, 'findByEmail').mockReturnValueOnce(new Promise((resolve) => resolve({
-      id: '1', name: 'any_name', email: 'any_email@test.com', password: 'any_password1',
-    })));
-    const error = await sut.execute({ name: 'any_name', email: 'any_email@test.com', password: 'any_password1' });
+    const { sut, userRepository, user } = makeSut();
+    jest.spyOn(userRepository, 'findByEmail').mockReturnValueOnce(new Promise((resolve) => resolve(user.build())));
+    const error = await sut.execute(user.build());
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new ExistingUserError());
   });

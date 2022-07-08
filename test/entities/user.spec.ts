@@ -11,21 +11,21 @@ describe('User Entity', () => {
     expect(user.password.value).toEqual('any_password_1');
   });
 
-  it('Should create an user on success', () => {
-    const user = User.create('', 'any_email@test.com', 'any_password_1');
-    expect(user.isSuccess()).toBe(true);
-    expect(user.value).toEqual(new InvalidNameError(''));
+  it('Should return an error if name is invalid', () => {
+    const error = User.create('', 'any_email@test.com', 'any_password_1');
+    expect(error.isSuccess()).toBe(true);
+    expect(error.value).toEqual(new InvalidNameError(''));
   });
 
-  it('Should create an user on success', () => {
-    const user = User.create('any_name', '', 'any_password_1');
-    expect(user.isSuccess()).toBe(true);
-    expect(user.value).toEqual(new InvalidEmailError(''));
+  it('Should create an error if email is invalid', () => {
+    const error = User.create('any_name', '', 'any_password_1');
+    expect(error.isSuccess()).toBe(true);
+    expect(error.value).toEqual(new InvalidEmailError(''));
   });
 
-  it('Should create an user on success', () => {
-    const user = User.create('any_name', 'any_email@test.com', '');
-    expect(user.isSuccess()).toBe(true);
-    expect(user.value).toEqual(new InvalidPasswordError(''));
+  it('Should create an error if password is invalid', () => {
+    const error = User.create('any_name', 'any_email@test.com', '');
+    expect(error.isSuccess()).toBe(true);
+    expect(error.value).toEqual(new InvalidPasswordError(''));
   });
 });

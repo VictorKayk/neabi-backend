@@ -1,5 +1,5 @@
 import { Name } from '@/entities/name';
-import { InvalidNameError } from '@/entities/errors/invalid-name-error';
+import { InvalidNameError } from '@/entities/errors';
 
 describe('Name Entity', () => {
   it('Should create a name on success', () => {

@@ -1,5 +1,5 @@
 import { Either, success, error } from '@/shared';
-import { InvalidNameError } from '@/entities/errors/invalid-name-error';
+import { InvalidNameError } from '@/entities/errors';
 
 const isEmpty = (str: string): boolean => !str;
 const isTooShort = (str: string) => str.length < 4;

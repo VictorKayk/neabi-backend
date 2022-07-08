@@ -109,9 +109,9 @@ describe('SignUp Use Case', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo('Should call Encrypter with correct password');
+  it.todo('Should call Encrypter with correct values');
   it.todo('Should throw if Encrypter throws');
-  it.todo('Should call AddAccount with correct values');
-  it.todo('Should throw if AddAccount throws');
+  it.todo('Should call add with correct values');
+  it.todo('Should throw if add throws');
   it.todo('Should return an account and an accessToken on success');
 });

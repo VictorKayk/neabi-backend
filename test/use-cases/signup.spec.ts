@@ -61,7 +61,7 @@ describe('SignUp Use Case', () => {
     expect(error.value).toEqual(new InvalidPasswordError(''));
   });
 
-  it('Should call findByEmail with correct values', async () => {
+  it('Should call findByEmail with correct email', async () => {
     const { sut, user, userRepository } = makeSut();
     const userRepositorySpy = jest.spyOn(userRepository, 'findByEmail');
     await sut.execute(user.build());

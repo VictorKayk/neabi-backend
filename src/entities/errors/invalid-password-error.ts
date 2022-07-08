@@ -1,6 +1,6 @@
 export class InvalidPasswordError extends Error {
-  constructor(email: string) {
-    super(`Invalid Password: ${email}`);
+  constructor(password: string) {
+    super(`Invalid Password: ${password}`);
     this.name = 'InvalidPasswordError';
   }
 }

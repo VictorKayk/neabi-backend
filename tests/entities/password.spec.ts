@@ -21,8 +21,8 @@ describe('Password Entity', () => {
   });
 
   it('Should return an error if password is too short', () => {
-    const password = Password.create('pass');
+    const password = Password.create('pas1');
     expect(password.isError()).toBe(true);
-    expect(password.value).toEqual(new InvalidPasswordError('pass'));
+    expect(password.value).toEqual(new InvalidPasswordError('pas1'));
   });
 });

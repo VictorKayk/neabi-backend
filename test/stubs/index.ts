@@ -1,3 +1,4 @@
+import { SignUp } from '@/use-cases/signup';
 import {
   IUserData,
   IUserRepository,
@@ -5,7 +6,7 @@ import {
   IIdGenerator,
   IEncrypter,
 } from '@/use-cases/interfaces';
-import { SignUp } from '@/use-cases/signup';
+import { IHttpRequest } from '@/adapters/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
@@ -51,10 +52,19 @@ export const makeEncrypter = (): IEncrypter => {
   return new EncrypterStub();
 };
 
-export const makeUseCase = (): SignUp => {
+export const makeSignUpUseCase = (): SignUp => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
   return new SignUp(userRepository, hasher, idGenerator, encrypter);
 };
+
+export const makeFakeRequest = (): IHttpRequest => ({
+  body: {
+    name: 'any_name',
+    email: 'any_email@test.com',
+    password: 'any_password_1',
+    passwordConfirmation: 'any_password_1',
+  },
+});

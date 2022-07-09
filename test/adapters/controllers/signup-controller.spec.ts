@@ -1,9 +1,16 @@
+import { InvalidEmailError } from '@/entities/errors';
 import { SignUp } from '@/use-cases/signup';
 import { IHasher, IIdGenerator, IEncrypter } from '@/use-cases/interfaces';
+import { ExistingUserError } from '@/use-cases/errors';
 import { SignUpController } from '@/adapters/controllers/signup-controller';
 import { IValidation } from '@/adapters/interfaces';
 import { ServerError, MissingParamsError } from '@/adapters/errors';
-import { created, serverError, badRequest } from '@/adapters/util/http';
+import {
+  created,
+  serverError,
+  badRequest,
+  forbidden,
+} from '@/adapters/util/http';
 import {
   makeSignUpUseCase,
   makeFakeRequest,
@@ -12,6 +19,7 @@ import {
   makeIdGenerator,
   makeValidation,
 } from '@/test/stubs';
+import { error } from '@/shared';
 
 type SutTypes = {
   sut: SignUpController,
@@ -30,6 +38,7 @@ const makeSut = (): SutTypes => {
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
+
   return {
     sut,
     validation,
@@ -78,6 +87,27 @@ describe('SignUp Controller ', () => {
       password: await hasher.hash(makeFakeRequest().body.password),
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
     }));
+  });
+
+  it('Should return 400 if call SignUp use case with incorrect values', async () => {
+    const { sut } = makeSut();
+    const response = await sut.handle({
+      body: {
+        name: makeFakeRequest().body.name,
+        email: '',
+        password: makeFakeRequest().body.password,
+      },
+    });
+    expect(response).toEqual(badRequest(new InvalidEmailError('')));
+  });
+
+  it('Should return 403 if user already exists', async () => {
+    const { sut, useCase } = makeSut();
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
+      error(new ExistingUserError()),
+    )));
+    const response = await sut.handle(makeFakeRequest());
+    expect(response).toEqual(forbidden(new ExistingUserError()));
   });
 
   it('Should call Validation with correct values', async () => {

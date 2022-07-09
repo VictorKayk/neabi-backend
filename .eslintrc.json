@@ -34,7 +34,8 @@
     "no-useless-constructor": "off",
     "class-methods-use-this": "off",
     "max-classes-per-file": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-await-in-loop": "off"
   },
   "settings": {
     "import/resolver": {

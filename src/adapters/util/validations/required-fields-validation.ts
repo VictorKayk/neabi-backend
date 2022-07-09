@@ -10,12 +10,5 @@ export class RequiredFieldsValidation implements IValidation {
       return !input[current] ? new MissingParamsError(current) : null;
     }, null);
     return errorOrNull;
-    // for (const fieldName of this.fieldsName) {
-    //   if (!input[fieldName]) {
-    //     return new MissingParamsError(fieldName);
-    //   }
-    // }
-
-    // return null;
   }
 }

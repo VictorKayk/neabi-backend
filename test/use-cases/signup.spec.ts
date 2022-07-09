@@ -15,6 +15,10 @@ const makeUserRepository = (): IUserRepository => {
     async findByEmail(email: string): Promise<IUserData | null> {
       return null;
     }
+
+    async findById(id: string): Promise<IUserData | null> {
+      return null;
+    }
   }
   return new UserRepositoryStub();
 };
@@ -133,8 +137,21 @@ describe('SignUp Use Case', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo('Should call findById with correct value');
-  it.todo('Should throw if findById throws');
+  it('Should call findById with correct value', async () => {
+    const {
+      sut, user, userRepository, idGenerator,
+    } = makeSut();
+    const userRepositorySpy = jest.spyOn(userRepository, 'findById');
+    await sut.execute(user.build());
+    expect(userRepositorySpy).toHaveBeenCalledWith(await idGenerator.generate());
+  });
+
+  it('Should throw if findById throws', async () => {
+    const { sut, user, userRepository } = makeSut();
+    jest.spyOn(userRepository, 'findById').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute(user.build());
+    await expect(promise).rejects.toThrow();
+  });
 
   it.todo('Should call Encrypter with correct value');
   it.todo('Should throw if Encrypter throws');

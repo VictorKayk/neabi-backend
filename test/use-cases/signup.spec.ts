@@ -2,7 +2,6 @@ import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import { SignUp } from '@/use-cases/signup';
 import {
-  IUserData,
   IUserRepository,
   IHasher,
   IIdGenerator,
@@ -10,50 +9,12 @@ import {
 } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { UserBuilder } from '@/test/builders/user-builder';
-
-const makeUserRepository = (): IUserRepository => {
-  class UserRepositoryStub implements IUserRepository {
-    async findByEmail(email: string): Promise<IUserData | null> {
-      return null;
-    }
-
-    async findById(id: string): Promise<IUserData | null> {
-      return null;
-    }
-
-    async add(userData: IUserData): Promise<IUserData> {
-      return userData;
-    }
-  }
-  return new UserRepositoryStub();
-};
-
-const makeHasher = (): IHasher => {
-  class HasherStub implements IHasher {
-    async hash(value: string): Promise<string> {
-      return 'any_hash';
-    }
-  }
-  return new HasherStub();
-};
-
-const makeIdGenerator = (): IIdGenerator => {
-  class IdGeneratorStub implements IIdGenerator {
-    async generate(): Promise<string> {
-      return 'any_id';
-    }
-  }
-  return new IdGeneratorStub();
-};
-
-const makeEncrypter = (): IEncrypter => {
-  class EncrypterStub implements IEncrypter {
-    async encrypt(value: string): Promise<string> {
-      return 'any_encrypted_string';
-    }
-  }
-  return new EncrypterStub();
-};
+import {
+  makeUserRepository,
+  makeEncrypter,
+  makeHasher,
+  makeIdGenerator,
+} from '@/test/stubs/';
 
 type SutTypes = {
   userRepository: IUserRepository,

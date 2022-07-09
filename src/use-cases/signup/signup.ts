@@ -6,6 +6,7 @@ import {
   IUseCase,
   IUserData,
   IUserRepository,
+  IEncrypter,
 } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { Either, error, success } from '@/shared';
@@ -23,6 +24,7 @@ export class SignUp implements IUseCase {
     private readonly userRepository: IUserRepository,
     private readonly hasher: IHasher,
     private readonly idGenerator: IIdGenerator,
+    private readonly encrypter: IEncrypter,
   ) { }
 
   async execute({ name, email, password }: IUserData): Promise<Response> {
@@ -34,10 +36,13 @@ export class SignUp implements IUseCase {
 
     await this.hasher.hash(password);
 
+    let id: string;
     do {
-      const id = await this.idGenerator.generate();
+      id = await this.idGenerator.generate();
       userOrNull = await this.userRepository.findById(id);
     } while (userOrNull);
+
+    await this.encrypter.encrypt(id);
 
     return new Promise((resolve) => resolve(success('')));
   }

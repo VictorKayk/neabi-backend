@@ -2,7 +2,6 @@ import { IUserData } from '@/use-cases/interfaces';
 
 export class UserBuilder {
   private user: IUserData = {
-    id: '1',
     name: 'any_name',
     email: 'any_email@test.com',
     password: 'any_password1',

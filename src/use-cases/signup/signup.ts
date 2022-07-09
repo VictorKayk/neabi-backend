@@ -16,7 +16,7 @@ type Response = Either<
   InvalidEmailError |
   InvalidPasswordError |
   ExistingUserError,
-  string
+  IUserData
 >;
 
 export class SignUp implements IUseCase {
@@ -34,16 +34,23 @@ export class SignUp implements IUseCase {
     let userOrNull = await this.userRepository.findByEmail(email);
     if (userOrNull) return error(new ExistingUserError());
 
-    await this.hasher.hash(password);
-
     let id: string;
     do {
       id = await this.idGenerator.generate();
       userOrNull = await this.userRepository.findById(id);
     } while (userOrNull);
 
-    await this.encrypter.encrypt(id);
+    const accessToken = await this.encrypter.encrypt(id);
+    const hashedPassword = await this.hasher.hash(password);
 
-    return new Promise((resolve) => resolve(success('')));
+    const user: IUserData = await this.userRepository.add({
+      id,
+      name,
+      email,
+      password: hashedPassword,
+      accessToken,
+    });
+
+    return success(user);
   }
 }

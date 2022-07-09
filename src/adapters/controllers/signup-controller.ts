@@ -1,7 +1,12 @@
 import { SignUp } from '@/use-cases/signup';
 import { IUserData } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
-import { IController, IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
+import {
+  IController,
+  IHttpRequest,
+  IHttpResponse,
+  IValidation,
+} from '@/adapters/interfaces';
 import {
   created,
   serverError,
@@ -10,10 +15,16 @@ import {
 } from '@/adapters/util/http';
 
 export class SignUpController implements IController {
-  constructor(private readonly signUp: SignUp) { }
+  constructor(
+    private readonly validation: IValidation,
+    private readonly signUp: SignUp,
+  ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse> {
     try {
+      const validationError = this.validation.validate(body);
+      if (validationError) return badRequest(validationError);
+
       const { name, email, password } = body;
 
       const accountOrError = await this.signUp.execute({ name, email, password });

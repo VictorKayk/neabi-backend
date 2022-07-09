@@ -1,7 +1,11 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import {
-  IHasher, IUseCase, IUserData, IUserRepository,
+  IHasher,
+  IIdGenerator,
+  IUseCase,
+  IUserData,
+  IUserRepository,
 } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { Either, error, success } from '@/shared';
@@ -18,6 +22,7 @@ export class SignUp implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly hasher: IHasher,
+    private readonly idGenerator: IIdGenerator,
   ) { }
 
   async execute({ name, email, password }: IUserData): Promise<Response> {
@@ -28,6 +33,7 @@ export class SignUp implements IUseCase {
     if (userOrNull) return error(new ExistingUserError());
 
     await this.hasher.hash(password);
+    await this.idGenerator.generate();
 
     return new Promise((resolve) => resolve(success('')));
   }

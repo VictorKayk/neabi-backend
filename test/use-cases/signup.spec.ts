@@ -6,6 +6,7 @@ import {
   IUserRepository,
   IHasher,
   IIdGenerator,
+  IEncrypter,
 } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { UserBuilder } from '@/test/builders/user-builder';
@@ -25,7 +26,7 @@ const makeUserRepository = (): IUserRepository => {
 
 const makeHasher = (): IHasher => {
   class HasherStub implements IHasher {
-    async hash(str: string): Promise<string> {
+    async hash(value: string): Promise<string> {
       return 'any_hash';
     }
   }
@@ -41,10 +42,20 @@ const makeIdGenerator = (): IIdGenerator => {
   return new IdGeneratorStub();
 };
 
+const makeEncrypter = (): IEncrypter => {
+  class EncrypterStub implements IEncrypter {
+    async encrypt(value: string): Promise<string> {
+      return 'any_encrypted_string';
+    }
+  }
+  return new EncrypterStub();
+};
+
 type SutTypes = {
   userRepository: IUserRepository,
   hasher: IHasher,
   idGenerator: IIdGenerator,
+  encrypter: IEncrypter,
   sut: SignUp,
   user: UserBuilder,
 }
@@ -53,11 +64,13 @@ const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
-  const sut = new SignUp(userRepository, hasher, idGenerator);
+  const encrypter = makeEncrypter();
+  const sut = new SignUp(userRepository, hasher, idGenerator, encrypter);
   const user = new UserBuilder();
   return {
     userRepository,
     hasher,
+    encrypter,
     idGenerator,
     sut,
     user,
@@ -153,8 +166,22 @@ describe('SignUp Use Case', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo('Should call Encrypter with correct value');
-  it.todo('Should throw if Encrypter throws');
+  it('Should call Encrypter with correct value', async () => {
+    const {
+      sut, user, idGenerator, encrypter,
+    } = makeSut();
+    const encrypterSpy = jest.spyOn(encrypter, 'encrypt');
+    await sut.execute(user.build());
+    expect(encrypterSpy).toHaveBeenCalledWith(await idGenerator.generate());
+  });
+
+  it('Should throw if Encrypter throws', async () => {
+    const { sut, user, encrypter } = makeSut();
+    jest.spyOn(encrypter, 'encrypt').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute(user.build());
+    await expect(promise).rejects.toThrow();
+  });
+
   it.todo('Should call add with correct values');
   it.todo('Should throw if add throws');
   it.todo('Should return an account and an accessToken on success');

@@ -1,7 +1,12 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import { SignUp } from '@/use-cases/signup';
-import { IUserData, IUserRepository, IHasher } from '@/use-cases/interfaces';
+import {
+  IUserData,
+  IUserRepository,
+  IHasher,
+  IIdGenerator,
+} from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
 import { UserBuilder } from '@/test/builders/user-builder';
 
@@ -23,9 +28,19 @@ const makeHasher = (): IHasher => {
   return new HasherStub();
 };
 
+const makeIdGenerator = (): IIdGenerator => {
+  class IdGeneratorStub implements IIdGenerator {
+    async generate(): Promise<string> {
+      return 'any_id';
+    }
+  }
+  return new IdGeneratorStub();
+};
+
 type SutTypes = {
   userRepository: IUserRepository,
   hasher: IHasher,
+  idGenerator: IIdGenerator,
   sut: SignUp,
   user: UserBuilder,
 }
@@ -33,11 +48,13 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
-  const sut = new SignUp(userRepository, hasher);
+  const idGenerator = makeIdGenerator();
+  const sut = new SignUp(userRepository, hasher, idGenerator);
   const user = new UserBuilder();
   return {
     userRepository,
     hasher,
+    idGenerator,
     sut,
     user,
   };
@@ -109,7 +126,17 @@ describe('SignUp Use Case', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo('Should call Encrypter with correct values');
+  it('Should throw if IdGenerator throws', async () => {
+    const { sut, user, idGenerator } = makeSut();
+    jest.spyOn(idGenerator, 'generate').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute(user.build());
+    await expect(promise).rejects.toThrow();
+  });
+
+  it.todo('Should call findById with correct value');
+  it.todo('Should throw if findById throws');
+
+  it.todo('Should call Encrypter with correct value');
   it.todo('Should throw if Encrypter throws');
   it.todo('Should call add with correct values');
   it.todo('Should throw if add throws');

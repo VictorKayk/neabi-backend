@@ -29,11 +29,15 @@ export class SignUp implements IUseCase {
     const userOrError = User.create(name, email, password);
     if (userOrError.isError()) return error(userOrError.value);
 
-    const userOrNull = await this.userRepository.findByEmail(email);
+    let userOrNull = await this.userRepository.findByEmail(email);
     if (userOrNull) return error(new ExistingUserError());
 
     await this.hasher.hash(password);
-    await this.idGenerator.generate();
+
+    do {
+      const id = await this.idGenerator.generate();
+      userOrNull = await this.userRepository.findById(id);
+    } while (userOrNull);
 
     return new Promise((resolve) => resolve(success('')));
   }

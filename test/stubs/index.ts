@@ -6,7 +6,7 @@ import {
   IIdGenerator,
   IEncrypter,
 } from '@/use-cases/interfaces';
-import { IHttpRequest } from '@/adapters/interfaces';
+import { IHttpRequest, IValidation } from '@/adapters/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
@@ -68,3 +68,12 @@ export const makeFakeRequest = (): IHttpRequest => ({
     passwordConfirmation: 'any_password_1',
   },
 });
+
+export const makeValidation = (): IValidation => {
+  class ValidationStub implements IValidation {
+    validate(input: any): Error | null {
+      return null;
+    }
+  }
+  return new ValidationStub();
+};

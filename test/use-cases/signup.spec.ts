@@ -20,6 +20,10 @@ const makeUserRepository = (): IUserRepository => {
     async findById(id: string): Promise<IUserData | null> {
       return null;
     }
+
+    async add(userData: IUserData): Promise<IUserData> {
+      return userData;
+    }
   }
   return new UserRepositoryStub();
 };
@@ -182,7 +186,40 @@ describe('SignUp Use Case', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo('Should call add with correct values');
-  it.todo('Should throw if add throws');
-  it.todo('Should return an account and an accessToken on success');
+  it('Should call add with correct values', async () => {
+    const {
+      sut, user, userRepository, hasher, idGenerator, encrypter,
+    } = makeSut();
+    const userRepositorySpy = jest.spyOn(userRepository, 'add');
+    await sut.execute(user.build());
+    expect(userRepositorySpy).toHaveBeenCalledWith({
+      id: await idGenerator.generate(),
+      name: user.build().name,
+      email: user.build().email,
+      password: await hasher.hash(user.build().password),
+      accessToken: await encrypter.encrypt(await idGenerator.generate()),
+    });
+  });
+
+  it('Should throw if add throws', async () => {
+    const { sut, user, userRepository } = makeSut();
+    jest.spyOn(userRepository, 'add').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute(user.build());
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('Should return an user and an accessToken on success', async () => {
+    const {
+      sut, user, hasher, idGenerator, encrypter,
+    } = makeSut();
+    const response = await sut.execute(user.build());
+    expect(response.isSuccess()).toBe(true);
+    expect(response.value).toEqual({
+      id: await idGenerator.generate(),
+      name: user.build().name,
+      email: user.build().email,
+      password: await hasher.hash(user.build().password),
+      accessToken: await encrypter.encrypt(await idGenerator.generate()),
+    });
+  });
 });

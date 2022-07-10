@@ -33,6 +33,8 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^28.1.4",
     "@types/jsonwebtoken": "^8.5.8",
@@ -47,7 +49,6 @@
     "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "git-commit-msg-linter": "^4.1.3",
     "husky": "^8.0.1",
     "jest": "^28.1.2",
     "lint-staged": "^13.0.3",

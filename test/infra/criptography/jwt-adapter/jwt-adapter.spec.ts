@@ -19,20 +19,20 @@ const makeSut = (): SutTypes => {
 };
 
 describe('Jwt Adapter', () => {
-  test('Should call sign with correct values', async () => {
+  it('Should call sign with correct values', async () => {
     const { sut } = makeSut();
     const jwtSpy = jest.spyOn(jwt, 'sign');
     await sut.encrypt('any_id');
     expect(jwtSpy).toHaveBeenLastCalledWith({ id: 'any_id' }, 'any_secret');
   });
 
-  test('Should return an token on sign success', async () => {
+  it('Should return an token on sign success', async () => {
     const { sut } = makeSut();
     const accessToken = await sut.encrypt('any_id');
     expect(accessToken).toBe('any_token');
   });
 
-  test('Should throw if sign throws', async () => {
+  it('Should throw if sign throws', async () => {
     const { sut } = makeSut();
     const jwtSpy = jest.spyOn(jwt, 'sign') as unknown as jest.Mock<ReturnType<(key: Error) => Promise<Error>>, Parameters<(key: Error) => Promise<Error>>>;
     jwtSpy.mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));

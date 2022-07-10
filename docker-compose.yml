@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    container_name: db-postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=neabi
+    volumes:
+      - ./data:/data/db

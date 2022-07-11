@@ -1,6 +1,7 @@
+import { UserBuilder } from '@/test/builders/user-builder';
 import { SignUp } from '@/use-cases/signup';
 import {
-  IUserData,
+  IUserRepositoryData,
   IUserRepository,
   IHasher,
   IIdGenerator,
@@ -10,15 +11,15 @@ import { IHttpRequest, IValidation } from '@/adapters/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
-    async findByEmail(email: string): Promise<IUserData | null> {
+    async findByEmail(email: string): Promise<IUserRepositoryData | null> {
       return null;
     }
 
-    async findById(id: string): Promise<IUserData | null> {
+    async findById(id: string): Promise<IUserRepositoryData | null> {
       return null;
     }
 
-    async add(userData: IUserData): Promise<IUserData> {
+    async add(userData: IUserRepositoryData): Promise<IUserRepositoryData> {
       return userData;
     }
   }
@@ -60,14 +61,17 @@ export const makeSignUpUseCase = (): SignUp => {
   return new SignUp(userRepository, hasher, idGenerator, encrypter);
 };
 
-export const makeFakeRequest = (): IHttpRequest => ({
-  body: {
-    name: 'any_name',
-    email: 'any_email@test.com',
-    password: 'any_password_1',
-    passwordConfirmation: 'any_password_1',
-  },
-});
+export const makeFakeRequest = (): IHttpRequest => {
+  const user = new UserBuilder();
+  return {
+    body: {
+      name: user.build().name,
+      email: user.build().email,
+      password: user.build().password,
+      passwordConfirmation: user.build().password,
+    },
+  };
+};
 
 export const makeValidation = (): IValidation => {
   class ValidationStub implements IValidation {

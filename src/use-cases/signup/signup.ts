@@ -5,6 +5,7 @@ import {
   IIdGenerator,
   IUseCase,
   IUserData,
+  IUserRepositoryData,
   IUserRepository,
   IEncrypter,
 } from '@/use-cases/interfaces';
@@ -43,7 +44,7 @@ export class SignUp implements IUseCase {
     const accessToken = await this.encrypter.encrypt(id);
     const hashedPassword = await this.hasher.hash(password);
 
-    const user: IUserData = await this.userRepository.add({
+    const user: IUserRepositoryData = await this.userRepository.add({
       id,
       name,
       email,

@@ -23,6 +23,8 @@
     "build": "tsc -p tsconfig-build.json",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
     "test": "jest --passWithNoTests --silent",
     "test:verbose": "jest --passWithNoTests",
     "test:all": "npm run test -- --watch",

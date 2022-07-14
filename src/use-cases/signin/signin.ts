@@ -3,7 +3,7 @@ import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/ent
 import {
   IHashCompare,
   IUseCase,
-  IUserData,
+  IUserSignIn,
   IUserRepositoryData,
   IUserRepository,
   IEncrypter,
@@ -26,7 +26,7 @@ export class SignIn implements IUseCase {
     private readonly encrypter: IEncrypter,
   ) { }
 
-  async execute({ email, password }: IUserData): Promise<Response> {
+  async execute({ email, password }: IUserSignIn): Promise<Response> {
     const userOrError = User.create({ email, password });
     if (userOrError.isError()) return error(userOrError.value);
 

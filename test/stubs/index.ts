@@ -4,8 +4,10 @@ import {
   IUserRepositoryData,
   IUserRepository,
   IHasher,
+  IHashCompare,
   IIdGenerator,
   IEncrypter,
+  IUserEditableData,
 } from '@/use-cases/interfaces';
 import { IHttpRequest, IValidation } from '@/adapters/interfaces';
 
@@ -22,6 +24,11 @@ export const makeUserRepository = (): IUserRepository => {
     async add(userData: IUserRepositoryData): Promise<IUserRepositoryData> {
       return userData;
     }
+
+    async updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryData> {
+      const user = new UserBuilder();
+      return user.build();
+    }
   }
   return new UserRepositoryStub();
 };
@@ -33,6 +40,15 @@ export const makeHasher = (): IHasher => {
     }
   }
   return new HasherStub();
+};
+
+export const makeHashCompare = (): IHashCompare => {
+  class HashCompareStub implements IHashCompare {
+    async compare(hash: string, value: string): Promise<boolean> {
+      return true;
+    }
+  }
+  return new HashCompareStub();
 };
 
 export const makeIdGenerator = (): IIdGenerator => {

@@ -1,5 +1,6 @@
 import { UserBuilder } from '@/test/builders/user-builder';
 import { SignUp } from '@/use-cases/signup';
+import { SignIn } from '@/use-cases/signin';
 import {
   IUserRepositoryData,
   IUserRepository,
@@ -75,6 +76,13 @@ export const makeSignUpUseCase = (): SignUp => {
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
   return new SignUp(userRepository, hasher, idGenerator, encrypter);
+};
+
+export const makeSignInUseCase = (): SignIn => {
+  const userRepository = makeUserRepository();
+  const hashCompare = makeHashCompare();
+  const encrypter = makeEncrypter();
+  return new SignIn(userRepository, hashCompare, encrypter);
 };
 
 export const makeFakeRequest = (): IHttpRequest => {

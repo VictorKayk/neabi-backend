@@ -17,7 +17,7 @@ const makeSut = (): SutTypes => {
 jest.mock('@/test/mocks/prisma-client.ts');
 
 describe('User Routes', () => {
-  it('Should return 201 an account and accessToken on signup route success', async () => {
+  it('Should return 201 an account and accessToken on sign up route success', async () => {
     const { user } = makeSut();
 
     jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);

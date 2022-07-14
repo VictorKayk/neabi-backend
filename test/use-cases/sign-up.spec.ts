@@ -1,6 +1,6 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { SignUp } from '@/use-cases/signup';
+import { SignUp } from '@/use-cases/sign-up';
 import {
   IUserRepository,
   IHasher,

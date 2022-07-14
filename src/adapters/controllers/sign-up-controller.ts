@@ -1,4 +1,4 @@
-import { SignUp } from '@/use-cases/signup';
+import { SignUp } from '@/use-cases/sign-up';
 import { IUserData } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
 import {

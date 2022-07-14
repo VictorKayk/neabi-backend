@@ -1,8 +1,8 @@
 import { InvalidEmailError } from '@/entities/errors';
-import { SignUp } from '@/use-cases/signup';
+import { SignUp } from '@/use-cases/sign-up';
 import { IHasher, IIdGenerator, IEncrypter } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
-import { SignUpController } from '@/adapters/controllers/signup-controller';
+import { SignUpController } from '@/adapters/controllers/sign-up-controller';
 import { IValidation } from '@/adapters/interfaces';
 import { ServerError, MissingParamsError } from '@/adapters/errors';
 import {

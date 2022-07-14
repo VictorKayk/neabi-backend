@@ -1,4 +1,4 @@
-import { IUserRepositoryData, IUserRepository } from '@/use-cases/interfaces';
+import { IUserRepositoryData, IUserRepository, IUserEditableData } from '@/use-cases/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class UserRepository implements IUserRepository {
@@ -25,5 +25,13 @@ export class UserRepository implements IUserRepository {
       },
     });
     return account;
+  }
+
+  async updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryData> {
+    const user = prisma.user.update({
+      where: { email },
+      data: userData,
+    });
+    return user;
   }
 }

@@ -18,7 +18,7 @@ describe('Required Fields validation', () => {
     const error = sut.validate({
       invalid_field: 'invalid_field',
     });
-    expect(error).toEqual(new MissingParamsError('field'));
+    expect(error).toEqual(new MissingParamsError('field, field1'));
   });
 
   test('Should return null if validation succeeds', () => {

@@ -19,7 +19,7 @@ describe('Compare Fields validation', () => {
       field: 'invalid_field',
       fieldToCompare: 'invalid_fieldToCompare',
     });
-    expect(error).toEqual(new InvalidParamsError('fieldToCompare'));
+    expect(error).toEqual(new InvalidParamsError('\'field\' and \'fieldToCompare\' must be equal.'));
   });
 
   test('Should return null if validation succeeds', () => {

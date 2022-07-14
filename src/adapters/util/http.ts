@@ -1,5 +1,5 @@
 import { IHttpResponse } from '@/adapters/interfaces';
-import { ServerError, UnauthorizedError } from '@/adapters/errors';
+import { ServerError } from '@/adapters/errors';
 
 export const ok = (data: any): IHttpResponse => ({
   statusCode: 200,
@@ -19,9 +19,12 @@ export const badRequest = (error: Error): IHttpResponse => ({
   },
 });
 
-export const unauthorized = (): IHttpResponse => ({
+export const unauthorized = (error: Error): IHttpResponse => ({
   statusCode: 401,
-  body: new UnauthorizedError(),
+  body: {
+    name: error.name,
+    message: error.message,
+  },
 });
 
 export const forbidden = (error: Error): IHttpResponse => ({

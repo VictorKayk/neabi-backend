@@ -17,7 +17,7 @@ type Response = Either<
   InvalidEmailError |
   InvalidPasswordError |
   ExistingUserError,
-  IUserData
+  IUserRepositoryData
 >;
 
 export class SignUp implements IUseCase {
@@ -29,7 +29,7 @@ export class SignUp implements IUseCase {
   ) { }
 
   async execute({ name, email, password }: IUserData): Promise<Response> {
-    const userOrError = User.create(name, email, password);
+    const userOrError = User.create({ name, email, password });
     if (userOrError.isError()) return error(userOrError.value);
 
     let userOrNull = await this.userRepository.findByEmail(email);

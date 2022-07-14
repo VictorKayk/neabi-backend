@@ -7,7 +7,7 @@ import {
   IIdGenerator,
   IEncrypter,
 } from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
+import { ExistingUserError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,
@@ -48,7 +48,11 @@ describe('SignUp Use Case', () => {
     const userSpy = jest.spyOn(User, 'create');
     await sut.execute(user.build());
     expect(userSpy)
-      .toHaveBeenCalledWith(user.build().name, user.build().email, user.build().password);
+      .toHaveBeenCalledWith({
+        name: user.build().name,
+        email: user.build().email,
+        password: user.build().password,
+      });
   });
 
   it('Should return an error if name is invalid', async () => {

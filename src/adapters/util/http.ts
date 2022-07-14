@@ -13,7 +13,10 @@ export const created = (data: any): IHttpResponse => ({
 
 export const badRequest = (error: Error): IHttpResponse => ({
   statusCode: 400,
-  body: error,
+  body: {
+    name: error.name,
+    message: error.message,
+  },
 });
 
 export const unauthorized = (): IHttpResponse => ({
@@ -23,7 +26,10 @@ export const unauthorized = (): IHttpResponse => ({
 
 export const forbidden = (error: Error): IHttpResponse => ({
   statusCode: 403,
-  body: error,
+  body: {
+    name: error.name,
+    message: error.message,
+  },
 });
 
 export const serverError = (error: Error): IHttpResponse => ({

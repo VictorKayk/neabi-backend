@@ -8,7 +8,7 @@ import { makeSignUpValidationFactory } from '@/main/factories/sign-up';
 import env from '@/main/config/env';
 
 export function makeSignUpController(): IController {
-  const salt = 12;
+  const salt = env.bcryptSalt;
   const userRepository = new UserRepository();
   const bcryptAdapter = new BcryptAdapter(salt);
   const uuidAdapter = new UuidAdapter();

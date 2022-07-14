@@ -1,6 +1,6 @@
 import { UserBuilder } from '@/test/builders/user-builder';
 import { SignUp } from '@/use-cases/sign-up';
-import { SignIn } from '@/use-cases/signin';
+import { SignIn } from '@/use-cases/sign-in';
 import {
   IUserRepositoryData,
   IUserRepository,

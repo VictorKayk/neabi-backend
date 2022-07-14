@@ -1,5 +1,5 @@
 import { InvalidEmailError } from '@/entities/errors';
-import { SignIn } from '@/use-cases/signin';
+import { SignIn } from '@/use-cases/sign-in';
 import { IHashCompare, IEncrypter } from '@/use-cases/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
 import { IValidation } from '@/adapters/interfaces';
@@ -14,7 +14,7 @@ import {
 } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { SignInController } from '@/adapters/controllers/signin-controller';
+import { SignInController } from '@/adapters/controllers/sign-in-controller';
 
 type SutTypes = {
   sut: SignInController,

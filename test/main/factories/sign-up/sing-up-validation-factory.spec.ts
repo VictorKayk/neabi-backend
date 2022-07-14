@@ -1,4 +1,4 @@
-import { makeSignUpValidationFactory } from '@/main/factories/sign-up/sign-up-validation-factory';
+import { makeSignUpValidationFactory } from '@/main/factories/sign-up';
 import { ValidationComposite, RequiredFieldsValidation, CompareFieldsValidation } from '@/adapters/util/validations';
 
 jest.mock('@/adapters/util/validations/validation-composite');

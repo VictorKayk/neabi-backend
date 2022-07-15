@@ -1,4 +1,6 @@
 import { UserBuilder } from '@/test/builders/user-builder';
+import { Either, success } from '@/shared';
+import { UnauthorizedError } from '@/use-cases/errors';
 import { SignUp } from '@/use-cases/sign-up';
 import { SignIn } from '@/use-cases/sign-in';
 import {
@@ -8,6 +10,8 @@ import {
   IHashCompare,
   IIdGenerator,
   IEncrypter,
+  IDecrypter,
+  IPayload,
   IUserEditableData,
 } from '@/use-cases/interfaces';
 import { IHttpRequest, IValidation } from '@/adapters/interfaces';
@@ -68,6 +72,17 @@ export const makeEncrypter = (): IEncrypter => {
     }
   }
   return new EncrypterStub();
+};
+
+export const makeDecrypter = (): IDecrypter => {
+  class DecrypterStub implements IDecrypter {
+    async decrypt(value: string): Promise<Either<UnauthorizedError, IPayload>> {
+      return success({
+        id: 'any_id',
+      });
+    }
+  }
+  return new DecrypterStub();
 };
 
 export const makeSignUpUseCase = (): SignUp => {

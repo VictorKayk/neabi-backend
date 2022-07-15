@@ -8,3 +8,6 @@ export * from '@/use-cases/interfaces/hasher';
 export * from '@/use-cases/interfaces/hash-compare';
 export * from '@/use-cases/interfaces/id-generator';
 export * from '@/use-cases/interfaces/encrypter';
+export * from '@/use-cases/interfaces/decrypter';
+export * from '@/use-cases/interfaces/payload';
+export * from '@/use-cases/interfaces/authentication-response';

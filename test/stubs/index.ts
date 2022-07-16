@@ -3,6 +3,7 @@ import { Either, success } from '@/shared';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { SignUp } from '@/use-cases/sign-up';
 import { SignIn } from '@/use-cases/sign-in';
+import { Authentication } from '@/use-cases/authentication';
 import {
   IUserRepositoryData,
   IUserRepository,
@@ -98,6 +99,12 @@ export const makeSignInUseCase = (): SignIn => {
   const hashCompare = makeHashCompare();
   const encrypter = makeEncrypter();
   return new SignIn(userRepository, hashCompare, encrypter);
+};
+
+export const makeAuthenticationUseCase = (): Authentication => {
+  const userRepository = makeUserRepository();
+  const decrypter = makeDecrypter();
+  return new Authentication(userRepository, decrypter);
 };
 
 export const makeFakeRequest = (): IHttpRequest => {

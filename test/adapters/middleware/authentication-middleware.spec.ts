@@ -36,7 +36,7 @@ describe('Authentication Middleware', () => {
   it('Should call Authentication use case with correct values', async () => {
     const { sut, useCase } = makeSut();
     const useCaseSpy = jest.spyOn(useCase, 'execute');
-    await sut.handle('any_encrypted_string');
+    await sut.handle({ accessToken: 'any_encrypted_string' });
 
     expect(useCaseSpy).toHaveBeenCalledWith('any_encrypted_string');
   });
@@ -46,14 +46,14 @@ describe('Authentication Middleware', () => {
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
       throw new Error();
     });
-    const response = await sut.handle('any_encrypted_string');
+    const response = await sut.handle({ accessToken: 'any_encrypted_string' });
 
     expect(response).toEqual(serverError(new ServerError()));
   });
 
   it('Should return 200 on success', async () => {
     const { sut, user } = makeSut();
-    const response = await sut.handle('any_encrypted_string');
+    const response = await sut.handle({ accessToken: 'any_encrypted_string' });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.accessToken).toBe('any_encrypted_string');
@@ -63,7 +63,7 @@ describe('Authentication Middleware', () => {
   it('Should return 401 if call Authentication use case with incorrect values', async () => {
     const { sut, useCase } = makeSut();
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new UnauthorizedError()));
-    const response = await sut.handle('invalid_token');
+    const response = await sut.handle({ accessToken: 'invalid_encrypted_string' });
 
     expect(response).toEqual(unauthorized(new UnauthorizedError()));
   });

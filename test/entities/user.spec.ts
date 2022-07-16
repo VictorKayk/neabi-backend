@@ -41,7 +41,7 @@ describe('User Entity', () => {
       email: 'any_email@test.com',
       password: '',
     });
-    expect(error.isError()).toBe(true);
+    expect(error.isSuccess()).toBe(false);
     expect(error.value).toEqual(new InvalidPasswordError(''));
   });
 });

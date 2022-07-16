@@ -3,12 +3,16 @@ import { IAuthenticationResponse } from '@/use-cases/interfaces';
 import { IMiddleware, IHttpResponse } from '@/adapters/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
 
-export class AuthenticationMiddleware implements IMiddleware<string> {
+interface IAuthenticationRequest {
+  accessToken: string
+}
+
+export class AuthenticationMiddleware implements IMiddleware<IAuthenticationRequest> {
   constructor(
     private readonly authentication: Authentication,
   ) { }
 
-  async handle(accessToken: string): Promise<IHttpResponse> {
+  async handle({ accessToken }: IAuthenticationRequest): Promise<IHttpResponse> {
     try {
       const authenticationOrError = await this.authentication.execute(accessToken);
       if (authenticationOrError.isError()) return unauthorized(authenticationOrError.value);

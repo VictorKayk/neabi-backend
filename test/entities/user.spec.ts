@@ -21,7 +21,7 @@ describe('User Entity', () => {
       email: 'any_email@test.com',
       password: 'any_password_1',
     });
-    expect(error.isSuccess()).toBe(true);
+    expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidNameError(''));
   });
 
@@ -31,7 +31,7 @@ describe('User Entity', () => {
       email: '',
       password: 'any_password_1',
     });
-    expect(error.isSuccess()).toBe(true);
+    expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidEmailError(''));
   });
 
@@ -41,7 +41,7 @@ describe('User Entity', () => {
       email: 'any_email@test.com',
       password: '',
     });
-    expect(error.isSuccess()).toBe(true);
+    expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidPasswordError(''));
   });
 });

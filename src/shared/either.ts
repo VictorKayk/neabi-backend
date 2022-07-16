@@ -10,7 +10,7 @@ export class Error<L, A> {
   }
 
   isSuccess(): this is Success<L, A> {
-    return true;
+    return false;
   }
 }
 

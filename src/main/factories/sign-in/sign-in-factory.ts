@@ -10,7 +10,7 @@ export function makeSignInController(): IController {
   const salt = env.bcryptSalt;
   const userRepository = new UserRepository();
   const bcryptAdapter = new BcryptAdapter(salt);
-  const jwtAdapter = new JwtAdapter(env.jwtSecret);
+  const jwtAdapter = new JwtAdapter(env.jwtSecret, env.expiresIn);
   const signInUseCase = new SignIn(userRepository, bcryptAdapter, jwtAdapter);
   const signInController = new SignInController(makeSignInValidationFactory(), signInUseCase);
   return signInController;

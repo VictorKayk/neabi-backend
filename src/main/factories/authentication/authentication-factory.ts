@@ -7,7 +7,7 @@ import env from '@/main/config/env';
 
 export function makeAuthenticationMiddleware(): IMiddleware {
   const userRepository = new UserRepository();
-  const jwtAdapter = new JwtAdapter(env.jwtSecret);
+  const jwtAdapter = new JwtAdapter(env.jwtSecret, env.expiresIn);
   const authenticationUseCase = new Authentication(userRepository, jwtAdapter);
   const authenticationMiddleware = new AuthenticationMiddleware(authenticationUseCase);
   return authenticationMiddleware;

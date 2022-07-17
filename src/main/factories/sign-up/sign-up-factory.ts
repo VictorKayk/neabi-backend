@@ -12,7 +12,7 @@ export function makeSignUpController(): IController {
   const userRepository = new UserRepository();
   const bcryptAdapter = new BcryptAdapter(salt);
   const uuidAdapter = new UuidAdapter();
-  const jwtAdapter = new JwtAdapter(env.jwtSecret);
+  const jwtAdapter = new JwtAdapter(env.jwtSecret, env.expiresIn);
   const signUpUseCase = new SignUp(userRepository, bcryptAdapter, uuidAdapter, jwtAdapter);
   const signUpController = new SignUpController(makeSignUpValidationFactory(), signUpUseCase);
   return signUpController;

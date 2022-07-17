@@ -1,5 +1,5 @@
 import { InvalidEmailError } from '@/entities/errors';
-import { SignUp } from '@/use-cases/sign-up';
+import { SignUpUseCase } from '@/use-cases/sign-up';
 import { IHasher, IIdGenerator, IEncrypter } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
 import { SignUpController } from '@/adapters/controllers/sign-up-controller';
@@ -24,7 +24,7 @@ import { error } from '@/shared';
 type SutTypes = {
   sut: SignUpController,
   validation: IValidation,
-  useCase: SignUp,
+  useCase: SignUpUseCase,
   hasher: IHasher,
   idGenerator: IIdGenerator,
   encrypter: IEncrypter,
@@ -49,8 +49,8 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('SignUp Controller ', () => {
-  it('Should call SignUp use case with correct values', async () => {
+describe('SignUpUseCase Controller ', () => {
+  it('Should call SignUpUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
     const useCaseSpy = jest.spyOn(useCase, 'execute');
     await sut.handle(makeFakeRequest());
@@ -61,7 +61,7 @@ describe('SignUp Controller ', () => {
     });
   });
 
-  it('Should return 500 if use case throws', async () => {
+  it('Should return 500 if throws', async () => {
     const { sut, useCase } = makeSut();
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
       throw new Error();
@@ -89,7 +89,7 @@ describe('SignUp Controller ', () => {
     }));
   });
 
-  it('Should return 400 if call SignUp use case with incorrect values', async () => {
+  it('Should return 400 if call SignUpUseCase with incorrect values', async () => {
     const { sut } = makeSut();
     const response = await sut.handle({
       body: {

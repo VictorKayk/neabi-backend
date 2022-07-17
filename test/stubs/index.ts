@@ -1,9 +1,9 @@
 import { UserBuilder } from '@/test/builders/user-builder';
 import { Either, success } from '@/shared';
 import { UnauthorizedError } from '@/use-cases/errors';
-import { SignUp } from '@/use-cases/sign-up';
-import { SignIn } from '@/use-cases/sign-in';
-import { Authentication } from '@/use-cases/authentication';
+import { SignUpUseCase } from '@/use-cases/sign-up';
+import { SignInUseCase } from '@/use-cases/sign-in';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import {
   IUserRepositoryData,
   IUserRepository,
@@ -86,25 +86,25 @@ export const makeDecrypter = (): IDecrypter => {
   return new DecrypterStub();
 };
 
-export const makeSignUpUseCase = (): SignUp => {
+export const makeSignUpUseCase = (): SignUpUseCase => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
-  return new SignUp(userRepository, hasher, idGenerator, encrypter);
+  return new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
 };
 
-export const makeSignInUseCase = (): SignIn => {
+export const makeSignInUseCase = (): SignInUseCase => {
   const userRepository = makeUserRepository();
   const hashCompare = makeHashCompare();
   const encrypter = makeEncrypter();
-  return new SignIn(userRepository, hashCompare, encrypter);
+  return new SignInUseCase(userRepository, hashCompare, encrypter);
 };
 
-export const makeAuthenticationUseCase = (): Authentication => {
+export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
   const userRepository = makeUserRepository();
   const decrypter = makeDecrypter();
-  return new Authentication(userRepository, decrypter);
+  return new AuthenticationUseCase(userRepository, decrypter);
 };
 
 export const makeFakeRequest = (): IHttpRequest => {

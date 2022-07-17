@@ -1,4 +1,4 @@
-import { SignUp } from '@/use-cases/sign-up';
+import { SignUpUseCase } from '@/use-cases/sign-up';
 import { SignUpController } from '@/adapters/controllers/sign-up-controller';
 import { IController } from '@/adapters/interfaces';
 import { UuidAdapter } from '@/infra/uuid-adapter';
@@ -13,7 +13,7 @@ export function makeSignUpController(): IController {
   const bcryptAdapter = new BcryptAdapter(salt);
   const uuidAdapter = new UuidAdapter();
   const jwtAdapter = new JwtAdapter(env.jwtSecret, env.expiresIn);
-  const signUpUseCase = new SignUp(userRepository, bcryptAdapter, uuidAdapter, jwtAdapter);
+  const signUpUseCase = new SignUpUseCase(userRepository, bcryptAdapter, uuidAdapter, jwtAdapter);
   const signUpController = new SignUpController(makeSignUpValidationFactory(), signUpUseCase);
   return signUpController;
 }

@@ -1,4 +1,4 @@
-import { SignIn } from '@/use-cases/sign-in';
+import { SignInUseCase } from '@/use-cases/sign-in';
 import { IUserData } from '@/use-cases/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
 import {
@@ -17,7 +17,7 @@ import {
 export class SignInController implements IController {
   constructor(
     private readonly validation: IValidation,
-    private readonly signIn: SignIn,
+    private readonly signIn: SignInUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse> {

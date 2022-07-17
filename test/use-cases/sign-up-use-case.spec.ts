@@ -1,6 +1,6 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { SignUp } from '@/use-cases/sign-up';
+import { SignUpUseCase } from '@/use-cases/sign-up';
 import {
   IUserRepository,
   IHasher,
@@ -21,7 +21,7 @@ type SutTypes = {
   hasher: IHasher,
   idGenerator: IIdGenerator,
   encrypter: IEncrypter,
-  sut: SignUp,
+  sut: SignUpUseCase,
   user: UserBuilder,
 }
 
@@ -30,7 +30,7 @@ const makeSut = (): SutTypes => {
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
-  const sut = new SignUp(userRepository, hasher, idGenerator, encrypter);
+  const sut = new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
   const user = new UserBuilder();
   return {
     userRepository,

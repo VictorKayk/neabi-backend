@@ -1,4 +1,4 @@
-import { Authentication } from '@/use-cases/authentication';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IUserRepository, IDecrypter, IAuthenticationResponse } from '@/use-cases/interfaces';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
@@ -8,14 +8,14 @@ import { error } from '@/shared';
 type SutTypes = {
   userRepository: IUserRepository,
   decrypter: IDecrypter,
-  sut: Authentication,
+  sut: AuthenticationUseCase,
   user: UserBuilder,
 }
 
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
   const decrypter = makeDecrypter();
-  const sut = new Authentication(userRepository, decrypter);
+  const sut = new AuthenticationUseCase(userRepository, decrypter);
   const user = new UserBuilder();
 
   jest.spyOn(userRepository, 'findById').mockResolvedValue(user.build());

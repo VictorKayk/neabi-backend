@@ -1,4 +1,4 @@
-import { Authentication } from '@/use-cases/authentication';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IAuthenticationResponse } from '@/use-cases/interfaces';
 import { IMiddleware, IHttpResponse } from '@/adapters/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
@@ -9,7 +9,7 @@ interface IAuthenticationRequest {
 
 export class AuthenticationMiddleware implements IMiddleware<IAuthenticationRequest> {
   constructor(
-    private readonly authentication: Authentication,
+    private readonly authentication: AuthenticationUseCase,
   ) { }
 
   async handle({ accessToken }: IAuthenticationRequest): Promise<IHttpResponse> {

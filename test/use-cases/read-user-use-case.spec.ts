@@ -1,5 +1,5 @@
 import { ReadUserUseCase } from '@/use-cases/read-user';
-import { IUserRepository, IUserRepositoryData } from '@/use-cases/interfaces';
+import { IUserRepository, IUserVisibleData } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
@@ -34,11 +34,23 @@ describe('ReadUserUseCase Use Case', () => {
   it('Should return user data on success', async () => {
     const { sut, userRepository, user } = makeSut();
 
-    jest.spyOn(userRepository, 'findById').mockResolvedValue(user.build());
+    const findByIdReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute(user.build().id);
-    const value = response.value as IUserRepositoryData;
+    const value = response.value as IUserVisibleData;
 
-    expect(value).toEqual(user.build());
+    expect(value).toEqual({
+      id: findByIdReturn.id,
+      name: findByIdReturn.name,
+      email: findByIdReturn.email,
+      createdAt: findByIdReturn.createdAt,
+      updatedAt: findByIdReturn.updatedAt,
+    });
   });
 });

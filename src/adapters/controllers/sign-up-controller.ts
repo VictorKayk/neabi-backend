@@ -1,4 +1,4 @@
-import { SignUp } from '@/use-cases/sign-up';
+import { SignUpUseCase } from '@/use-cases/sign-up';
 import { IUserData } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
 import {
@@ -17,7 +17,7 @@ import {
 export class SignUpController implements IController {
   constructor(
     private readonly validation: IValidation,
-    private readonly signUp: SignUp,
+    private readonly signUp: SignUpUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse> {

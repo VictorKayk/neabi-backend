@@ -9,7 +9,7 @@ import { Either, error, success } from '@/shared';
 
 type Response = Either<UnauthorizedError, IAuthenticationResponse>;
 
-export class Authentication implements IUseCase {
+export class AuthenticationUseCase implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly decrypter: IDecrypter,

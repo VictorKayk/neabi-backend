@@ -19,7 +19,7 @@ type Response = Either<
   IUserRepositoryData
 >;
 
-export class SignIn implements IUseCase {
+export class SignInUseCase implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly hashCompare: IHashCompare,

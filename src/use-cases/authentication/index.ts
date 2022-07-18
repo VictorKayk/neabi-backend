@@ -1,1 +1,1 @@
-export * from '@/use-cases/authentication/authentication';
+export * from '@/use-cases/authentication/authentication-use-case';

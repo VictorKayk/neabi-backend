@@ -25,6 +25,15 @@ jest.mock('bcrypt', () => ({
   },
 }));
 
+jest.mock('jsonwebtoken', () => ({
+  async sign(): Promise<string> {
+    return new Promise((resolve) => resolve('any_encrypted_string'));
+  },
+  verify() {
+    return { id: 'any_id' };
+  },
+}));
+
 describe('User Routes', () => {
   it('Should return 201 on sign up route success', async () => {
     const { user } = makeSut();
@@ -90,7 +99,7 @@ describe('User Routes', () => {
       }).expect(200);
   });
 
-  it('Should return 401 if account already exists on sign up route', async () => {
+  it('Should return 401 if account already exists on sign in route', async () => {
     const { user } = makeSut();
 
     jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
@@ -102,5 +111,29 @@ describe('User Routes', () => {
         password: user.build().password,
       })
       .expect(401);
+  });
+
+  it('Should return 401 if accessToken is not provided in an authenticated route', async () => {
+    await request(app).get('/api/user').expect(401);
+  });
+
+  it('Should return 200 on read user route success', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    await request(app).get('/api/user')
+      .set('x-access-token', user.build().accessToken).expect(200);
+  });
+
+  it('Should return 401 if user do not exist in read user route', async () => {
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
+
+    await request(app).get('/api/user')
+      .set('x-access-token', 'invalid_accessToken').expect(401);
   });
 });

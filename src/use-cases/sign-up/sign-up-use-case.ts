@@ -5,11 +5,12 @@ import {
   IIdGenerator,
   IUseCase,
   IUserData,
-  IUserRepositoryData,
+  IUserVisibleData,
   IUserRepository,
   IEncrypter,
 } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
+import { getUserVisibleData } from '@/use-cases/util';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<
@@ -17,7 +18,7 @@ type Response = Either<
   InvalidEmailError |
   InvalidPasswordError |
   ExistingUserError,
-  IUserRepositoryData
+  IUserVisibleData
 >;
 
 export class SignUpUseCase implements IUseCase {
@@ -44,7 +45,7 @@ export class SignUpUseCase implements IUseCase {
     const accessToken = await this.encrypter.encrypt(id);
     const hashedPassword = await this.hasher.hash(password);
 
-    const user: IUserRepositoryData = await this.userRepository.add({
+    const userData = await this.userRepository.add({
       id,
       name,
       email,
@@ -52,6 +53,8 @@ export class SignUpUseCase implements IUseCase {
       accessToken,
     });
 
-    return success(user);
+    const userVisibleData = getUserVisibleData(userData);
+
+    return success(userVisibleData);
   }
 }

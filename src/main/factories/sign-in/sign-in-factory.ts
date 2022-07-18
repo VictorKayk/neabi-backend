@@ -1,4 +1,4 @@
-import { SignIn } from '@/use-cases/sign-in';
+import { SignInUseCase } from '@/use-cases/sign-in';
 import { SignInController } from '@/adapters/controllers/sign-in-controller';
 import { IController } from '@/adapters/interfaces';
 import { UserRepository } from '@/infra/repositories';
@@ -10,8 +10,8 @@ export function makeSignInController(): IController {
   const salt = env.bcryptSalt;
   const userRepository = new UserRepository();
   const bcryptAdapter = new BcryptAdapter(salt);
-  const jwtAdapter = new JwtAdapter(env.jwtSecret);
-  const signInUseCase = new SignIn(userRepository, bcryptAdapter, jwtAdapter);
+  const jwtAdapter = new JwtAdapter(env.jwtSecret, env.expiresIn);
+  const signInUseCase = new SignInUseCase(userRepository, bcryptAdapter, jwtAdapter);
   const signInController = new SignInController(makeSignInValidationFactory(), signInUseCase);
   return signInController;
 }

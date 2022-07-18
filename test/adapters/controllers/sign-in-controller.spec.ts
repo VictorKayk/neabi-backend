@@ -1,5 +1,5 @@
 import { InvalidEmailError } from '@/entities/errors';
-import { SignIn } from '@/use-cases/sign-in';
+import { SignInUseCase } from '@/use-cases/sign-in';
 import { IHashCompare, IEncrypter } from '@/use-cases/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
 import { IValidation } from '@/adapters/interfaces';
@@ -19,7 +19,7 @@ import { SignInController } from '@/adapters/controllers/sign-in-controller';
 type SutTypes = {
   sut: SignInController,
   validation: IValidation,
-  useCase: SignIn,
+  useCase: SignInUseCase,
   hashCompare: IHashCompare,
   encrypter: IEncrypter,
 };
@@ -44,8 +44,8 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('SignIn Controller ', () => {
-  it('Should call SignIn use case with correct values', async () => {
+describe('SignInUseCase Controller ', () => {
+  it('Should call SignInUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
     const useCaseSpy = jest.spyOn(useCase, 'execute');
     await sut.handle(makeFakeRequest());
@@ -55,7 +55,7 @@ describe('SignIn Controller ', () => {
     });
   });
 
-  it('Should return 500 if use case throws', async () => {
+  it('Should return 500 if throws', async () => {
     const { sut, useCase } = makeSut();
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
       throw new Error();
@@ -75,7 +75,7 @@ describe('SignIn Controller ', () => {
     expect(response.body.accessToken).toBe(await encrypter.encrypt(response.body.id));
   });
 
-  it('Should return 400 if call SignIn use case with incorrect values', async () => {
+  it('Should return 400 if call SignInUseCase with incorrect values', async () => {
     const { sut, useCase } = makeSut();
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new InvalidEmailError('')));

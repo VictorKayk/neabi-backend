@@ -1,6 +1,9 @@
 import { UserBuilder } from '@/test/builders/user-builder';
-import { SignUp } from '@/use-cases/sign-up';
-import { SignIn } from '@/use-cases/sign-in';
+import { Either, success } from '@/shared';
+import { UnauthorizedError } from '@/use-cases/errors';
+import { SignUpUseCase } from '@/use-cases/sign-up';
+import { SignInUseCase } from '@/use-cases/sign-in';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import {
   IUserRepositoryData,
   IUserRepository,
@@ -8,6 +11,8 @@ import {
   IHashCompare,
   IIdGenerator,
   IEncrypter,
+  IDecrypter,
+  IPayload,
   IUserEditableData,
 } from '@/use-cases/interfaces';
 import { IHttpRequest, IValidation } from '@/adapters/interfaces';
@@ -70,19 +75,36 @@ export const makeEncrypter = (): IEncrypter => {
   return new EncrypterStub();
 };
 
-export const makeSignUpUseCase = (): SignUp => {
+export const makeDecrypter = (): IDecrypter => {
+  class DecrypterStub implements IDecrypter {
+    async decrypt(value: string): Promise<Either<UnauthorizedError, IPayload>> {
+      return success({
+        id: 'any_id',
+      });
+    }
+  }
+  return new DecrypterStub();
+};
+
+export const makeSignUpUseCase = (): SignUpUseCase => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
-  return new SignUp(userRepository, hasher, idGenerator, encrypter);
+  return new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
 };
 
-export const makeSignInUseCase = (): SignIn => {
+export const makeSignInUseCase = (): SignInUseCase => {
   const userRepository = makeUserRepository();
   const hashCompare = makeHashCompare();
   const encrypter = makeEncrypter();
-  return new SignIn(userRepository, hashCompare, encrypter);
+  return new SignInUseCase(userRepository, hashCompare, encrypter);
+};
+
+export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
+  const userRepository = makeUserRepository();
+  const decrypter = makeDecrypter();
+  return new AuthenticationUseCase(userRepository, decrypter);
 };
 
 export const makeFakeRequest = (): IHttpRequest => {

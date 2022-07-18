@@ -1,6 +1,6 @@
 import { User } from '@/entities';
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { SignIn } from '@/use-cases/sign-in';
+import { SignInUseCase } from '@/use-cases/sign-in';
 import {
   IUserRepository,
   IHashCompare,
@@ -19,7 +19,7 @@ type SutTypes = {
   userRepository: IUserRepository,
   hashCompare: IHashCompare,
   encrypter: IEncrypter,
-  sut: SignIn,
+  sut: SignInUseCase,
   user: UserBuilder,
 }
 
@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
   const hashCompare = makeHashCompare();
   const encrypter = makeEncrypter();
-  const sut = new SignIn(userRepository, hashCompare, encrypter);
+  const sut = new SignInUseCase(userRepository, hashCompare, encrypter);
   const user = new UserBuilder();
 
   jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(user.build());
@@ -41,7 +41,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('SignIn Use Case', () => {
+describe('SignInUseCase', () => {
   it('Should call user entity with correct values', async () => {
     const { sut, user } = makeSut();
     const userSpy = jest.spyOn(User, 'create');

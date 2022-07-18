@@ -6,6 +6,7 @@ import { SignInUseCase } from '@/use-cases/sign-in';
 import { AuthenticationUseCase } from '@/use-cases/authentication';
 import {
   IUserRepositoryData,
+  IUserRepositoryReturnData,
   IUserRepository,
   IHasher,
   IHashCompare,
@@ -19,21 +20,30 @@ import { IHttpRequest, IValidation } from '@/adapters/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
-    async findByEmail(email: string): Promise<IUserRepositoryData | null> {
+    async findByEmail(email: string): Promise<IUserRepositoryReturnData | null> {
       return null;
     }
 
-    async findById(id: string): Promise<IUserRepositoryData | null> {
+    async findById(id: string): Promise<IUserRepositoryReturnData | null> {
       return null;
     }
 
-    async add(userData: IUserRepositoryData): Promise<IUserRepositoryData> {
-      return userData;
+    async add(userData: IUserRepositoryData): Promise<IUserRepositoryReturnData> {
+      return {
+        ...userData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
     }
 
-    async updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryData> {
+    async updateByEmail(email: string, userData: IUserEditableData):
+      Promise<IUserRepositoryReturnData> {
       const user = new UserBuilder();
-      return user.build();
+      return {
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
     }
   }
   return new UserRepositoryStub();

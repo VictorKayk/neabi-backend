@@ -1,7 +1,6 @@
 import { ReadUserUseCase } from '@/use-cases/read-user';
 import { IController, IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
-import { IUserVisibleData } from '@/use-cases/interfaces';
 
 export class ReadUserController implements IController {
   constructor(
@@ -17,7 +16,7 @@ export class ReadUserController implements IController {
         return unauthorized(accountOrError.value);
       }
 
-      const account: IUserVisibleData = accountOrError.value;
+      const account = accountOrError.value;
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

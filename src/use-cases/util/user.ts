@@ -1,6 +1,6 @@
-import { IUserRepositoryData, IUserVisibleData } from '@/use-cases/interfaces';
+import { IUserRepositoryReturnData, IUserVisibleData } from '@/use-cases/interfaces';
 
-export function getUserVisibleData(userData: IUserRepositoryData): IUserVisibleData {
+export function getUserVisibleData(userData: IUserRepositoryReturnData): IUserVisibleData {
   return {
     id: userData.id,
     name: userData.name,

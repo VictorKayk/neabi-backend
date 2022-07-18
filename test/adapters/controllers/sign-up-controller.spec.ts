@@ -1,6 +1,6 @@
 import { InvalidEmailError } from '@/entities/errors';
 import { SignUpUseCase } from '@/use-cases/sign-up';
-import { IHasher, IIdGenerator, IEncrypter } from '@/use-cases/interfaces';
+import { IIdGenerator, IEncrypter } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
 import { SignUpController } from '@/adapters/controllers/sign-up-controller';
 import { IValidation } from '@/adapters/interfaces';
@@ -14,7 +14,6 @@ import {
 import {
   makeSignUpUseCase,
   makeFakeRequest,
-  makeHasher,
   makeEncrypter,
   makeIdGenerator,
   makeValidation,
@@ -25,7 +24,6 @@ type SutTypes = {
   sut: SignUpController,
   validation: IValidation,
   useCase: SignUpUseCase,
-  hasher: IHasher,
   idGenerator: IIdGenerator,
   encrypter: IEncrypter,
 };
@@ -35,7 +33,6 @@ const makeSut = (): SutTypes => {
   const useCase = makeSignUpUseCase();
   const sut = new SignUpController(validation, useCase);
 
-  const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
 
@@ -43,7 +40,6 @@ const makeSut = (): SutTypes => {
     sut,
     validation,
     useCase,
-    hasher,
     encrypter,
     idGenerator,
   };
@@ -71,12 +67,7 @@ describe('SignUpUseCase Controller ', () => {
   });
 
   it('Should return 201 on success', async () => {
-    const {
-      sut,
-      hasher,
-      encrypter,
-      idGenerator,
-    } = makeSut();
+    const { sut, encrypter, idGenerator } = makeSut();
 
     const response = await sut.handle(makeFakeRequest());
 
@@ -84,8 +75,9 @@ describe('SignUpUseCase Controller ', () => {
       id: await idGenerator.generate(),
       name: makeFakeRequest().body.name,
       email: makeFakeRequest().body.email,
-      password: await hasher.hash(makeFakeRequest().body.password),
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
+      createdAt: response.body.createdAt,
+      updatedAt: response.body.updatedAt,
     }));
   });
 

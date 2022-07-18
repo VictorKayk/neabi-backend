@@ -4,6 +4,7 @@ export * from '@/use-cases/interfaces/user-visible-data-interface';
 export * from '@/use-cases/interfaces/user-sign-in-interface';
 export * from '@/use-cases/interfaces/user-editable-data-interface';
 export * from '@/use-cases/interfaces/user-repository-interface';
+export * from '@/use-cases/interfaces/user-repository-return-data-interface';
 export * from '@/use-cases/interfaces/user-repository-data-interface';
 export * from '@/use-cases/interfaces/hasher-interface';
 export * from '@/use-cases/interfaces/hash-compare-interface';

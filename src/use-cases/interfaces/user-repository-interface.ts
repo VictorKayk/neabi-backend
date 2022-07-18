@@ -1,8 +1,8 @@
-import { IUserRepositoryData, IUserEditableData } from '@/use-cases/interfaces';
+import { IUserRepositoryReturnData, IUserRepositoryData, IUserEditableData } from '@/use-cases/interfaces';
 
 export interface IUserRepository {
-  findByEmail(email: string): Promise<IUserRepositoryData | null>
-  findById(id: string): Promise<IUserRepositoryData | null>
-  add(userData: IUserRepositoryData): Promise<IUserRepositoryData>
-  updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryData>
+  findByEmail(email: string): Promise<IUserRepositoryReturnData | null>
+  findById(id: string): Promise<IUserRepositoryReturnData | null>
+  add(userData: IUserRepositoryData): Promise<IUserRepositoryReturnData>
+  updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryReturnData>
 }

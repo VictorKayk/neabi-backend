@@ -6,7 +6,7 @@ export class UserBuilder {
     name: 'any_name',
     email: 'any_email@test.com',
     password: 'any_password1',
-    accessToken: 'any_token',
+    accessToken: 'any_encrypted_string',
   }
 
   public emptyName() {

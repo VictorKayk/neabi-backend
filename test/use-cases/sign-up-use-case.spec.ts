@@ -1,13 +1,13 @@
 import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { SignUp } from '@/use-cases/signup';
+import { SignUpUseCase } from '@/use-cases/sign-up';
 import {
   IUserRepository,
   IHasher,
   IIdGenerator,
   IEncrypter,
 } from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
+import { ExistingUserError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,
@@ -21,7 +21,7 @@ type SutTypes = {
   hasher: IHasher,
   idGenerator: IIdGenerator,
   encrypter: IEncrypter,
-  sut: SignUp,
+  sut: SignUpUseCase,
   user: UserBuilder,
 }
 
@@ -30,7 +30,7 @@ const makeSut = (): SutTypes => {
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
-  const sut = new SignUp(userRepository, hasher, idGenerator, encrypter);
+  const sut = new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
   const user = new UserBuilder();
   return {
     userRepository,
@@ -48,7 +48,11 @@ describe('SignUp Use Case', () => {
     const userSpy = jest.spyOn(User, 'create');
     await sut.execute(user.build());
     expect(userSpy)
-      .toHaveBeenCalledWith(user.build().name, user.build().email, user.build().password);
+      .toHaveBeenCalledWith({
+        name: user.build().name,
+        email: user.build().email,
+        password: user.build().password,
+      });
   });
 
   it('Should return an error if name is invalid', async () => {

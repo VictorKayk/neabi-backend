@@ -1,12 +1,28 @@
 import jwt from 'jsonwebtoken';
-import { IEncrypter } from '@/use-cases/interfaces';
+import { IEncrypter, IDecrypter, IPayload } from '@/use-cases/interfaces';
+import { Either, success, error } from '@/shared';
+import { UnauthorizedError } from '@/use-cases/errors';
 
-export class JwtAdapter implements IEncrypter {
-  constructor(private readonly secret: string) { }
+export class JwtAdapter implements IEncrypter, IDecrypter {
+  constructor(
+    private readonly secret: string,
+    private readonly expiresIn: string,
+  ) { }
 
   async encrypt(value: string): Promise<string> {
     return jwt.sign({
       id: value,
-    }, this.secret);
+    }, this.secret, {
+      expiresIn: this.expiresIn,
+    });
+  }
+
+  async decrypt(value: string): Promise<Either<UnauthorizedError, IPayload>> {
+    try {
+      const payload = jwt.verify(value, this.secret) as IPayload;
+      return success(payload);
+    } catch (e) {
+      return error(new UnauthorizedError());
+    }
   }
 }

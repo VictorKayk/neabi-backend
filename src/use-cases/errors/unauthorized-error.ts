@@ -1,6 +1,6 @@
 export class UnauthorizedError extends Error {
   constructor() {
-    super('Unauthorized');
+    super('User Unauthorized');
     this.name = 'UnauthorizedError';
   }
 }

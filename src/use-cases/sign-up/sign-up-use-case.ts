@@ -17,10 +17,10 @@ type Response = Either<
   InvalidEmailError |
   InvalidPasswordError |
   ExistingUserError,
-  IUserData
+  IUserRepositoryData
 >;
 
-export class SignUp implements IUseCase {
+export class SignUpUseCase implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly hasher: IHasher,
@@ -29,7 +29,7 @@ export class SignUp implements IUseCase {
   ) { }
 
   async execute({ name, email, password }: IUserData): Promise<Response> {
-    const userOrError = User.create(name, email, password);
+    const userOrError = User.create({ name, email, password });
     if (userOrError.isError()) return error(userOrError.value);
 
     let userOrNull = await this.userRepository.findByEmail(email);

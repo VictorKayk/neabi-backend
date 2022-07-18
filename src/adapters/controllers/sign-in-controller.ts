@@ -1,6 +1,6 @@
-import { SignUp } from '@/use-cases/signup';
+import { SignInUseCase } from '@/use-cases/sign-in';
 import { IUserData } from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/errors';
+import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
 import {
   IController,
   IHttpRequest,
@@ -8,16 +8,16 @@ import {
   IValidation,
 } from '@/adapters/interfaces';
 import {
-  created,
+  ok,
   serverError,
   badRequest,
-  forbidden,
+  unauthorized,
 } from '@/adapters/util/http';
 
-export class SignUpController implements IController {
+export class SignInController implements IController {
   constructor(
     private readonly validation: IValidation,
-    private readonly signUp: SignUp,
+    private readonly signIn: SignInUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse> {
@@ -25,18 +25,18 @@ export class SignUpController implements IController {
       const validationError = this.validation.validate(body);
       if (validationError) return badRequest(validationError);
 
-      const { name, email, password } = body;
+      const { email, password } = body;
 
-      const accountOrError = await this.signUp.execute({ name, email, password });
+      const accountOrError = await this.signIn.execute({ email, password });
       if (accountOrError.isError()) {
-        if (accountOrError.value instanceof ExistingUserError) {
-          return forbidden(accountOrError.value);
+        if (accountOrError.value instanceof InvalidEmailOrPasswordError) {
+          return unauthorized(accountOrError.value);
         }
         return badRequest(accountOrError.value);
       }
 
       const account: IUserData = accountOrError.value;
-      return created(account);
+      return ok(account);
     } catch (error) {
       return serverError(error as Error);
     }

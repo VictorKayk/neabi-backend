@@ -91,4 +91,23 @@ describe('User Repository Implementation', () => {
     const account = await sut.findById(user.build().id);
     expect(account).toBe(null);
   });
+
+  it('Should return an account on updateByEmail success', async () => {
+    const { sut, user } = makeSut();
+
+    jest.spyOn(prisma.user, 'update').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    const account = await sut.updateByEmail(user.build().email, user.build());
+    expect(account.id).toBe(user.build().id);
+    expect(account.name).toBe(user.build().name);
+    expect(account.email).toBe(user.build().email);
+    expect(account.password).toBe(user.build().password);
+    expect(account.accessToken).toBe(user.build().accessToken);
+    expect(account.createdAt).toBeTruthy();
+    expect(account.updatedAt).toBeTruthy();
+  });
 });

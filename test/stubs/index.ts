@@ -1,11 +1,19 @@
 import { UserBuilder } from '@/test/builders/user-builder';
-import { SignUp } from '@/use-cases/signup';
+import { Either, success } from '@/shared';
+import { UnauthorizedError } from '@/use-cases/errors';
+import { SignUpUseCase } from '@/use-cases/sign-up';
+import { SignInUseCase } from '@/use-cases/sign-in';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import {
   IUserRepositoryData,
   IUserRepository,
   IHasher,
+  IHashCompare,
   IIdGenerator,
   IEncrypter,
+  IDecrypter,
+  IPayload,
+  IUserEditableData,
 } from '@/use-cases/interfaces';
 import { IHttpRequest, IValidation } from '@/adapters/interfaces';
 
@@ -22,6 +30,11 @@ export const makeUserRepository = (): IUserRepository => {
     async add(userData: IUserRepositoryData): Promise<IUserRepositoryData> {
       return userData;
     }
+
+    async updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryData> {
+      const user = new UserBuilder();
+      return user.build();
+    }
   }
   return new UserRepositoryStub();
 };
@@ -33,6 +46,15 @@ export const makeHasher = (): IHasher => {
     }
   }
   return new HasherStub();
+};
+
+export const makeHashCompare = (): IHashCompare => {
+  class HashCompareStub implements IHashCompare {
+    async compare(hash: string, value: string): Promise<boolean> {
+      return true;
+    }
+  }
+  return new HashCompareStub();
 };
 
 export const makeIdGenerator = (): IIdGenerator => {
@@ -53,12 +75,36 @@ export const makeEncrypter = (): IEncrypter => {
   return new EncrypterStub();
 };
 
-export const makeSignUpUseCase = (): SignUp => {
+export const makeDecrypter = (): IDecrypter => {
+  class DecrypterStub implements IDecrypter {
+    async decrypt(value: string): Promise<Either<UnauthorizedError, IPayload>> {
+      return success({
+        id: 'any_id',
+      });
+    }
+  }
+  return new DecrypterStub();
+};
+
+export const makeSignUpUseCase = (): SignUpUseCase => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
-  return new SignUp(userRepository, hasher, idGenerator, encrypter);
+  return new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
+};
+
+export const makeSignInUseCase = (): SignInUseCase => {
+  const userRepository = makeUserRepository();
+  const hashCompare = makeHashCompare();
+  const encrypter = makeEncrypter();
+  return new SignInUseCase(userRepository, hashCompare, encrypter);
+};
+
+export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
+  const userRepository = makeUserRepository();
+  const decrypter = makeDecrypter();
+  return new AuthenticationUseCase(userRepository, decrypter);
 };
 
 export const makeFakeRequest = (): IHttpRequest => {

@@ -20,8 +20,8 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "start": "npm run build && node dist/main/server.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/main/server.ts",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",

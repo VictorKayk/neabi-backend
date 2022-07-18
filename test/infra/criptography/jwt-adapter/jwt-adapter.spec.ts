@@ -17,7 +17,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new JwtAdapter('any_secret');
+  const sut = new JwtAdapter('any_secret', '30d');
   return {
     sut,
   };
@@ -29,7 +29,7 @@ describe('Jwt Adapter', () => {
     const jwtSpy = jest.spyOn(jwt, 'sign');
     await sut.encrypt('any_id');
 
-    expect(jwtSpy).toHaveBeenLastCalledWith({ id: 'any_id' }, 'any_secret');
+    expect(jwtSpy).toHaveBeenLastCalledWith({ id: 'any_id' }, 'any_secret', { expiresIn: '30d' });
   });
 
   it('Should return an token on sign success', async () => {

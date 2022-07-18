@@ -1,4 +1,4 @@
-import { Authentication } from '@/use-cases/authentication';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IDecrypter } from '@/use-cases/interfaces';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { ServerError } from '@/adapters/errors';
@@ -10,7 +10,7 @@ import { AuthenticationMiddleware } from '@/adapters/middleware/authentication-m
 
 type SutTypes = {
   sut: AuthenticationMiddleware,
-  useCase: Authentication,
+  useCase: AuthenticationUseCase,
   decrypter: IDecrypter,
   user: UserBuilder
 };
@@ -33,7 +33,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('Authentication Middleware', () => {
-  it('Should call Authentication use case with correct values', async () => {
+  it('Should call AuthenticationUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
     const useCaseSpy = jest.spyOn(useCase, 'execute');
     await sut.handle({ accessToken: 'any_encrypted_string' });
@@ -60,7 +60,7 @@ describe('Authentication Middleware', () => {
     expect(response.body.id).toBe(user.build().id);
   });
 
-  it('Should return 401 if call Authentication use case with incorrect values', async () => {
+  it('Should return 401 if call AuthenticationUseCase with incorrect values', async () => {
     const { sut, useCase } = makeSut();
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new UnauthorizedError()));
     const response = await sut.handle({ accessToken: 'invalid_encrypted_string' });

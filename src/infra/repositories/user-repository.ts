@@ -40,4 +40,13 @@ export class UserRepository implements IUserRepository {
     });
     return user;
   }
+
+  async updateById(id: string, userData: IUserEditableData):
+    Promise<IUserRepositoryReturnData> {
+    const user = prisma.user.update({
+      where: { id },
+      data: userData,
+    });
+    return user;
+  }
 }

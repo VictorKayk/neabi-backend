@@ -5,4 +5,5 @@ export interface IUserRepository {
   findById(id: string): Promise<IUserRepositoryReturnData | null>
   add(userData: IUserRepositoryData): Promise<IUserRepositoryReturnData>
   updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryReturnData>
+  updateById(id: string, userData: IUserEditableData): Promise<IUserRepositoryReturnData>
 }

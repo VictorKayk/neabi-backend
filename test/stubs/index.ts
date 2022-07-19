@@ -45,6 +45,16 @@ export const makeUserRepository = (): IUserRepository => {
         updatedAt: new Date(),
       };
     }
+
+    async updateById(id: string, userData: IUserEditableData):
+      Promise<IUserRepositoryReturnData> {
+      const user = new UserBuilder();
+      return {
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
   }
   return new UserRepositoryStub();
 };

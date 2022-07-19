@@ -11,8 +11,8 @@ describe('User Entity', () => {
     expect(userOrError.isSuccess()).toBe(true);
     const user = userOrError.value as User;
     expect(user.name?.value).toEqual('any_name');
-    expect(user.email.value).toEqual('any_email@test.com');
-    expect(user.password.value).toEqual('any_password_1');
+    expect(user.email?.value).toEqual('any_email@test.com');
+    expect(user.password?.value).toEqual('any_password_1');
   });
 
   it('Should return an error if name is invalid', () => {

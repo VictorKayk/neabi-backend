@@ -19,7 +19,8 @@
     "noImplicitOverride": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "typeRoots": ["./src/main/config/@types", "node_modules/@types"]
   },
   "include": ["src", "test"]
 }

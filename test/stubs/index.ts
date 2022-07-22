@@ -17,7 +17,7 @@ import {
   IPayload,
   IUserEditableData,
 } from '@/use-cases/interfaces';
-import { IHttpRequest, IValidation } from '@/adapters/interfaces';
+import { IHttpRequest, IHttpRequestAuthenticated, IValidation } from '@/adapters/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
@@ -138,7 +138,20 @@ export const makeFakeRequest = (): IHttpRequest => {
   const user = new UserBuilder();
   return {
     body: {
-      id: 'any_id',
+      name: user.build().name,
+      email: user.build().email,
+      password: user.build().password,
+      passwordConfirmation: user.build().password,
+    },
+  };
+};
+
+export const makeFakeRequestAuthenticated = (): IHttpRequestAuthenticated => {
+  const user = new UserBuilder();
+  return {
+    id: 'any_id',
+    accessToken: 'any_token',
+    body: {
       name: user.build().name,
       email: user.build().email,
       password: user.build().password,

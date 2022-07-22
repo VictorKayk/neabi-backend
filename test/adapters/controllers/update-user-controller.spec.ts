@@ -1,6 +1,5 @@
 import { InvalidEmailError } from '@/entities/errors';
 import { UpdateUserUseCase } from '@/use-cases/update-user';
-import { IEncrypter } from '@/use-cases/interfaces';
 import { NonExistingUserError, ExistingUserError } from '@/use-cases/errors';
 import { ServerError } from '@/adapters/errors';
 import {
@@ -9,7 +8,7 @@ import {
   badRequest,
   forbidden,
 } from '@/adapters/util/http';
-import { makeUpdateUserUseCase, makeFakeRequest } from '@/test/stubs';
+import { makeUpdateUserUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UpdateUserController } from '@/adapters/controllers/update-user-controller';
 
@@ -29,14 +28,14 @@ describe('UpdateUser Controller ', () => {
   it('Should call UpdateUserUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
     const useCaseSpy = jest.spyOn(useCase, 'execute');
-    await sut.handle(makeFakeRequest());
+    await sut.handle(makeFakeRequestAuthenticated());
 
     expect(useCaseSpy).toHaveBeenCalledWith({
       id: 'any_id',
       userData: {
-        name: makeFakeRequest().body.name,
-        email: makeFakeRequest().body.email,
-        password: makeFakeRequest().body.password,
+        name: makeFakeRequestAuthenticated().body.name,
+        email: makeFakeRequestAuthenticated().body.email,
+        password: makeFakeRequestAuthenticated().body.password,
       },
     });
   });
@@ -46,7 +45,7 @@ describe('UpdateUser Controller ', () => {
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
       throw new Error();
     });
-    const response = await sut.handle(makeFakeRequest());
+    const response = await sut.handle(makeFakeRequestAuthenticated());
 
     expect(response).toEqual(serverError(new ServerError()));
   });
@@ -56,19 +55,19 @@ describe('UpdateUser Controller ', () => {
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(success({
       id: 'any_id',
-      name: makeFakeRequest().body.name,
-      email: makeFakeRequest().body.email,
+      name: makeFakeRequestAuthenticated().body.name,
+      email: makeFakeRequestAuthenticated().body.email,
       accessToken: 'any_token',
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
 
-    const response = await sut.handle(makeFakeRequest());
+    const response = await sut.handle(makeFakeRequestAuthenticated());
 
     expect(response).toEqual(ok({
       id: 'any_id',
-      name: makeFakeRequest().body.name,
-      email: makeFakeRequest().body.email,
+      name: makeFakeRequestAuthenticated().body.name,
+      email: makeFakeRequestAuthenticated().body.email,
       accessToken: response.body.accessToken,
       createdAt: response.body.createdAt,
       updatedAt: response.body.updatedAt,
@@ -78,10 +77,12 @@ describe('UpdateUser Controller ', () => {
   it('Should return 400 if call UpdateUserUseCase with incorrect values', async () => {
     const { sut } = makeSut();
     const response = await sut.handle({
+      id: 'any_id',
+      accessToken: 'any_accessToken',
       body: {
-        name: makeFakeRequest().body.name,
+        name: makeFakeRequestAuthenticated().body.name,
         email: '',
-        password: makeFakeRequest().body.password,
+        password: makeFakeRequestAuthenticated().body.password,
       },
     });
 
@@ -93,7 +94,7 @@ describe('UpdateUser Controller ', () => {
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new NonExistingUserError()),
     )));
-    const response = await sut.handle(makeFakeRequest());
+    const response = await sut.handle(makeFakeRequestAuthenticated());
 
     expect(response).toEqual(forbidden(new NonExistingUserError()));
   });
@@ -103,7 +104,7 @@ describe('UpdateUser Controller ', () => {
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new ExistingUserError()),
     )));
-    const response = await sut.handle(makeFakeRequest());
+    const response = await sut.handle(makeFakeRequestAuthenticated());
 
     expect(response).toEqual(forbidden(new ExistingUserError()));
   });

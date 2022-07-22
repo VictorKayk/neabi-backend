@@ -1,6 +1,6 @@
 import { UpdateUserUseCase } from '@/use-cases/update-user';
 import { ExistingUserError, NonExistingUserError } from '@/use-cases/errors';
-import { IController, IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
+import { IController, IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
 import {
   ok,
   serverError,
@@ -11,15 +11,9 @@ import {
 export class UpdateUserController implements IController {
   constructor(private readonly updateUser: UpdateUserUseCase) { }
 
-  async handle({ body }: IHttpRequest): Promise<IHttpResponse> {
+  async handle({ id, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
-      const {
-        id,
-        name,
-        email,
-        password,
-      } = body;
-
+      const { name, email, password } = body;
       const accountOrError = await this.updateUser.execute({
         id,
         userData: {

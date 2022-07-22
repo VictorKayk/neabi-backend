@@ -1,5 +1,4 @@
 import { SignUpUseCase } from '@/use-cases/sign-up';
-import { IUserData } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
 import {
   IController,
@@ -35,7 +34,7 @@ export class SignUpController implements IController {
         return badRequest(accountOrError.value);
       }
 
-      const account: IUserData = accountOrError.value;
+      const account = accountOrError.value;
       return created(account);
     } catch (error) {
       return serverError(error as Error);

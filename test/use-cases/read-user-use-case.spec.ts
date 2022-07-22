@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('ReadUserUseCase Use Case', () => {
+describe('ReadUserUseCase', () => {
   it('Should return an error if user do not exists', async () => {
     const { sut, user } = makeSut();
     const response = await sut.execute(user.build().id);
@@ -49,6 +49,7 @@ describe('ReadUserUseCase Use Case', () => {
       id: findByIdReturn.id,
       name: findByIdReturn.name,
       email: findByIdReturn.email,
+      accessToken: findByIdReturn.accessToken,
       createdAt: findByIdReturn.createdAt,
       updatedAt: findByIdReturn.updatedAt,
     });

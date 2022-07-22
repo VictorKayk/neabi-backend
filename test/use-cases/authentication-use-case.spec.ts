@@ -18,7 +18,11 @@ const makeSut = (): SutTypes => {
   const sut = new AuthenticationUseCase(userRepository, decrypter);
   const user = new UserBuilder();
 
-  jest.spyOn(userRepository, 'findById').mockResolvedValue(user.build());
+  jest.spyOn(userRepository, 'findById').mockResolvedValue({
+    ...user.build(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
 
   return {
     userRepository,

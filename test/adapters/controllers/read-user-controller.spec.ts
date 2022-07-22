@@ -50,7 +50,13 @@ describe('ReadUser Controller ', () => {
   it('Should return 200 on success', async () => {
     const { sut, user, useCase } = makeSut();
 
-    jest.spyOn(useCase, 'execute').mockResolvedValue(success(user.build()));
+    const useCaseReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
       body: {
         id: user.build().id,
@@ -58,7 +64,7 @@ describe('ReadUser Controller ', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(user.build());
+    expect(response.body).toEqual(useCaseReturn);
   });
 
   it('Should return 401 if user do not exists', async () => {

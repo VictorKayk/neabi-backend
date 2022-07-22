@@ -156,8 +156,45 @@ describe('UpdateUserUseCase', () => {
     });
   });
 
-  it('Should return an error if email is already taken', async () => {
-    const { sut, user } = makeSut();
+  it('Should update email if it is the same email as the user', async () => {
+    const {
+      sut,
+      user,
+      userRepository,
+      repositoryReturn,
+    } = makeSut();
+
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(repositoryReturn);
+    jest.spyOn(userRepository, 'updateById').mockResolvedValue(repositoryReturn);
+
+    const response = await sut.execute({
+      id: user.build().id,
+      userData: { email: repositoryReturn.email },
+    });
+    const value = response.value as IUserVisibleData;
+
+    expect(value).toEqual({
+      id: repositoryReturn.id,
+      name: repositoryReturn.name,
+      email: repositoryReturn.email,
+      accessToken: repositoryReturn.accessToken,
+      createdAt: repositoryReturn.createdAt,
+      updatedAt: repositoryReturn.updatedAt,
+    });
+  });
+
+  it('Should return an error if email is already taken by any other user', async () => {
+    const {
+      sut,
+      user,
+      userRepository,
+      repositoryReturn,
+    } = makeSut();
+
+    jest.spyOn(userRepository, 'findByEmail').mockResolvedValue({
+      ...repositoryReturn,
+      id: 'another_id',
+    });
 
     const response = await sut.execute({ id: user.build().id, userData: { email: 'invalid_email@test.com' } });
 

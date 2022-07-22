@@ -4,6 +4,7 @@ import { UnauthorizedError } from '@/use-cases/errors';
 import { SignUpUseCase } from '@/use-cases/sign-up';
 import { SignInUseCase } from '@/use-cases/sign-in';
 import { AuthenticationUseCase } from '@/use-cases/authentication';
+import { UpdateUserUseCase } from '@/use-cases/update-user';
 import {
   IUserRepositoryData,
   IUserRepositoryReturnData,
@@ -127,10 +128,17 @@ export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
   return new AuthenticationUseCase(userRepository, decrypter);
 };
 
+export const makeUpdateUserUseCase = (): UpdateUserUseCase => {
+  const userRepository = makeUserRepository();
+  const hasher = makeHasher();
+  return new UpdateUserUseCase(userRepository, hasher);
+};
+
 export const makeFakeRequest = (): IHttpRequest => {
   const user = new UserBuilder();
   return {
     body: {
+      id: 'any_id',
       name: user.build().name,
       email: user.build().email,
       password: user.build().password,

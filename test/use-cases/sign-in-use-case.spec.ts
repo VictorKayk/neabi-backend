@@ -5,7 +5,7 @@ import {
   IUserRepository,
   IHashCompare,
   IEncrypter,
-  IUserRepositoryData,
+  IUserVisibleData,
 } from '@/use-cases/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
@@ -30,7 +30,11 @@ const makeSut = (): SutTypes => {
   const sut = new SignInUseCase(userRepository, hashCompare, encrypter);
   const user = new UserBuilder();
 
-  jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(user.build());
+  jest.spyOn(userRepository, 'findByEmail').mockResolvedValue({
+    ...user.build(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
 
   return {
     userRepository,
@@ -93,8 +97,8 @@ describe('SignInUseCase', () => {
   it('Should call HashCompare with correct password', async () => {
     const { sut, user, hashCompare } = makeSut();
     const hashCompareSpy = jest.spyOn(hashCompare, 'compare');
-    const response = await (await sut.execute(user.build())).value as IUserRepositoryData;
-    expect(hashCompareSpy).toHaveBeenCalledWith(user.build().password, response.password);
+    const response = await (await sut.execute(user.build())).value as IUserVisibleData;
+    expect(hashCompareSpy).toHaveBeenCalledWith(user.build().password, user.build().password);
   });
 
   it('Should throw if HashCompare throws', async () => {
@@ -115,7 +119,7 @@ describe('SignInUseCase', () => {
   it('Should call Encrypter with correct value', async () => {
     const { sut, user, encrypter } = makeSut();
     const encrypterSpy = jest.spyOn(encrypter, 'encrypt');
-    const response = await (await sut.execute(user.build())).value as IUserRepositoryData;
+    const response = await (await sut.execute(user.build())).value as IUserVisibleData;
     expect(encrypterSpy).toHaveBeenCalledWith(response.id);
   });
 
@@ -131,7 +135,7 @@ describe('SignInUseCase', () => {
       sut, user, userRepository, encrypter,
     } = makeSut();
     const userRepositorySpy = jest.spyOn(userRepository, 'updateByEmail');
-    const response = await (await sut.execute(user.build())).value as IUserRepositoryData;
+    const response = await (await sut.execute(user.build())).value as IUserVisibleData;
     expect(userRepositorySpy).toHaveBeenCalledWith(user.build().email, {
       accessToken: await encrypter.encrypt(response.id),
     });
@@ -146,7 +150,7 @@ describe('SignInUseCase', () => {
 
   it('Should return an user and an accessToken on success', async () => {
     const { sut, user, encrypter } = makeSut();
-    const response = await (await sut.execute(user.build())).value as IUserRepositoryData;
+    const response = await (await sut.execute(user.build())).value as IUserVisibleData;
     expect(response.name).toBe(user.build().name);
     expect(response.email).toBe(user.build().email);
     expect(response.accessToken).toBe(await encrypter.encrypt(response.id));

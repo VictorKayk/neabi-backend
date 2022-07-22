@@ -136,4 +136,103 @@ describe('User Routes', () => {
     await request(app).get('/api/user')
       .set('x-access-token', 'invalid_accessToken').expect(401);
   });
+
+  it('Should return 200 on update user route success', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst')
+      .mockResolvedValueOnce({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .mockResolvedValueOnce({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .mockResolvedValueOnce(null);
+
+    jest.spyOn(prisma.user, 'update').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    await request(app).patch('/api/user')
+      .set('x-access-token', user.build().accessToken)
+      .send({
+        name: 'new_name',
+        email: 'new_email@test.com',
+        password: 'new_password_1',
+      })
+      .expect(200);
+  });
+
+  it('Should return 400 if params are invalid', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst')
+      .mockResolvedValueOnce({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .mockResolvedValueOnce({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .mockResolvedValueOnce(null);
+
+    await request(app).patch('/api/user')
+      .set('x-access-token', user.build().accessToken)
+      .send({
+        name: '',
+        email: '',
+        password: '',
+      })
+      .expect(400);
+  });
+
+  it('Should return 403 if user do not exists', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst')
+      .mockResolvedValueOnce({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .mockResolvedValueOnce(null);
+
+    await request(app).patch('/api/user')
+      .set('x-access-token', user.build().accessToken)
+      .send({
+        name: 'new_name',
+        email: 'new_email@test.com',
+        password: 'new_password_1',
+      })
+      .expect(403);
+  });
+
+  it('Should return 403 if user exists', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst')
+      .mockResolvedValue({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+    await request(app).patch('/api/user')
+      .set('x-access-token', user.build().accessToken)
+      .send({
+        name: 'new_name',
+        email: 'new_email@test.com',
+        password: 'new_password_1',
+      })
+      .expect(403);
+  });
 });

@@ -6,6 +6,7 @@ import {
   IHasher,
   IIdGenerator,
   IEncrypter,
+  IUserVisibleData,
 } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
@@ -92,7 +93,11 @@ describe('SignUp Use Case', () => {
 
   it('Should return an error if user already exists', async () => {
     const { sut, userRepository, user } = makeSut();
-    jest.spyOn(userRepository, 'findByEmail').mockReturnValueOnce(new Promise((resolve) => resolve(user.build())));
+    jest.spyOn(userRepository, 'findByEmail').mockReturnValueOnce(new Promise((resolve) => resolve({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })));
     const error = await sut.execute(user.build());
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new ExistingUserError());
@@ -175,16 +180,19 @@ describe('SignUp Use Case', () => {
 
   it('Should return an user and an accessToken on success', async () => {
     const {
-      sut, user, hasher, idGenerator, encrypter,
+      sut, user, idGenerator, encrypter,
     } = makeSut();
     const response = await sut.execute(user.build());
+    const responseValue = response.value as IUserVisibleData;
+
     expect(response.isSuccess()).toBe(true);
-    expect(response.value).toEqual({
+    expect(responseValue).toEqual({
       id: await idGenerator.generate(),
       name: user.build().name,
       email: user.build().email,
-      password: await hasher.hash(user.build().password),
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
+      createdAt: responseValue.createdAt,
+      updatedAt: responseValue.updatedAt,
     });
   });
 });

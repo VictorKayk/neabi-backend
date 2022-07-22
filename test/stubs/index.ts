@@ -4,8 +4,10 @@ import { UnauthorizedError } from '@/use-cases/errors';
 import { SignUpUseCase } from '@/use-cases/sign-up';
 import { SignInUseCase } from '@/use-cases/sign-in';
 import { AuthenticationUseCase } from '@/use-cases/authentication';
+import { UpdateUserUseCase } from '@/use-cases/update-user';
 import {
   IUserRepositoryData,
+  IUserRepositoryReturnData,
   IUserRepository,
   IHasher,
   IHashCompare,
@@ -15,25 +17,44 @@ import {
   IPayload,
   IUserEditableData,
 } from '@/use-cases/interfaces';
-import { IHttpRequest, IValidation } from '@/adapters/interfaces';
+import { IHttpRequest, IHttpRequestAuthenticated, IValidation } from '@/adapters/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
-    async findByEmail(email: string): Promise<IUserRepositoryData | null> {
+    async findByEmail(email: string): Promise<IUserRepositoryReturnData | null> {
       return null;
     }
 
-    async findById(id: string): Promise<IUserRepositoryData | null> {
+    async findById(id: string): Promise<IUserRepositoryReturnData | null> {
       return null;
     }
 
-    async add(userData: IUserRepositoryData): Promise<IUserRepositoryData> {
-      return userData;
+    async add(userData: IUserRepositoryData): Promise<IUserRepositoryReturnData> {
+      return {
+        ...userData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
     }
 
-    async updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryData> {
+    async updateByEmail(email: string, userData: IUserEditableData):
+      Promise<IUserRepositoryReturnData> {
       const user = new UserBuilder();
-      return user.build();
+      return {
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+
+    async updateById(id: string, userData: IUserEditableData):
+      Promise<IUserRepositoryReturnData> {
+      const user = new UserBuilder();
+      return {
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
     }
   }
   return new UserRepositoryStub();
@@ -107,9 +128,29 @@ export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
   return new AuthenticationUseCase(userRepository, decrypter);
 };
 
+export const makeUpdateUserUseCase = (): UpdateUserUseCase => {
+  const userRepository = makeUserRepository();
+  const hasher = makeHasher();
+  return new UpdateUserUseCase(userRepository, hasher);
+};
+
 export const makeFakeRequest = (): IHttpRequest => {
   const user = new UserBuilder();
   return {
+    body: {
+      name: user.build().name,
+      email: user.build().email,
+      password: user.build().password,
+      passwordConfirmation: user.build().password,
+    },
+  };
+};
+
+export const makeFakeRequestAuthenticated = (): IHttpRequestAuthenticated => {
+  const user = new UserBuilder();
+  return {
+    id: 'any_id',
+    accessToken: 'any_token',
     body: {
       name: user.build().name,
       email: user.build().email,

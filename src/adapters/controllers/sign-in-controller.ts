@@ -1,5 +1,4 @@
 import { SignInUseCase } from '@/use-cases/sign-in';
-import { IUserData } from '@/use-cases/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
 import {
   IController,
@@ -35,7 +34,7 @@ export class SignInController implements IController {
         return badRequest(accountOrError.value);
       }
 
-      const account: IUserData = accountOrError.value;
+      const account = accountOrError.value;
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

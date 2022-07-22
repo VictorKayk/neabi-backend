@@ -2,55 +2,56 @@ import { User } from '@/entities';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import {
   IHasher,
-  IIdGenerator,
   IUseCase,
-  IUserData,
+  IUserEditableData,
   IUserVisibleData,
   IUserRepository,
-  IEncrypter,
 } from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/errors/existing-user-error';
+import { ExistingUserError, NonExistingUserError } from '@/use-cases/errors';
 import { getUserVisibleData } from '@/use-cases/util';
 import { Either, error, success } from '@/shared';
+
+interface Request {
+  id: string,
+  userData: IUserEditableData
+}
 
 type Response = Either<
   InvalidNameError |
   InvalidEmailError |
   InvalidPasswordError |
+  NonExistingUserError |
   ExistingUserError,
   IUserVisibleData
 >;
 
-export class SignUpUseCase implements IUseCase {
+export class UpdateUserUseCase implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly hasher: IHasher,
-    private readonly idGenerator: IIdGenerator,
-    private readonly encrypter: IEncrypter,
   ) { }
 
-  async execute({ name, email, password }: IUserData): Promise<Response> {
+  async execute({ id, userData: { name, email, password } }: Request): Promise<Response> {
     const userOrError = User.create({ name, email, password });
     if (userOrError.isError()) return error(userOrError.value);
 
-    let userOrNull = await this.userRepository.findByEmail(email);
-    if (userOrNull) return error(new ExistingUserError());
+    let userOrNull = await this.userRepository.findById(id);
+    if (!userOrNull) return error(new NonExistingUserError());
 
-    let id: string;
-    do {
-      id = await this.idGenerator.generate();
-      userOrNull = await this.userRepository.findById(id);
-    } while (userOrNull);
+    if (email) {
+      userOrNull = await this.userRepository.findByEmail(email);
+      if (userOrNull && userOrNull.id !== id) return error(new ExistingUserError());
+    }
 
-    const accessToken = await this.encrypter.encrypt(id);
-    const hashedPassword = await this.hasher.hash(password);
+    let newPassword;
+    if (password) {
+      newPassword = await this.hasher.hash(password);
+    }
 
-    const userData = await this.userRepository.add({
-      id,
+    const userData = await this.userRepository.updateById(id, {
       name,
       email,
-      password: hashedPassword,
-      accessToken,
+      password: newPassword,
     });
 
     const userVisibleData = getUserVisibleData(userData);

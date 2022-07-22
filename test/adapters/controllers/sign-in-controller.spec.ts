@@ -33,7 +33,11 @@ const makeSut = (): SutTypes => {
   const encrypter = makeEncrypter();
 
   const user = new UserBuilder();
-  jest.spyOn(useCase, 'execute').mockResolvedValue(success(user.build()));
+  jest.spyOn(useCase, 'execute').mockResolvedValue(success({
+    ...user.build(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }));
 
   return {
     sut,

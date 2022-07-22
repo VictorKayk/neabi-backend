@@ -6,11 +6,11 @@ import { IUserCreate } from '@/entities/interfaces';
 export class User {
   readonly name?: Name;
 
-  readonly email: Email;
+  readonly email?: Email;
 
-  readonly password: Password;
+  readonly password?: Password;
 
-  private constructor(email: Email, password: Password, name?: Name) {
+  private constructor(email?: Email, password?: Password, name?: Name) {
     this.email = email;
     this.password = password;
     this.name = name;
@@ -25,14 +25,20 @@ export class User {
       if (nameOrError.isError()) return error(new InvalidNameError(name));
     }
 
-    const emailOrError = Email.create(email);
-    if (emailOrError.isError()) return error(new InvalidEmailError(email));
+    let emailOrError;
+    if (email !== undefined) {
+      emailOrError = Email.create(email);
+      if (emailOrError.isError()) return error(new InvalidEmailError(email));
+    }
 
-    const passwordOrError = Password.create(password);
-    if (passwordOrError.isError()) return error(new InvalidPasswordError(password));
+    let passwordOrError;
+    if (password !== undefined) {
+      passwordOrError = Password.create(password);
+      if (passwordOrError.isError()) return error(new InvalidPasswordError(password));
+    }
 
-    const emailObj = emailOrError.value;
-    const passwordObj = passwordOrError.value;
+    const emailObj = emailOrError?.value;
+    const passwordObj = passwordOrError?.value;
     const nameObj = nameOrError?.value;
     return success(new User(emailObj, passwordObj, nameObj));
   }

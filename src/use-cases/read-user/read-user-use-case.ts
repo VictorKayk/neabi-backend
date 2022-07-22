@@ -1,6 +1,7 @@
 import { IUseCase, IUserRepository, IUserVisibleData } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/errors';
 import { Either, error, success } from '@/shared';
+import { getUserVisibleData } from '@/use-cases/util';
 
 type Response = Either<NonExistingUserError, IUserVisibleData>;
 
@@ -13,14 +14,8 @@ export class ReadUserUseCase implements IUseCase {
     const userOrNull = await this.userRepository.findById(id);
     if (!userOrNull) return error(new NonExistingUserError());
 
-    const user: IUserVisibleData = {
-      id: userOrNull.id,
-      name: userOrNull.name,
-      email: userOrNull.email,
-      createdAt: userOrNull.createdAt,
-      updatedAt: userOrNull.updatedAt,
-    };
+    const userVisibleData = getUserVisibleData(userOrNull);
 
-    return success(user);
+    return success(userVisibleData);
   }
 }

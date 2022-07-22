@@ -40,7 +40,7 @@ export class UpdateUserUseCase implements IUseCase {
 
     if (email) {
       userOrNull = await this.userRepository.findByEmail(email);
-      if (userOrNull) return error(new ExistingUserError());
+      if (userOrNull && userOrNull.id !== id) return error(new ExistingUserError());
     }
 
     let newPassword;

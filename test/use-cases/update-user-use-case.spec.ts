@@ -1,5 +1,5 @@
 import { User } from '@/entities';
-import { InvalidEmailError } from '@/entities/errors';
+import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import {
   IUserRepository,
   IUserVisibleData,
@@ -54,6 +54,42 @@ describe('UpdateUserUseCase', () => {
         email: user.build().email,
         password: user.build().password,
       });
+  });
+
+  it('Should return an error if name is invalid', async () => {
+    const { sut, user } = makeSut();
+    const error = await sut.execute({
+      id: user.build().id,
+      userData: {
+        name: '',
+      },
+    });
+    expect(error.isError()).toBe(true);
+    expect(error.value).toEqual(new InvalidNameError(''));
+  });
+
+  it('Should return an error if email is invalid', async () => {
+    const { sut, user } = makeSut();
+    const error = await sut.execute({
+      id: user.build().id,
+      userData: {
+        email: '',
+      },
+    });
+    expect(error.isError()).toBe(true);
+    expect(error.value).toEqual(new InvalidEmailError(''));
+  });
+
+  it('Should return an error if password is invalid', async () => {
+    const { sut, user } = makeSut();
+    const error = await sut.execute({
+      id: user.build().id,
+      userData: {
+        password: '',
+      },
+    });
+    expect(error.isError()).toBe(true);
+    expect(error.value).toEqual(new InvalidPasswordError(''));
   });
 
   it('Should return an error if user do not exists', async () => {

@@ -20,6 +20,7 @@ type Response = Either<
   InvalidNameError |
   InvalidEmailError |
   InvalidPasswordError |
+  NonExistingUserError |
   ExistingUserError,
   IUserVisibleData
 >;

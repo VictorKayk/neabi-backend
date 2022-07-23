@@ -1,5 +1,6 @@
 export interface IHttpRequest {
   body: any,
+  params?: any,
 }
 
 export interface IHttpRequestAuthenticated extends IHttpRequest {

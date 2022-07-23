@@ -32,7 +32,6 @@ const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const useCase = makeSignUpUseCase();
   const sut = new SignUpController(validation, useCase);
-
   const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
 
@@ -48,7 +47,9 @@ const makeSut = (): SutTypes => {
 describe('SignUpUseCase Controller ', () => {
   it('Should call SignUpUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
+
     const useCaseSpy = jest.spyOn(useCase, 'execute');
+
     await sut.handle(makeFakeRequest());
     expect(useCaseSpy).toHaveBeenCalledWith({
       name: makeFakeRequest().body.name,
@@ -59,18 +60,16 @@ describe('SignUpUseCase Controller ', () => {
 
   it('Should return 500 if throws', async () => {
     const { sut, useCase } = makeSut();
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
-      throw new Error();
-    });
+
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
+
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(serverError(new ServerError()));
   });
 
   it('Should return 201 on success', async () => {
     const { sut, encrypter, idGenerator } = makeSut();
-
     const response = await sut.handle(makeFakeRequest());
-
     expect(response).toEqual(created({
       id: await idGenerator.generate(),
       name: makeFakeRequest().body.name,
@@ -95,9 +94,11 @@ describe('SignUpUseCase Controller ', () => {
 
   it('Should return 403 if user already exists', async () => {
     const { sut, useCase } = makeSut();
+
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new ExistingUserError()),
     )));
+
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(forbidden(new ExistingUserError()));
   });

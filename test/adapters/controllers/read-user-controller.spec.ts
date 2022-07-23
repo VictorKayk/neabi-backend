@@ -7,7 +7,11 @@ import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { ReadUserController } from '@/adapters/controllers/read-user-controller';
 
-type SutTypes = { sut: ReadUserController, useCase: ReadUserUseCase, user: UserBuilder };
+type SutTypes = {
+  sut: ReadUserController,
+  useCase: ReadUserUseCase,
+  user: UserBuilder
+};
 
 const makeSut = (): SutTypes => {
   const repository = makeUserRepository();
@@ -15,7 +19,11 @@ const makeSut = (): SutTypes => {
   const sut = new ReadUserController(useCase);
   const user = new UserBuilder();
 
-  return { sut, useCase, user };
+  return {
+    sut,
+    useCase,
+    user,
+  };
 };
 
 describe('ReadUser Controller ', () => {
@@ -23,21 +31,19 @@ describe('ReadUser Controller ', () => {
     const { sut, useCase, user } = makeSut();
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');
+
     await sut.handle({
       id: user.build().id,
       accessToken: 'any_accessToken',
       body: {},
     });
-
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
   });
 
   it('Should return 500 if throws', async () => {
     const { sut, useCase, user } = makeSut();
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
-      throw new Error();
-    });
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
     const response = await sut.handle({
       id: user.build().id,
@@ -55,7 +61,6 @@ describe('ReadUser Controller ', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
       id: user.build().id,

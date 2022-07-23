@@ -2,6 +2,7 @@ import { IUserRepository } from '@/use-cases/interfaces';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
 import { ReadAllUsersUseCase } from '@/use-cases/read-all-users';
+import { getUserVisibleData } from '@/use-cases/util';
 
 type SutTypes = {
   userRepository: IUserRepository,
@@ -25,31 +26,16 @@ describe('ReadAllUsersUseCase', () => {
   it('Should return user data on success', async () => {
     const { sut, user, userRepository } = makeSut();
 
-    const userRepositoryReturn = {
-      ...user.build(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    const readAllUsersReturn = [
+      { ...user.build(), createdAt: new Date(), updatedAt: new Date() },
+      { ...user.build(), createdAt: new Date(), updatedAt: new Date() },
+    ];
+    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue(readAllUsersReturn);
 
-    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
     const response = await sut.execute();
-
-    expect(response).toEqual([{
-      id: userRepositoryReturn.id,
-      name: userRepositoryReturn.name,
-      email: userRepositoryReturn.email,
-      accessToken: userRepositoryReturn.accessToken,
-      createdAt: userRepositoryReturn.createdAt,
-      updatedAt: userRepositoryReturn.updatedAt,
-    },
-    {
-      id: userRepositoryReturn.id,
-      name: userRepositoryReturn.name,
-      email: userRepositoryReturn.email,
-      accessToken: userRepositoryReturn.accessToken,
-      createdAt: userRepositoryReturn.createdAt,
-      updatedAt: userRepositoryReturn.updatedAt,
-    }]);
+    const readAllUsersVisibleDataReturn = readAllUsersReturn
+      .map((userData) => getUserVisibleData(userData));
+    expect(response).toEqual(readAllUsersVisibleDataReturn);
   });
 
   it('Should throw if readAllUsers throws', async () => {

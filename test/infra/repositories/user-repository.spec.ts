@@ -10,6 +10,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const sut = new UserRepository();
   const user = new UserBuilder();
+
   return {
     sut,
     user,
@@ -157,28 +158,9 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
 
     const account = await sut.readAllUsers();
-
-    expect(account).toEqual([{
-      id: userRepositoryReturn.id,
-      name: userRepositoryReturn.name,
-      email: userRepositoryReturn.email,
-      password: userRepositoryReturn.password,
-      accessToken: userRepositoryReturn.accessToken,
-      createdAt: userRepositoryReturn.createdAt,
-      updatedAt: userRepositoryReturn.updatedAt,
-    },
-    {
-      id: userRepositoryReturn.id,
-      name: userRepositoryReturn.name,
-      email: userRepositoryReturn.email,
-      password: userRepositoryReturn.password,
-      accessToken: userRepositoryReturn.accessToken,
-      createdAt: userRepositoryReturn.createdAt,
-      updatedAt: userRepositoryReturn.updatedAt,
-    }]);
+    expect(account).toEqual([userRepositoryReturn, userRepositoryReturn]);
   });
 });

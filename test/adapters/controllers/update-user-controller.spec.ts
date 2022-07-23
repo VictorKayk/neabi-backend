@@ -21,32 +21,31 @@ const makeSut = (): SutTypes => {
   const useCase = makeUpdateUserUseCase();
   const sut = new UpdateUserController(useCase);
 
-  return { sut, useCase };
+  return {
+    sut,
+    useCase,
+  };
 };
 
 describe('UpdateUser Controller ', () => {
   it('Should call UpdateUserUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
-    const useCaseSpy = jest.spyOn(useCase, 'execute');
-    await sut.handle(makeFakeRequestAuthenticated());
 
+    const useCaseSpy = jest.spyOn(useCase, 'execute');
+
+    await sut.handle(makeFakeRequestAuthenticated());
     expect(useCaseSpy).toHaveBeenCalledWith({
       id: 'any_id',
-      userData: {
-        name: makeFakeRequestAuthenticated().body.name,
-        email: makeFakeRequestAuthenticated().body.email,
-        password: makeFakeRequestAuthenticated().body.password,
-      },
+      userData: { ...makeFakeRequestAuthenticated().body },
     });
   });
 
   it('Should return 500 if throws', async () => {
     const { sut, useCase } = makeSut();
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
-      throw new Error();
-    });
-    const response = await sut.handle(makeFakeRequestAuthenticated());
 
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
+
+    const response = await sut.handle(makeFakeRequestAuthenticated());
     expect(response).toEqual(serverError(new ServerError()));
   });
 
@@ -63,7 +62,6 @@ describe('UpdateUser Controller ', () => {
     }));
 
     const response = await sut.handle(makeFakeRequestAuthenticated());
-
     expect(response).toEqual(ok({
       id: 'any_id',
       name: makeFakeRequestAuthenticated().body.name,
@@ -80,32 +78,32 @@ describe('UpdateUser Controller ', () => {
       id: 'any_id',
       accessToken: 'any_accessToken',
       body: {
-        name: makeFakeRequestAuthenticated().body.name,
+        ...makeFakeRequestAuthenticated().body,
         email: '',
-        password: makeFakeRequestAuthenticated().body.password,
       },
     });
-
     expect(response).toEqual(badRequest(new InvalidEmailError('')));
   });
 
   it('Should return 403 if user do not exists', async () => {
     const { sut, useCase } = makeSut();
+
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new NonExistingUserError()),
     )));
-    const response = await sut.handle(makeFakeRequestAuthenticated());
 
+    const response = await sut.handle(makeFakeRequestAuthenticated());
     expect(response).toEqual(forbidden(new NonExistingUserError()));
   });
 
   it('Should return 403 if user already exists', async () => {
     const { sut, useCase } = makeSut();
+
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new ExistingUserError()),
     )));
-    const response = await sut.handle(makeFakeRequestAuthenticated());
 
+    const response = await sut.handle(makeFakeRequestAuthenticated());
     expect(response).toEqual(forbidden(new ExistingUserError()));
   });
 });

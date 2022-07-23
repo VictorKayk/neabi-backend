@@ -24,9 +24,9 @@ describe('ReadUser Controller ', () => {
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');
     await sut.handle({
-      body: {
-        id: user.build().id,
-      },
+      id: user.build().id,
+      accessToken: 'any_accessToken',
+      body: {},
     });
 
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
@@ -40,9 +40,9 @@ describe('ReadUser Controller ', () => {
     });
 
     const response = await sut.handle({
-      body: {
-        id: user.build().id,
-      },
+      id: user.build().id,
+      accessToken: 'any_accessToken',
+      body: {},
     });
     expect(response).toEqual(serverError(new ServerError()));
   });
@@ -58,9 +58,9 @@ describe('ReadUser Controller ', () => {
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
-      body: {
-        id: user.build().id,
-      },
+      id: user.build().id,
+      accessToken: 'any_accessToken',
+      body: {},
     });
 
     expect(response.statusCode).toBe(200);
@@ -72,9 +72,9 @@ describe('ReadUser Controller ', () => {
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingUserError()));
     const response = await sut.handle({
-      body: {
-        id: 'invalid_id',
-      },
+      id: 'invalid_id',
+      accessToken: 'any_accessToken',
+      body: {},
     });
 
     expect(response).toEqual(unauthorized(new NonExistingUserError()));

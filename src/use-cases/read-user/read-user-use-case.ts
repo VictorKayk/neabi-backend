@@ -13,7 +13,6 @@ export class ReadUserUseCase implements IUseCase {
   async execute(id: string): Promise<Response> {
     const userOrNull = await this.userRepository.findById(id);
     if (!userOrNull) return error(new NonExistingUserError());
-
     const userVisibleData = getUserVisibleData(userOrNull);
 
     return success(userVisibleData);

@@ -7,4 +7,5 @@ export interface IUserRepository {
   updateByEmail(email: string, userData: IUserEditableData): Promise<IUserRepositoryReturnData>
   updateById(id: string, userData: IUserEditableData): Promise<IUserRepositoryReturnData>
   deleteById(id: string): Promise<IUserRepositoryReturnData>
+  readAllUsers(): Promise<IUserRepositoryReturnData[] | []>
 }

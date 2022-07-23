@@ -7,6 +7,7 @@ export function routerAdapter(controller: IController) {
       body: req.body,
       id: req.id,
       accessToken: req.accessToken,
+      params: req.params,
     };
     const httpResponse = await controller.handle(httpRequest);
     res.status(httpResponse.statusCode).json(httpResponse.body);

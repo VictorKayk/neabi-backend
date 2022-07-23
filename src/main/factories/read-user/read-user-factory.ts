@@ -6,6 +6,6 @@ import { UserRepository } from '@/infra/repositories';
 export function makeReadUserController(): IController {
   const userRepository = new UserRepository();
   const readUserUseCase = new ReadUserUseCase(userRepository);
-  const readUserMiddleware = new ReadUserController(readUserUseCase);
-  return readUserMiddleware;
+  const readUserController = new ReadUserController(readUserUseCase);
+  return readUserController;
 }

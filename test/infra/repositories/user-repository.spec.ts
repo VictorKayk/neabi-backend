@@ -148,4 +148,37 @@ describe('User Repository Implementation', () => {
     expect(account.createdAt).toBeTruthy();
     expect(account.updatedAt).toBeTruthy();
   });
+
+  it('Should return all accounts or an empty array on readAllUser success', async () => {
+    const { sut, user } = makeSut();
+
+    const userRepositoryReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
+
+    const account = await sut.readAllUsers();
+
+    expect(account).toEqual([{
+      id: userRepositoryReturn.id,
+      name: userRepositoryReturn.name,
+      email: userRepositoryReturn.email,
+      password: userRepositoryReturn.password,
+      accessToken: userRepositoryReturn.accessToken,
+      createdAt: userRepositoryReturn.createdAt,
+      updatedAt: userRepositoryReturn.updatedAt,
+    },
+    {
+      id: userRepositoryReturn.id,
+      name: userRepositoryReturn.name,
+      email: userRepositoryReturn.email,
+      password: userRepositoryReturn.password,
+      accessToken: userRepositoryReturn.accessToken,
+      createdAt: userRepositoryReturn.createdAt,
+      updatedAt: userRepositoryReturn.updatedAt,
+    }]);
+  });
 });

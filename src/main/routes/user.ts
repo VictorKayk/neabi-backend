@@ -4,6 +4,7 @@ import { makeSignUpController } from '@/main/factories/sign-up';
 import { makeSignInController } from '@/main/factories/sign-in';
 import { makeReadUserController } from '@/main/factories/read-user';
 import { makeUpdateUserController } from '@/main/factories/update-user';
+import { makeDeleteUserController } from '@/main/factories/delete-user';
 import { authentication } from '@/main/middlewares';
 
 export function user(router: Router) {
@@ -11,4 +12,5 @@ export function user(router: Router) {
   router.post('/signin', routerAdapter(makeSignInController()));
   router.get('/user', authentication, routerAdapter(makeReadUserController()));
   router.patch('/user', authentication, routerAdapter(makeUpdateUserController()));
+  router.delete('/user', authentication, routerAdapter(makeDeleteUserController()));
 }

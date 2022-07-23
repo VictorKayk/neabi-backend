@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
 
 describe('ReadAllUsersUseCase', () => {
   it('Should return user data on success', async () => {
-    const { sut, user } = makeSut();
+    const { sut, user, userRepository } = makeSut();
 
     const userRepositoryReturn = {
       ...user.build(),
@@ -31,6 +31,7 @@ describe('ReadAllUsersUseCase', () => {
       updatedAt: new Date(),
     };
 
+    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
     const response = await sut.execute();
 
     expect(response).toEqual([{

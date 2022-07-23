@@ -26,7 +26,6 @@ describe('ReadUserUseCase', () => {
   it('Should return an error if user do not exists', async () => {
     const { sut, user } = makeSut();
     const response = await sut.execute(user.build().id);
-
     expect(response.isError()).toBe(true);
     expect(response.value).toEqual(new NonExistingUserError());
   });
@@ -34,18 +33,11 @@ describe('ReadUserUseCase', () => {
   it('Should return user data on success', async () => {
     const { sut, userRepository, user } = makeSut();
 
-    const findByIdReturn = {
-      ...user.build(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
+    const findByIdReturn = { ...user.build(), createdAt: new Date(), updatedAt: new Date() };
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute(user.build().id);
-    const value = response.value as IUserVisibleData;
-
-    expect(value).toEqual({
+    expect(response.value).toEqual({
       id: findByIdReturn.id,
       name: findByIdReturn.name,
       email: findByIdReturn.email,

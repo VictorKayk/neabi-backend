@@ -1,8 +1,9 @@
-import { IUserRepository, IUserVisibleData } from '@/use-cases/interfaces';
+import { IUserRepository } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
 import { DeleteUserUseCase } from '@/use-cases/delete-user';
+import { getUserVisibleData } from '@/use-cases/util';
 
 type SutTypes = {
   userRepository: IUserRepository,
@@ -26,7 +27,6 @@ describe('DeleteUserUseCase', () => {
   it('Should return an error if user do not exists', async () => {
     const { sut, user } = makeSut();
     const response = await sut.execute(user.build().id);
-
     expect(response.isError()).toBe(true);
     expect(response.value).toEqual(new NonExistingUserError());
   });
@@ -39,11 +39,10 @@ describe('DeleteUserUseCase', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
+
     const deleteSpy = jest.spyOn(userRepository, 'deleteById');
     await sut.execute(user.build().id);
-
     expect(deleteSpy).toHaveBeenCalledWith(user.build().id);
   });
 
@@ -55,21 +54,10 @@ describe('DeleteUserUseCase', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
-
     jest.spyOn(userRepository, 'deleteById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute(user.build().id);
-    const value = response.value as IUserVisibleData;
-
-    expect(value).toEqual({
-      id: findByIdReturn.id,
-      name: findByIdReturn.name,
-      email: findByIdReturn.email,
-      accessToken: findByIdReturn.accessToken,
-      createdAt: findByIdReturn.createdAt,
-      updatedAt: findByIdReturn.updatedAt,
-    });
+    expect(response.value).toEqual(getUserVisibleData(findByIdReturn));
   });
 });

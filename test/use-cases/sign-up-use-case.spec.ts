@@ -126,9 +126,14 @@ describe('SignUp Use Case', () => {
 
   it('Should call findById with correct value', async () => {
     const {
-      sut, user, userRepository, idGenerator,
+      sut,
+      user,
+      userRepository,
+      idGenerator,
     } = makeSut();
+
     const userRepositorySpy = jest.spyOn(userRepository, 'findById');
+
     await sut.execute(user.build());
     expect(userRepositorySpy).toHaveBeenCalledWith(await idGenerator.generate());
   });
@@ -142,7 +147,10 @@ describe('SignUp Use Case', () => {
 
   it('Should call Encrypter with correct value', async () => {
     const {
-      sut, user, idGenerator, encrypter,
+      sut,
+      user,
+      idGenerator,
+      encrypter,
     } = makeSut();
     const encrypterSpy = jest.spyOn(encrypter, 'encrypt');
     await sut.execute(user.build());
@@ -158,7 +166,12 @@ describe('SignUp Use Case', () => {
 
   it('Should call add with correct values', async () => {
     const {
-      sut, user, userRepository, hasher, idGenerator, encrypter,
+      sut,
+      user,
+      userRepository,
+      hasher,
+      idGenerator,
+      encrypter,
     } = makeSut();
     const userRepositorySpy = jest.spyOn(userRepository, 'add');
     await sut.execute(user.build());
@@ -180,19 +193,21 @@ describe('SignUp Use Case', () => {
 
   it('Should return an user and an accessToken on success', async () => {
     const {
-      sut, user, idGenerator, encrypter,
+      sut,
+      user,
+      idGenerator,
+      encrypter,
     } = makeSut();
     const response = await sut.execute(user.build());
-    const responseValue = response.value as IUserVisibleData;
-
+    const value = response.value as IUserVisibleData;
     expect(response.isSuccess()).toBe(true);
-    expect(responseValue).toEqual({
+    expect(value).toEqual({
       id: await idGenerator.generate(),
       name: user.build().name,
       email: user.build().email,
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
-      createdAt: responseValue.createdAt,
-      updatedAt: responseValue.updatedAt,
+      createdAt: value.createdAt,
+      updatedAt: value.updatedAt,
     });
   });
 });

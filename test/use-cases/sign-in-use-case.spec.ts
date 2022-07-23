@@ -97,7 +97,7 @@ describe('SignInUseCase', () => {
   it('Should call HashCompare with correct password', async () => {
     const { sut, user, hashCompare } = makeSut();
     const hashCompareSpy = jest.spyOn(hashCompare, 'compare');
-    const response = await (await sut.execute(user.build())).value as IUserVisibleData;
+    await sut.execute(user.build());
     expect(hashCompareSpy).toHaveBeenCalledWith(user.build().password, user.build().password);
   });
 

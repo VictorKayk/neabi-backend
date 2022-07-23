@@ -169,7 +169,7 @@ describe('User Routes', () => {
       .expect(200);
   });
 
-  it('Should return 400 if params are invalid', async () => {
+  it('Should return 400 on update user route if params are invalid', async () => {
     const { user } = makeSut();
 
     jest.spyOn(prisma.user, 'findFirst')
@@ -195,7 +195,7 @@ describe('User Routes', () => {
       .expect(400);
   });
 
-  it('Should return 403 if user do not exists', async () => {
+  it('Should return 403 on update user route if user do not exists', async () => {
     const { user } = makeSut();
 
     jest.spyOn(prisma.user, 'findFirst')
@@ -216,7 +216,7 @@ describe('User Routes', () => {
       .expect(403);
   });
 
-  it('Should return 403 if user exists', async () => {
+  it('Should return 403 on update user route if user exists', async () => {
     const { user } = makeSut();
 
     jest.spyOn(prisma.user, 'findFirst')

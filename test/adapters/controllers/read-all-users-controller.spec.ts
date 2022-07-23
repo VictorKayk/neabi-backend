@@ -5,7 +5,11 @@ import { serverError } from '@/adapters/util/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { ReadAllUsersController } from '@/adapters/controllers/read-all-users-controller';
 
-type SutTypes = { sut: ReadAllUsersController, useCase: ReadAllUsersUseCase, user: UserBuilder };
+type SutTypes = {
+  sut: ReadAllUsersController,
+  useCase: ReadAllUsersUseCase,
+  user: UserBuilder
+};
 
 const makeSut = (): SutTypes => {
   const repository = makeUserRepository();
@@ -13,7 +17,11 @@ const makeSut = (): SutTypes => {
   const sut = new ReadAllUsersController(useCase);
   const user = new UserBuilder();
 
-  return { sut, useCase, user };
+  return {
+    sut,
+    useCase,
+    user,
+  };
 };
 
 describe('ReadUser Controller ', () => {

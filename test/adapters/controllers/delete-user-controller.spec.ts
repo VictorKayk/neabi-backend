@@ -7,7 +7,11 @@ import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { DeleteUserController } from '@/adapters/controllers/delete-user-controller';
 
-type SutTypes = { sut: DeleteUserController, useCase: DeleteUserUseCase, user: UserBuilder };
+type SutTypes = {
+  sut: DeleteUserController,
+  useCase: DeleteUserUseCase,
+  user: UserBuilder
+};
 
 const makeSut = (): SutTypes => {
   const repository = makeUserRepository();
@@ -15,7 +19,11 @@ const makeSut = (): SutTypes => {
   const sut = new DeleteUserController(useCase);
   const user = new UserBuilder();
 
-  return { sut, useCase, user };
+  return {
+    sut,
+    useCase,
+    user,
+  };
 };
 
 describe('DeleteUser Controller ', () => {
@@ -23,12 +31,12 @@ describe('DeleteUser Controller ', () => {
     const { sut, useCase, user } = makeSut();
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');
+
     await sut.handle({
       id: user.build().id,
       accessToken: 'any_accessToken',
       body: {},
     });
-
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
   });
 
@@ -55,7 +63,6 @@ describe('DeleteUser Controller ', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
       id: user.build().id,
@@ -71,12 +78,12 @@ describe('DeleteUser Controller ', () => {
     const { sut, useCase } = makeSut();
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingUserError()));
+
     const response = await sut.handle({
       id: 'invalid_id',
       accessToken: 'any_accessToken',
       body: {},
     });
-
     expect(response).toEqual(unauthorized(new NonExistingUserError()));
   });
 });

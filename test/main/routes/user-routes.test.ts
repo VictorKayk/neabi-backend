@@ -235,4 +235,30 @@ describe('User Routes', () => {
       })
       .expect(403);
   });
+
+  it('Should return 200 on delete user route success', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    jest.spyOn(prisma.user, 'delete').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    await request(app).delete('/api/user')
+      .set('x-access-token', user.build().accessToken).expect(200);
+  });
+
+  it('Should return 401 if user do not exist in delete user route', async () => {
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
+
+    await request(app).delete('/api/user')
+      .set('x-access-token', 'invalid_accessToken').expect(401);
+  });
 });

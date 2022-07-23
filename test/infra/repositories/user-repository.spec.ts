@@ -129,4 +129,23 @@ describe('User Repository Implementation', () => {
     expect(account.createdAt).toBeTruthy();
     expect(account.updatedAt).toBeTruthy();
   });
+
+  it('Should return an account on deleteById success', async () => {
+    const { sut, user } = makeSut();
+
+    jest.spyOn(prisma.user, 'delete').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    const account = await sut.deleteById(user.build().id);
+    expect(account.id).toBe(user.build().id);
+    expect(account.name).toBe(user.build().name);
+    expect(account.email).toBe(user.build().email);
+    expect(account.password).toBe(user.build().password);
+    expect(account.accessToken).toBe(user.build().accessToken);
+    expect(account.createdAt).toBeTruthy();
+    expect(account.updatedAt).toBeTruthy();
+  });
 });

@@ -137,6 +137,22 @@ describe('User Routes', () => {
       .set('x-access-token', 'invalid_accessToken').expect(401);
   });
 
+  it('Should return 200 on read all users route success', async () => {
+    const { user } = makeSut();
+
+    const userReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(userReturn);
+    jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userReturn, userReturn, userReturn]);
+
+    await request(app).get('/api/user/all')
+      .set('x-access-token', user.build().accessToken).expect(200);
+  });
+
   it('Should return 200 on update user route success', async () => {
     const { user } = makeSut();
 

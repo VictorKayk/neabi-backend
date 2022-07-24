@@ -1,1 +1,1 @@
-export * from '@/main/routes/user';
+export * from '@/main/routes/user-routes';

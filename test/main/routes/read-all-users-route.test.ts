@@ -42,17 +42,17 @@ describe('ReadAllUsers Route', () => {
       .set('x-access-token', user.build().accessToken).expect(200);
   });
 
-  it('Should return 401 if user do not exist in read all users route', async () => {
-    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
-
-    await request(app).get('/api/user/all')
-      .set('x-access-token', 'invalid_accessToken').expect(401);
-  });
-
   it('Should return 500 if read all users route throws', async () => {
-    jest.spyOn(prisma.user, 'findFirst').mockImplementation(() => { throw new Error(); });
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValueOnce({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    jest.spyOn(prisma.user, 'findMany').mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).get('/api/user/all')
-      .set('x-access-token', 'invalid_accessToken').expect(500);
+      .set('x-access-token', user.build().accessToken).expect(500);
   });
 });

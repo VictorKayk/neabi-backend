@@ -117,12 +117,11 @@ describe('UpdateUser Route', () => {
   it('Should return 403 on update user route if user exists', async () => {
     const { user } = makeSut();
 
-    jest.spyOn(prisma.user, 'findFirst')
-      .mockResolvedValue({
-        ...user.build(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
 
     await request(app).patch('/api/user')
       .set('x-access-token', user.build().accessToken)
@@ -137,7 +136,11 @@ describe('UpdateUser Route', () => {
   it('Should return 500 if update user route throws', async () => {
     const { user } = makeSut();
 
-    jest.spyOn(prisma.user, 'findFirst').mockImplementation(() => { throw new Error(); });
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValueOnce({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).patch('/api/user')
       .set('x-access-token', user.build().accessToken)

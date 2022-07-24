@@ -6,6 +6,6 @@ import { UserRepository } from '@/infra/repositories';
 export function makeDeleteUserController(): IController {
   const userRepository = new UserRepository();
   const deleteUserUseCase = new DeleteUserUseCase(userRepository);
-  const deleteUserMiddleware = new DeleteUserController(deleteUserUseCase);
-  return deleteUserMiddleware;
+  const deleteUserController = new DeleteUserController(deleteUserUseCase);
+  return deleteUserController;
 }

@@ -1,11 +1,11 @@
 import { DeleteUserUseCase } from '@/use-cases/delete-user';
-import { DeleteUserController } from '@/adapters/controllers/delete-user-controller';
+import { DeleteUserByIdController } from '@/adapters/controllers/delete-user-by-id-controller';
 import { IController } from '@/adapters/interfaces';
 import { UserRepository } from '@/infra/repositories';
 
-export function makeDeleteUserController(): IController {
+export function makeDeleteUserByIdController(): IController {
   const userRepository = new UserRepository();
   const deleteUserUseCase = new DeleteUserUseCase(userRepository);
-  const deleteUserController = new DeleteUserController(deleteUserUseCase);
-  return deleteUserController;
+  const deleteUserByIdController = new DeleteUserByIdController(deleteUserUseCase);
+  return deleteUserByIdController;
 }

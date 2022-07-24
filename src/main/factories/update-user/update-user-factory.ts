@@ -9,7 +9,7 @@ export function makeUpdateUserController(): IController {
   const salt = env.bcryptSalt;
   const userRepository = new UserRepository();
   const bcryptAdapter = new BcryptAdapter(salt);
-  const signInUseCase = new UpdateUserUseCase(userRepository, bcryptAdapter);
-  const signInController = new UpdateUserController(signInUseCase);
-  return signInController;
+  const updateUserUseCase = new UpdateUserUseCase(userRepository, bcryptAdapter);
+  const updateUserController = new UpdateUserController(updateUserUseCase);
+  return updateUserController;
 }

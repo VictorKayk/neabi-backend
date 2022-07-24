@@ -1,4 +1,4 @@
-import { makeUserRepository } from '@/test/stubs';
+import { makeFakeRequestAuthenticated, makeUserRepository } from '@/test/stubs';
 import { DeleteUserUseCase } from '@/use-cases/delete-user';
 import { NonExistingUserError } from '@/use-cases/errors';
 import { ServerError } from '@/adapters/errors';
@@ -33,9 +33,7 @@ describe('DeleteUser Controller ', () => {
     const useCaseSpy = jest.spyOn(useCase, 'execute');
 
     await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: user.build().id },
     });
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
@@ -49,9 +47,7 @@ describe('DeleteUser Controller ', () => {
     });
 
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: user.build().id },
     });
     expect(response).toEqual(serverError(new ServerError()));
@@ -67,9 +63,7 @@ describe('DeleteUser Controller ', () => {
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: user.build().id },
     });
 
@@ -83,9 +77,7 @@ describe('DeleteUser Controller ', () => {
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingUserError()));
 
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: 'any_id' },
     });
     expect(response).toEqual(unauthorized(new NonExistingUserError()));

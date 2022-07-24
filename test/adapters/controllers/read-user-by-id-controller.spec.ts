@@ -1,4 +1,4 @@
-import { makeUserRepository } from '@/test/stubs';
+import { makeFakeRequestAuthenticated, makeUserRepository } from '@/test/stubs';
 import { ReadUserUseCase } from '@/use-cases/read-user';
 import { NonExistingUserError } from '@/use-cases/errors';
 import { ServerError } from '@/adapters/errors';
@@ -33,9 +33,7 @@ describe('ReadUserById Controller ', () => {
     const useCaseSpy = jest.spyOn(useCase, 'execute');
 
     await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: user.build().id },
     });
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
@@ -47,9 +45,7 @@ describe('ReadUserById Controller ', () => {
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: user.build().id },
     });
     expect(response).toEqual(serverError(new ServerError()));
@@ -66,9 +62,7 @@ describe('ReadUserById Controller ', () => {
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
 
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: user.build().id },
     });
 
@@ -81,9 +75,7 @@ describe('ReadUserById Controller ', () => {
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingUserError()));
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: 'invalid_id' },
     });
 

@@ -1,7 +1,5 @@
-import { IUserRepositoryData } from '@/use-cases/interfaces';
-
 export class UserBuilder {
-  private user: IUserRepositoryData = {
+  private user = {
     id: 'any_id',
     name: 'any_name',
     email: 'any_email@test.com',
@@ -24,7 +22,7 @@ export class UserBuilder {
     return this;
   }
 
-  public build(): IUserRepositoryData {
+  public build() {
     return this.user;
   }
 }

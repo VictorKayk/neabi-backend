@@ -29,22 +29,24 @@ export class ExternalSignInUseCase implements IUseCase {
     const userOrError = User.create({ name, email });
     if (userOrError.isError()) return error(userOrError.value);
 
-    let id: string;
-    let userOrNull;
-    do {
-      id = await this.idGenerator.generate();
-      userOrNull = await this.userRepository.findById(id);
-    } while (userOrNull);
-
-    const accessToken = await this.encrypter.encrypt(id);
-
     let userData: IUserRepositoryReturnData;
-    userOrNull = await this.userRepository.findByEmail(email);
+    let userOrNull = await this.userRepository.findByEmail(email);
+
     if (userOrNull) {
+      const accessToken = await this.encrypter.encrypt(userOrNull.id);
+
       userData = await this.userRepository.updateByEmail(email, {
         accessToken,
       });
     } else {
+      let id: string;
+      do {
+        id = await this.idGenerator.generate();
+        userOrNull = await this.userRepository.findById(id);
+      } while (userOrNull);
+
+      const accessToken = await this.encrypter.encrypt(id);
+
       userData = await this.userRepository.add({
         id,
         name,

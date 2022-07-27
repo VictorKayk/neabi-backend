@@ -10,6 +10,7 @@ import {
   makeHashCompare,
   makeDecrypter,
 } from '@/test/stubs';
+import { ExternalSignInUseCase } from '@/use-cases/external-sign-in';
 
 export const makeSignUpUseCase = (): SignUpUseCase => {
   const userRepository = makeUserRepository();
@@ -24,6 +25,13 @@ export const makeSignInUseCase = (): SignInUseCase => {
   const hashCompare = makeHashCompare();
   const encrypter = makeEncrypter();
   return new SignInUseCase(userRepository, hashCompare, encrypter);
+};
+
+export const makeExternalSignInUseCase = (): ExternalSignInUseCase => {
+  const userRepository = makeUserRepository();
+  const idGenerator = makeIdGenerator();
+  const encrypter = makeEncrypter();
+  return new ExternalSignInUseCase(userRepository, idGenerator, encrypter);
 };
 
 export const makeAuthenticationUseCase = (): AuthenticationUseCase => {

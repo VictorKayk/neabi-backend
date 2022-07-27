@@ -4,7 +4,7 @@ import {
   IHasher,
   IIdGenerator,
   IUseCase,
-  IUserData,
+  IUserRequired,
   IUserVisibleData,
   IUserRepository,
   IEncrypter,
@@ -29,7 +29,7 @@ export class SignUpUseCase implements IUseCase {
     private readonly encrypter: IEncrypter,
   ) { }
 
-  async execute({ name, email, password }: IUserData): Promise<Response> {
+  async execute({ name, email, password }: IUserRequired): Promise<Response> {
     const userOrError = User.create({ name, email, password });
     if (userOrError.isError()) return error(userOrError.value);
 

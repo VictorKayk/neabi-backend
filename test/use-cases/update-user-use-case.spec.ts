@@ -158,6 +158,23 @@ describe('UpdateUserUseCase', () => {
     expect(response.value).toEqual(new ExistingUserError());
   });
 
+  it('Should return an error if user password is null, and he is trying to update', async () => {
+    const {
+      sut,
+      user,
+      userRepository,
+      repositoryReturn,
+      hasher,
+    } = makeSut();
+
+    jest.spyOn(userRepository, 'findById').mockResolvedValue({ ...repositoryReturn, password: null });
+    jest.spyOn(userRepository, 'updateById').mockResolvedValue({ ...repositoryReturn, password: null });
+
+    const response = await sut.execute({ id: user.build().id, userData: { password: 'new_password_1' } });
+    expect(response.isError()).toBe(true);
+    expect(response.value).toEqual(new InvalidPasswordError('new_password_1'));
+  });
+
   it('Should call hasher with correct values', async () => {
     const {
       sut,

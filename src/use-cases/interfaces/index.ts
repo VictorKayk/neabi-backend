@@ -1,5 +1,6 @@
 export * from '@/use-cases/interfaces/use-case-interface';
 export * from '@/use-cases/interfaces/user-data-interface';
+export * from '@/use-cases/interfaces/user-required-interface';
 export * from '@/use-cases/interfaces/user-visible-data-interface';
 export * from '@/use-cases/interfaces/user-sign-in-interface';
 export * from '@/use-cases/interfaces/user-editable-data-interface';

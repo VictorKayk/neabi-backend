@@ -3,4 +3,6 @@ export default {
   jwtSecret: process.env.JWT_SECRET ?? 'secret',
   bcryptSalt: Number(process.env.BCRYPT_SALT) ?? 12,
   expiresIn: process.env.JWT_EXPIRES_IN ?? '30d',
+  googleClientId: process.env.GOOGLE_CLIENT_ID ?? '',
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
 };

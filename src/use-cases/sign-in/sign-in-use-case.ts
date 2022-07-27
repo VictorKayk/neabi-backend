@@ -32,7 +32,9 @@ export class SignInUseCase implements IUseCase {
     if (userOrError.isError()) return error(userOrError.value);
 
     const userOrNull = await this.userRepository.findByEmail(email);
-    if (!userOrNull) return error(new InvalidEmailOrPasswordError(email, password));
+    if (!userOrNull || !userOrNull.password) {
+      return error(new InvalidEmailOrPasswordError(email, password));
+    }
 
     const comparePassword = await this.hashCompare.compare(userOrNull.password, password);
     if (!comparePassword) return error(new InvalidEmailOrPasswordError(email, password));

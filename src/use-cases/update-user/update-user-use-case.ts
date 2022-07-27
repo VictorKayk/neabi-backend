@@ -45,6 +45,7 @@ export class UpdateUserUseCase implements IUseCase {
 
     let newPassword;
     if (password) {
+      if (userOrNull?.password === null) return error(new InvalidPasswordError(password));
       newPassword = await this.hasher.hash(password);
     }
 

@@ -1,4 +1,4 @@
-import { IHasher, IHashCompare } from '@/use-cases/interfaces';
+import { IHasher, IHashCompare } from '@/use-cases/user/interfaces';
 
 export const makeHasher = (): IHasher => {
   class HasherStub implements IHasher {

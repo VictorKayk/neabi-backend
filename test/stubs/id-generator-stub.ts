@@ -1,4 +1,4 @@
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IIdGenerator } from '@/use-cases/user/interfaces';
 
 export const makeIdGenerator = (): IIdGenerator => {
   class IdGeneratorStub implements IIdGenerator {

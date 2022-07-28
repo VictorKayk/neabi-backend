@@ -4,7 +4,7 @@ import {
   IUserRepositoryReturnData,
   IUserRepository,
   IUserEditableData,
-} from '@/use-cases/interfaces';
+} from '@/use-cases/user/interfaces';
 
 export const makeUserRepository = (): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {

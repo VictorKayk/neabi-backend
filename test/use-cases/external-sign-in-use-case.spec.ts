@@ -1,4 +1,4 @@
-import { User } from '@/entities';
+import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError } from '@/entities/errors';
 import {
   IUserRepository,

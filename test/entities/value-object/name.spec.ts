@@ -1,4 +1,4 @@
-import { Name } from '@/entities';
+import { Name } from '@/entities/value-object';
 import { InvalidNameError } from '@/entities/errors';
 
 describe('Name Entity', () => {

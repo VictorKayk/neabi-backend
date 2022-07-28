@@ -1,9 +1,10 @@
-import { InvalidEmailError } from '@/entities/errors';
-import { SignInUseCase } from '@/use-cases/sign-in';
-import { IHashCompare, IEncrypter } from '@/use-cases/interfaces';
-import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
-import { IValidation } from '@/adapters/interfaces';
-import { ServerError, MissingParamsError } from '@/adapters/errors';
+import { InvalidEmailError } from '@/entities/value-object/errors';
+import { SignInUseCase } from '@/use-cases/user/sign-in';
+import { IHashCompare, IEncrypter } from '@/use-cases/user/interfaces';
+import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
+import { IValidation } from '@/adapters/controllers/interfaces';
+import { ServerError } from '@/adapters/errors';
+import { MissingParamsError } from '@/adapters/controllers/errors';
 import { serverError, badRequest, unauthorized } from '@/adapters/util/http';
 import {
   makeSignInUseCase,
@@ -14,7 +15,7 @@ import {
 } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { SignInController } from '@/adapters/controllers/sign-in-controller';
+import { SignInController } from '@/adapters/controllers/user/sign-in-controller';
 
 type SutTypes = {
   sut: SignInController,

@@ -1,7 +1,7 @@
-import { IValidation } from '@/adapters/interfaces';
-import { InvalidParamsError, MissingParamsError } from '@/adapters/errors';
+import { IValidation } from '@/adapters/controllers/interfaces';
+import { InvalidParamsError, MissingParamsError } from '@/adapters/controllers/errors';
 import { makeValidation } from '@/test/stubs';
-import { ValidationComposite } from '@/adapters/util/validations';
+import { ValidationComposite } from '@/adapters/controllers/util/validations';
 
 interface SutTypes {
   sut: ValidationComposite,

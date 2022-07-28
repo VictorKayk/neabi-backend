@@ -1,10 +1,11 @@
-import { InvalidEmailError } from '@/entities/errors';
-import { SignUpUseCase } from '@/use-cases/sign-up';
-import { IIdGenerator, IEncrypter } from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/errors';
-import { SignUpController } from '@/adapters/controllers/sign-up-controller';
-import { IValidation } from '@/adapters/interfaces';
-import { ServerError, MissingParamsError } from '@/adapters/errors';
+import { InvalidEmailError } from '@/entities/value-object/errors';
+import { SignUpUseCase } from '@/use-cases/user/sign-up';
+import { IIdGenerator, IEncrypter } from '@/use-cases/user/interfaces';
+import { ExistingUserError } from '@/use-cases/user/errors';
+import { SignUpController } from '@/adapters/controllers/user/sign-up-controller';
+import { IValidation } from '@/adapters/controllers/interfaces';
+import { ServerError } from '@/adapters/errors';
+import { MissingParamsError } from '@/adapters/controllers/errors';
 import {
   created,
   serverError,

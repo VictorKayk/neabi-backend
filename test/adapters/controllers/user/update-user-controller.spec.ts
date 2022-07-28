@@ -1,6 +1,6 @@
-import { InvalidEmailError } from '@/entities/errors';
-import { UpdateUserUseCase } from '@/use-cases/update-user';
-import { NonExistingUserError, ExistingUserError } from '@/use-cases/errors';
+import { InvalidEmailError } from '@/entities/value-object/errors';
+import { UpdateUserUseCase } from '@/use-cases/user/update-user';
+import { NonExistingUserError, ExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
 import {
   ok,
@@ -10,7 +10,7 @@ import {
 } from '@/adapters/util/http';
 import { makeUpdateUserUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
 import { error, success } from '@/shared';
-import { UpdateUserController } from '@/adapters/controllers/update-user-controller';
+import { UpdateUserController } from '@/adapters/controllers/user/update-user-controller';
 
 type SutTypes = {
   sut: UpdateUserController,

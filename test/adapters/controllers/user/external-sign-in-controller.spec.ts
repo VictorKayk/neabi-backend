@@ -1,8 +1,9 @@
-import { InvalidEmailError } from '@/entities/errors';
-import { ExternalSignInUseCase } from '@/use-cases/external-sign-in';
-import { IEncrypter } from '@/use-cases/interfaces';
-import { IValidation } from '@/adapters/interfaces';
-import { ServerError, MissingParamsError } from '@/adapters/errors';
+import { InvalidEmailError } from '@/entities/value-object/errors';
+import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
+import { IEncrypter } from '@/use-cases/user/interfaces';
+import { IValidation } from '@/adapters/controllers/interfaces';
+import { ServerError } from '@/adapters/errors';
+import { MissingParamsError } from '@/adapters/controllers/errors';
 import { serverError, badRequest } from '@/adapters/util/http';
 import {
   makeExternalSignInUseCase,
@@ -12,7 +13,7 @@ import {
 } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { ExternalSignInController } from '@/adapters/controllers/external-sign-in-controller';
+import { ExternalSignInController } from '@/adapters/controllers/user/external-sign-in-controller';
 
 type SutTypes = {
   sut: ExternalSignInController,

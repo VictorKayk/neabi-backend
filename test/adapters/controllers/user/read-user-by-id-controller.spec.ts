@@ -1,11 +1,11 @@
 import { makeFakeRequestAuthenticated, makeUserRepository } from '@/test/stubs';
-import { ReadUserUseCase } from '@/use-cases/read-user';
-import { NonExistingUserError } from '@/use-cases/errors';
+import { NonExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { ReadUserByIdController } from '@/adapters/controllers/read-user-by-id-controller';
+import { ReadUserByIdController } from '@/adapters/controllers/user/read-user-by-id-controller';
+import { ReadUserUseCase } from '@/use-cases/user/read-user';
 
 type SutTypes = {
   sut: ReadUserByIdController,

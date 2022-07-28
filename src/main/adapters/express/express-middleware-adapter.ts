@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IMiddleware } from '@/adapters/interfaces';
+import { IMiddleware } from '@/adapters/middleware/interfaces';
 
 export function middlewareAdapter(middleware: IMiddleware) {
   return async (req: Request, res: Response, next: NextFunction) => {

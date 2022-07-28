@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Request, Response } from 'express';
-import { IController, IHttpRequestAuthenticated } from '@/adapters/interfaces';
+import { IHttpRequestAuthenticated } from '@/adapters/interfaces';
+import { IController } from '@/adapters/controllers/interfaces';
 
 export function routerAdapter(controller: IController) {
   return async (req: Request, res: Response) => {

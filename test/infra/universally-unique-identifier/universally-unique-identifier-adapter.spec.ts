@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import { UuidAdapter } from '@/infra/uuid-adapter';
+import { UuidAdapter } from '@/infra/universally-unique-identifier';
 
 type SutTypes = {
   sut: UuidAdapter,

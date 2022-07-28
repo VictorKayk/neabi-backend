@@ -3,7 +3,7 @@ import {
   IUserRepositoryData,
   IUserRepository,
   IUserEditableData,
-} from '@/use-cases/interfaces';
+} from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class UserRepository implements IUserRepository {

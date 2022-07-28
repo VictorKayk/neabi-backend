@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { IHasher, IHashCompare } from '@/use-cases/interfaces';
+import { IHasher, IHashCompare } from '@/use-cases/user/interfaces';
 
 export class BcryptAdapter implements IHasher, IHashCompare {
   constructor(private readonly salt: number) { }

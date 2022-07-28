@@ -1,18 +1,19 @@
 import { Router } from 'express';
 
 import { routerAdapter } from '@/main/adapters/express';
-import { makeSignUpController } from '@/main/factories/sign-up';
-import { makeSignInController } from '@/main/factories/sign-in';
-import { makeExternalSignInController } from '@/main/factories/external-sign-in';
-import { makeReadUserController } from '@/main/factories/read-user';
-import { makeAllReadUsersController } from '@/main/factories/read-all-users';
-import { makeReadUserByIdController } from '@/main/factories/read-user-by-id';
-import { makeUpdateUserController } from '@/main/factories/update-user';
-import { makeUpdateUserByIdController } from '@/main/factories/update-user-by-id';
-import { makeDeleteUserController } from '@/main/factories/delete-user';
-import { makeDeleteUserByIdController } from '@/main/factories/delete-user-by-id';
-
-import { authentication, googleLoginAuth, googleLoginAuthCb } from '@/main/middlewares';
+import {
+  makeAllReadUsersController,
+  makeDeleteUserByIdController,
+  makeDeleteUserController,
+  makeExternalSignInController,
+  makeReadUserByIdController,
+  makeReadUserController,
+  makeSignInController,
+  makeSignUpController,
+  makeUpdateUserByIdController,
+  makeUpdateUserController,
+} from '@/main/factories/user';
+import { authentication, googleLoginAuth, googleLoginAuthCb } from '@/main/middlewares/user';
 
 export function user(router: Router) {
   router.post('/signup', routerAdapter(makeSignUpController()));

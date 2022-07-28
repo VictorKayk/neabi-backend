@@ -1,7 +1,7 @@
-import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/util/validations';
-import { makeSignInValidationFactory } from '@/main/factories/sign-in';
+import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/controllers/util/validations';
+import { makeSignInValidationFactory } from '@/main/factories/user';
 
-jest.mock('@/adapters/util/validations/validation-composite');
+jest.mock('@/adapters/controllers/util/validations/validation-composite');
 
 describe('SignIn validation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {

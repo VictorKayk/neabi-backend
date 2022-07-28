@@ -1,8 +1,8 @@
-import { ReadUserUseCase } from '@/use-cases/read-user';
-import { IUserRepository, IUserVisibleData } from '@/use-cases/interfaces';
-import { NonExistingUserError } from '@/use-cases/errors';
+import { IUserRepository } from '@/use-cases/user/interfaces';
+import { NonExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
+import { ReadUserUseCase } from '@/use-cases/user/read-user';
 
 type SutTypes = {
   userRepository: IUserRepository,

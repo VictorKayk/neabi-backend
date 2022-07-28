@@ -1,13 +1,13 @@
 import { User } from '@/entities/user';
-import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { SignInUseCase } from '@/use-cases/sign-in';
+import { InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
+import { SignInUseCase } from '@/use-cases/user/sign-in';
 import {
   IUserRepository,
   IHashCompare,
   IEncrypter,
   IUserVisibleData,
-} from '@/use-cases/interfaces';
-import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
+} from '@/use-cases/user/interfaces';
+import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,

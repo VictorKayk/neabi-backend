@@ -1,18 +1,18 @@
 import { User } from '@/entities/user';
-import { InvalidNameError, InvalidEmailError } from '@/entities/errors';
+import { InvalidNameError, InvalidEmailError } from '@/entities/value-object/errors';
 import {
   IUserRepository,
   IIdGenerator,
   IEncrypter,
   IUserVisibleData,
-} from '@/use-cases/interfaces';
+} from '@/use-cases/user/interfaces';
+import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,
   makeEncrypter,
   makeIdGenerator,
 } from '@/test/stubs/';
-import { ExternalSignInUseCase } from '@/use-cases/external-sign-in';
 
 type SutTypes = {
   userRepository: IUserRepository,

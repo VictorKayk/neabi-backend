@@ -1,8 +1,8 @@
-import { IUserRepository } from '@/use-cases/interfaces';
+import { IUserRepository } from '@/use-cases/user/interfaces';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
-import { ReadAllUsersUseCase } from '@/use-cases/read-all-users';
-import { getUserVisibleData } from '@/use-cases/util';
+import { getUserVisibleData } from '@/use-cases/user/util';
+import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 
 type SutTypes = {
   userRepository: IUserRepository,

@@ -1,9 +1,9 @@
-import { IUserRepository } from '@/use-cases/interfaces';
-import { NonExistingUserError } from '@/use-cases/errors';
+import { IUserRepository } from '@/use-cases/user/interfaces';
+import { NonExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
-import { DeleteUserUseCase } from '@/use-cases/delete-user';
-import { getUserVisibleData } from '@/use-cases/util';
+import { getUserVisibleData } from '@/use-cases/user/util';
+import { DeleteUserUseCase } from '@/use-cases/user/delete-user';
 
 type SutTypes = {
   userRepository: IUserRepository,

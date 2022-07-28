@@ -1,14 +1,14 @@
 import { User } from '@/entities/user';
-import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { SignUpUseCase } from '@/use-cases/sign-up';
+import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
+import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import {
   IUserRepository,
   IHasher,
   IIdGenerator,
   IEncrypter,
   IUserVisibleData,
-} from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/errors';
+} from '@/use-cases/user/interfaces';
+import { ExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,

@@ -1,5 +1,5 @@
 import { Either, error, success } from '@/shared';
-import { Name, Email, Password } from '@/entities';
+import { Name, Email, Password } from '@/entities/value-object';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
 import { IUserCreate } from '@/entities/interfaces';
 

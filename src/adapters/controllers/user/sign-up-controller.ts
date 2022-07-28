@@ -1,17 +1,13 @@
-import { SignUpUseCase } from '@/use-cases/sign-up';
-import { ExistingUserError } from '@/use-cases/errors';
-import {
-  IController,
-  IHttpRequest,
-  IHttpResponse,
-  IValidation,
-} from '@/adapters/interfaces';
+import { ExistingUserError } from '@/use-cases/user/errors';
+import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
+import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   created,
   serverError,
   badRequest,
   forbidden,
 } from '@/adapters/util/http';
+import { SignUpUseCase } from '@/use-cases/user/sign-up';
 
 export class SignUpController implements IController {
   constructor(

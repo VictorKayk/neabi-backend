@@ -1,17 +1,13 @@
-import { SignInUseCase } from '@/use-cases/sign-in';
-import { InvalidEmailOrPasswordError } from '@/use-cases/errors';
-import {
-  IController,
-  IHttpRequest,
-  IHttpResponse,
-  IValidation,
-} from '@/adapters/interfaces';
+import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
+import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
+import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   ok,
   serverError,
   badRequest,
   unauthorized,
 } from '@/adapters/util/http';
+import { SignInUseCase } from '@/use-cases/user/sign-in';
 
 export class SignInController implements IController {
   constructor(

@@ -1,10 +1,6 @@
-import { ExternalSignInUseCase } from '@/use-cases/external-sign-in';
-import {
-  IController,
-  IHttpRequest,
-  IHttpResponse,
-  IValidation,
-} from '@/adapters/interfaces';
+import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
+import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
+import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import { ok, serverError, badRequest } from '@/adapters/util/http';
 
 export class ExternalSignInController implements IController {

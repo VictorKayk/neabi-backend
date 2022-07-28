@@ -1,5 +1,6 @@
-import { ReadUserUseCase } from '@/use-cases/read-user';
-import { IController, IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { ReadUserUseCase } from '@/use-cases/user/read-user';
+import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { IController } from '@/adapters/controllers/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
 
 export class ReadUserController implements IController {

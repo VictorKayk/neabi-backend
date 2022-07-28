@@ -1,6 +1,7 @@
-import { AuthenticationUseCase } from '@/use-cases/authentication';
-import { IAuthenticationResponse } from '@/use-cases/interfaces';
-import { IMiddleware, IHttpResponse } from '@/adapters/interfaces';
+import { AuthenticationUseCase } from '@/use-cases/user/authentication';
+import { IAuthenticationResponse } from '@/use-cases/user/authentication/interfaces';
+import { IHttpResponse } from '@/adapters/interfaces';
+import { IMiddleware } from '@/adapters/middleware/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
 
 interface IAuthenticationRequest {

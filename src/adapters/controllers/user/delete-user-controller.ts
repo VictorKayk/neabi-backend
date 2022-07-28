@@ -1,5 +1,6 @@
-import { DeleteUserUseCase } from '@/use-cases/delete-user';
-import { IController, IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { DeleteUserUseCase } from '@/use-cases/user/delete-user';
+import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { IController } from '@/adapters/controllers/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
 
 export class DeleteUserController implements IController {

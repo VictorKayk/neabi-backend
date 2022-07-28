@@ -1,17 +1,18 @@
-import { UpdateUserUseCase } from '@/use-cases/update-user';
-import { ExistingUserError, NonExistingUserError } from '@/use-cases/errors';
-import { IController, IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
+import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { IController } from '@/adapters/controllers/interfaces';
 import {
   ok,
   serverError,
   badRequest,
   forbidden,
 } from '@/adapters/util/http';
+import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 
-export class UpdateUserController implements IController {
+export class UpdateUserByIdController implements IController {
   constructor(private readonly updateUser: UpdateUserUseCase) { }
 
-  async handle({ id, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ params: { id }, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
       const { name, email, password } = body;
       const accountOrError = await this.updateUser.execute({

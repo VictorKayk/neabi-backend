@@ -1,5 +1,6 @@
-import { ReadAllUsersUseCase } from '@/use-cases/read-all-users';
-import { IController, IHttpResponse } from '@/adapters/interfaces';
+import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
+import { IHttpResponse } from '@/adapters/interfaces';
+import { IController } from '@/adapters/controllers/interfaces';
 import { ok, serverError } from '@/adapters/util/http';
 
 export class ReadAllUsersController implements IController {

@@ -1,15 +1,16 @@
-import { DeleteUserUseCase } from '@/use-cases/delete-user';
-import { IController, IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { ReadUserUseCase } from '@/use-cases/user/read-user';
+import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
+import { IController } from '@/adapters/controllers/interfaces';
 import { ok, serverError, unauthorized } from '@/adapters/util/http';
 
-export class DeleteUserByIdController implements IController {
+export class ReadUserByIdController implements IController {
   constructor(
-    private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly readUserUseCase: ReadUserUseCase,
   ) { }
 
   async handle({ params: { id } }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
-      const accountOrError = await this.deleteUserUseCase.execute(id);
+      const accountOrError = await this.readUserUseCase.execute(id);
       if (accountOrError.isError()) {
         return unauthorized(accountOrError.value);
       }

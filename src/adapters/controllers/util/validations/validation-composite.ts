@@ -1,4 +1,4 @@
-import { IValidation } from '@/adapters/interfaces';
+import { IValidation } from '@/adapters/controllers/interfaces';
 
 export class ValidationComposite implements IValidation {
   constructor(private readonly validations: IValidation[]) { }

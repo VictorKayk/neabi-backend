@@ -1,7 +1,7 @@
 import { Either, error, success } from '@/shared';
 import { Name, Email, Password } from '@/entities/value-object';
-import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
-import { IUserCreate } from '@/entities/interfaces';
+import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
+import { IUserCreate } from '@/entities/user/interfaces';
 
 export class User {
   readonly name?: Name;

@@ -1,5 +1,5 @@
 import { Either, success, error } from '@/shared';
-import { InvalidEmailError } from '@/entities/errors';
+import { InvalidEmailError } from '@/entities/value-object/errors';
 
 function nonConformant(email: string): boolean {
   const emailRegex = /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;

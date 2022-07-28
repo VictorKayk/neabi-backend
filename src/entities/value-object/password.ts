@@ -1,5 +1,5 @@
 import { Either, success, error } from '@/shared';
-import { InvalidPasswordError } from '@/entities/errors';
+import { InvalidPasswordError } from '@/entities/value-object/errors';
 
 const isEmpty = (str: string): boolean => !str;
 const noNumberIn = (str: string) => !(/\d/.test(str));

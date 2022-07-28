@@ -1,5 +1,5 @@
 import { Password } from '@/entities/value-object';
-import { InvalidPasswordError } from '@/entities/errors';
+import { InvalidPasswordError } from '@/entities/value-object/errors';
 
 describe('Password Entity', () => {
   it('Should create a password on success', () => {

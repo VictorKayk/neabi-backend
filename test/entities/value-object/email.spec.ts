@@ -1,5 +1,5 @@
 import { Email } from '@/entities/value-object';
-import { InvalidEmailError } from '@/entities/errors';
+import { InvalidEmailError } from '@/entities/value-object/errors';
 
 describe('Email', () => {
   it('Should create an email on success', () => {

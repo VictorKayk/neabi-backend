@@ -1,5 +1,5 @@
 import { User } from '@/entities/user';
-import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/errors';
+import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 
 describe('User Entity', () => {
   it('Should create an user on success', () => {

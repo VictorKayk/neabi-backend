@@ -1,5 +1,5 @@
-import { AuthenticationMiddleware } from '@/adapters/middleware/user/authentication-middleware';
-import { AuthenticationUseCase } from '@/use-cases/user/authentication';
+import { AuthenticationMiddleware } from '@/adapters/middleware/authentication/authentication-middleware';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IMiddleware } from '@/adapters/middleware/interfaces';
 import { UserRepository } from '@/infra/repositories';
 import { JwtAdapter } from '@/infra/criptography';

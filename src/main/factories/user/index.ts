@@ -8,4 +8,3 @@ export * from '@/main/factories/user/update-user';
 export * from '@/main/factories/user/update-user-by-id';
 export * from '@/main/factories/user/delete-user';
 export * from '@/main/factories/user/delete-user-by-id';
-export * from '@/main/factories/user/authentication';

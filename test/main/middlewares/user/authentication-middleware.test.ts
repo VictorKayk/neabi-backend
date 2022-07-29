@@ -29,8 +29,8 @@ jest.mock('jsonwebtoken', () => ({
 }));
 
 describe('Authentication middleware', () => {
-  it('Should return 401 if accessToken is not provided in an authenticated middleware', async () => {
-    await request(app).get('/api/user').expect(401);
+  it('Should return 401 if accessToken is invalid', async () => {
+    await request(app).get('/api/user').set('x-access-token', 'invalid_token').expect(401);
   });
 
   it('Should return 500 if sign up route throws', async () => {

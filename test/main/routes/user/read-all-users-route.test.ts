@@ -31,12 +31,14 @@ jest.mock('jsonwebtoken', () => ({
 describe('ReadAllUsers Route', () => {
   it('Should return 200 on read all users route success', async () => {
     const { user } = makeSut();
-
-    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
+    const userData = {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+    };
+
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(userData);
+    jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userData, userData]);
 
     await request(app).get('/api/user/all')
       .set('x-access-token', user.build().accessToken).expect(200);

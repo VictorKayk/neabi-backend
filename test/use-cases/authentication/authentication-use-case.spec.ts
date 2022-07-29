@@ -1,7 +1,7 @@
-import { AuthenticationUseCase } from '@/use-cases/user/authentication';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IUserRepository, IDecrypter } from '@/use-cases/user/interfaces';
-import { IAuthenticationResponse } from '@/use-cases/user/authentication/interfaces';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { IAuthenticationResponse } from '@/use-cases/authentication/interfaces';
+import { UnauthorizedError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository, makeDecrypter } from '@/test/stubs';
 import { error } from '@/shared';

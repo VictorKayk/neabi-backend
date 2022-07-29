@@ -1,5 +1,5 @@
 import { Either } from '@/shared';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { UnauthorizedError } from '@/use-cases/errors';
 import { IPayload } from '@/use-cases/user/interfaces';
 
 export interface IDecrypter {

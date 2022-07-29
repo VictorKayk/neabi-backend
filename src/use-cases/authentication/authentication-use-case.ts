@@ -1,6 +1,6 @@
 import { IUseCase, IUserRepository, IDecrypter } from '@/use-cases/user/interfaces';
-import { IAuthenticationResponse } from '@/use-cases/user/authentication/interfaces';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { IAuthenticationResponse } from '@/use-cases/authentication/interfaces';
+import { UnauthorizedError } from '@/use-cases/errors';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<UnauthorizedError, IAuthenticationResponse>;

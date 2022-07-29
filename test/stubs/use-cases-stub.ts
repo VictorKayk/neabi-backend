@@ -1,6 +1,6 @@
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { SignInUseCase } from '@/use-cases/user/sign-in';
-import { AuthenticationUseCase } from '@/use-cases/user/authentication';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import {

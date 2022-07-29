@@ -1,5 +1,5 @@
 import { Either, success } from '@/shared';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { UnauthorizedError } from '@/use-cases/errors';
 import { IEncrypter, IDecrypter, IPayload } from '@/use-cases/user/interfaces';
 
 export const makeEncrypter = (): IEncrypter => {

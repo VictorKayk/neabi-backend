@@ -1,12 +1,12 @@
-import { AuthenticationUseCase } from '@/use-cases/user/authentication';
+import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IDecrypter } from '@/use-cases/user/interfaces';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { UnauthorizedError } from '@/use-cases/errors';
 import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
 import { makeAuthenticationUseCase, makeDecrypter } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { AuthenticationMiddleware } from '@/adapters/middleware/user/authentication-middleware';
+import { AuthenticationMiddleware } from '@/adapters/middleware/authentication/authentication-middleware';
 
 type SutTypes = {
   sut: AuthenticationMiddleware,

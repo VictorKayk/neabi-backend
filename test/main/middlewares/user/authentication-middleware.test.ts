@@ -30,6 +30,8 @@ jest.mock('jsonwebtoken', () => ({
 
 describe('Authentication middleware', () => {
   it('Should return 401 if accessToken is invalid', async () => {
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
+
     await request(app).get('/api/user').set('x-access-token', 'invalid_token').expect(401);
   });
 

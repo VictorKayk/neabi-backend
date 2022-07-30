@@ -1,5 +1,5 @@
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
-import { ExternalSignInController } from '@/adapters/controllers/user/external-sign-in-controller';
+import { ExternalSignInController } from '@/adapters/controllers/user/external-sign-in';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UserRepository } from '@/infra/repositories';
 import { UuidAdapter } from '@/infra/universally-unique-identifier';

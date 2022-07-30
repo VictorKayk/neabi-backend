@@ -1,5 +1,5 @@
 import { DeleteUserUseCase } from '@/use-cases/user/delete-user';
-import { DeleteUserController } from '@/adapters/controllers/user/delete-user-controller';
+import { DeleteUserController } from '@/adapters/controllers/user/delete-user';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UserRepository } from '@/infra/repositories';
 

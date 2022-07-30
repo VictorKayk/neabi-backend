@@ -1,5 +1,5 @@
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
-import { SignUpController } from '@/adapters/controllers/user/sign-up-controller';
+import { SignUpController } from '@/adapters/controllers/user/sign-up';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UuidAdapter } from '@/infra/universally-unique-identifier';
 import { UserRepository } from '@/infra/repositories';

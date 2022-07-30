@@ -1,4 +1,5 @@
-import { IUseCase, IUserRepository, IDecrypter } from '@/use-cases/user/interfaces';
+import { IUserRepository, IDecrypter } from '@/use-cases/user/interfaces';
+import { IUseCase } from '@/use-cases/interfaces';
 import { IAuthenticationResponse } from '@/use-cases/authentication/interfaces';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { Either, error, success } from '@/shared';

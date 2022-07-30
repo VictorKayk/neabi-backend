@@ -2,12 +2,11 @@ import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 import {
   IHasher,
-  IIdGenerator,
-  IUseCase,
   IUserVisibleData,
   IUserRepository,
   IEncrypter,
 } from '@/use-cases/user/interfaces';
+import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
 import { IUserRequired } from '@/use-cases/user/sign-up/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors/existing-user-error';
 import { getUserVisibleData } from '@/use-cases/user/util';

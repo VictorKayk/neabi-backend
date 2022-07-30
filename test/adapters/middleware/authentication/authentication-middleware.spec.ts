@@ -6,7 +6,7 @@ import { serverError, unauthorized } from '@/adapters/util/http';
 import { makeAuthenticationUseCase, makeDecrypter } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { AuthenticationMiddleware } from '@/adapters/middleware/authentication/authentication-middleware';
+import { AuthenticationMiddleware } from '@/adapters/middleware/authentication';
 
 type SutTypes = {
   sut: AuthenticationMiddleware,

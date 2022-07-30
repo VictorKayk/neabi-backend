@@ -6,7 +6,7 @@ import { InvalidRoleError } from '@/entities/value-object/errors';
 
 import { Either, error, success } from '@/shared';
 
-type Response = Either<InvalidRoleError, IRoleRepositoryReturnData>;
+type Response = Either<InvalidRoleError | ExistingRoleError, IRoleRepositoryReturnData>;
 
 export class CreateRoleUseCase implements IUseCase {
   constructor(

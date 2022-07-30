@@ -4,7 +4,7 @@ import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { DeleteUserByIdController } from '@/adapters/controllers/user/delete-user-by-id-controller';
+import { DeleteUserByIdController } from '@/adapters/controllers/user/delete-user-by-id';
 import { DeleteUserUseCase } from '@/use-cases/user/delete-user';
 
 type SutTypes = {

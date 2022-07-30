@@ -15,7 +15,7 @@ import {
 } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { SignInController } from '@/adapters/controllers/user/sign-in-controller';
+import { SignInController } from '@/adapters/controllers/user/sign-in';
 
 type SutTypes = {
   sut: SignInController,

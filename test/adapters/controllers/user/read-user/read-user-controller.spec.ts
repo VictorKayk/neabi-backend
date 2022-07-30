@@ -4,7 +4,7 @@ import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
-import { ReadUserController } from '@/adapters/controllers/user/read-user-controller';
+import { ReadUserController } from '@/adapters/controllers/user/read-user';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 
 type SutTypes = {

@@ -11,7 +11,7 @@ import {
 import { makeUpdateUserUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UserBuilder } from '@/test/builders/user-builder';
-import { UpdateUserByIdController } from '@/adapters/controllers/user/update-user-by-id-controller';
+import { UpdateUserByIdController } from '@/adapters/controllers/user/update-user-by-id';
 
 type SutTypes = {
   sut: UpdateUserByIdController,

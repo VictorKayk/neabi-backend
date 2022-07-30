@@ -1,47 +1,53 @@
 import { InvalidEmailError } from '@/entities/value-object/errors';
-import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
+import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { IEncrypter } from '@/use-cases/user/interfaces';
+import { IIdGenerator } from '@/use-cases/interfaces';
+import { ExistingUserError } from '@/use-cases/user/errors';
+import { SignUpController } from '@/adapters/controllers/user/sign-up';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
 import { MissingParamsError } from '@/adapters/controllers/errors';
-import { serverError, badRequest } from '@/adapters/util/http';
 import {
-  makeExternalSignInUseCase,
+  created,
+  serverError,
+  badRequest,
+  forbidden,
+} from '@/adapters/util/http';
+import {
+  makeSignUpUseCase,
   makeFakeRequest,
   makeEncrypter,
+  makeIdGenerator,
   makeValidation,
 } from '@/test/stubs';
-import { UserBuilder } from '@/test/builders/user-builder';
-import { error, success } from '@/shared';
-import { ExternalSignInController } from '@/adapters/controllers/user/external-sign-in-controller';
+import { error } from '@/shared';
 
 type SutTypes = {
-  sut: ExternalSignInController,
+  sut: SignUpController,
   validation: IValidation,
+  useCase: SignUpUseCase,
+  idGenerator: IIdGenerator,
   encrypter: IEncrypter,
-  useCase: ExternalSignInUseCase,
 };
 
 const makeSut = (): SutTypes => {
   const validation = makeValidation();
-  const useCase = makeExternalSignInUseCase();
-  const sut = new ExternalSignInController(validation, useCase);
+  const useCase = makeSignUpUseCase();
+  const sut = new SignUpController(validation, useCase);
+  const idGenerator = makeIdGenerator();
   const encrypter = makeEncrypter();
-  const user = new UserBuilder();
-
-  jest.spyOn(useCase, 'execute')
-    .mockResolvedValue(success({ ...user.build(), createdAt: new Date(), updatedAt: new Date() }));
 
   return {
     sut,
     validation,
     useCase,
     encrypter,
+    idGenerator,
   };
 };
 
-describe('ExternalSignInUseCase Controller ', () => {
-  it('Should call ExternalSignInUseCase with correct values', async () => {
+describe('SignUpUseCase Controller ', () => {
+  it('Should call SignUpUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');
@@ -50,6 +56,7 @@ describe('ExternalSignInUseCase Controller ', () => {
     expect(useCaseSpy).toHaveBeenCalledWith({
       name: makeFakeRequest().body.name,
       email: makeFakeRequest().body.email,
+      password: makeFakeRequest().body.password,
     });
   });
 
@@ -62,27 +69,40 @@ describe('ExternalSignInUseCase Controller ', () => {
     expect(response).toEqual(serverError(new ServerError()));
   });
 
-  it('Should return 200 on success', async () => {
-    const { sut, encrypter } = makeSut();
+  it('Should return 201 on success', async () => {
+    const { sut, encrypter, idGenerator } = makeSut();
     const response = await sut.handle(makeFakeRequest());
-    expect(response.statusCode).toBe(200);
-    expect(response.body.name).toBe(makeFakeRequest().body.name);
-    expect(response.body.email).toBe(makeFakeRequest().body.email);
-    expect(response.body.accessToken).toBe(await encrypter.encrypt(response.body.id));
+    expect(response).toEqual(created({
+      id: await idGenerator.generate(),
+      name: makeFakeRequest().body.name,
+      email: makeFakeRequest().body.email,
+      accessToken: await encrypter.encrypt(await idGenerator.generate()),
+      createdAt: response.body.createdAt,
+      updatedAt: response.body.updatedAt,
+    }));
   });
 
-  it('Should return 400 if call ExternalSignInUseCase with incorrect values', async () => {
-    const { sut, useCase } = makeSut();
-
-    jest.spyOn(useCase, 'execute').mockResolvedValue(error(new InvalidEmailError('')));
-
+  it('Should return 400 if call SignUpUseCase with incorrect values', async () => {
+    const { sut } = makeSut();
     const response = await sut.handle({
       body: {
         name: makeFakeRequest().body.name,
         email: '',
+        password: makeFakeRequest().body.password,
       },
     });
     expect(response).toEqual(badRequest(new InvalidEmailError('')));
+  });
+
+  it('Should return 403 if user already exists', async () => {
+    const { sut, useCase } = makeSut();
+
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
+      error(new ExistingUserError()),
+    )));
+
+    const response = await sut.handle(makeFakeRequest());
+    expect(response).toEqual(forbidden(new ExistingUserError()));
   });
 
   it('Should call Validation with correct values', async () => {

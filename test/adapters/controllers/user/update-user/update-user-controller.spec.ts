@@ -10,7 +10,7 @@ import {
 } from '@/adapters/util/http';
 import { makeUpdateUserUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
 import { error, success } from '@/shared';
-import { UpdateUserController } from '@/adapters/controllers/user/update-user-controller';
+import { UpdateUserController } from '@/adapters/controllers/user/update-user';
 
 type SutTypes = {
   sut: UpdateUserController,

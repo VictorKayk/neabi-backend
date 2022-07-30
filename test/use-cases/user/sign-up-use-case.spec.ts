@@ -1,10 +1,10 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
+import { IIdGenerator } from '@/use-cases/interfaces';
 import {
   IUserRepository,
   IHasher,
-  IIdGenerator,
   IEncrypter,
   IUserVisibleData,
 } from '@/use-cases/user/interfaces';

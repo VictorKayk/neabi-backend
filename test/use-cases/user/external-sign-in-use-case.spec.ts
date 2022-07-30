@@ -2,10 +2,10 @@ import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError } from '@/entities/value-object/errors';
 import {
   IUserRepository,
-  IIdGenerator,
   IEncrypter,
   IUserVisibleData,
 } from '@/use-cases/user/interfaces';
+import { IIdGenerator } from '@/use-cases/interfaces';
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {

@@ -8,7 +8,7 @@ export class ReadRoleByIdController implements IController {
     private readonly readByIdRole: ReadRoleByIdUseCase,
   ) { }
 
-  async handle({ id }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ params: { id } }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
       const roleOrError = await this.readByIdRole.execute(id);
       if (roleOrError.isError()) return unauthorized(roleOrError.value);

@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('Role UseCase', () => {
+describe('CreateRoleUseCase', () => {
   it('Should call role value object with correct value', async () => {
     const { sut } = makeSut();
     const roleSpy = jest.spyOn(Role, 'create');

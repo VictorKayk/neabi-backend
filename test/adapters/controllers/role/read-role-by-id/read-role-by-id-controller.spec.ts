@@ -31,6 +31,7 @@ describe('ReadRoleById Controller ', () => {
       id: 'any_id',
       accessToken: 'any_accessToken',
       body: {},
+      params: { id: 'any_id' },
     });
     expect(useCaseSpy).toHaveBeenCalledWith('any_id');
   });
@@ -44,6 +45,7 @@ describe('ReadRoleById Controller ', () => {
       id: 'any_id',
       accessToken: 'any_accessToken',
       body: {},
+      params: { id: 'any_id' },
     });
     expect(response).toEqual(serverError(new ServerError()));
   });
@@ -61,6 +63,7 @@ describe('ReadRoleById Controller ', () => {
       id: 'any_id',
       accessToken: 'any_accessToken',
       body: {},
+      params: { id: 'any_id' },
     });
 
     expect(response.statusCode).toBe(200);
@@ -75,6 +78,7 @@ describe('ReadRoleById Controller ', () => {
       id: 'invalid_id',
       accessToken: 'any_accessToken',
       body: {},
+      params: { id: 'any_id' },
     });
 
     expect(response).toEqual(unauthorized(new NonExistingRoleError()));

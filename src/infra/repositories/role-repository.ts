@@ -24,4 +24,9 @@ export class RoleRepository implements IRoleRepository {
     });
     return roleReturnData;
   }
+
+  async readAllRoles(): Promise<IRoleRepositoryReturnData[] | []> {
+    const roles = await prisma.roles.findMany();
+    return roles;
+  }
 }

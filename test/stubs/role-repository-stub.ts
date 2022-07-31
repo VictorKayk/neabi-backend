@@ -20,6 +20,10 @@ export const makeRoleRepository = (): IRoleRepository => {
         createdAt: new Date(),
       };
     }
+
+    async readAllRoles(): Promise<IRoleRepositoryReturnData[] | []> {
+      return [];
+    }
   }
   return new RoleRepositoryStub();
 };

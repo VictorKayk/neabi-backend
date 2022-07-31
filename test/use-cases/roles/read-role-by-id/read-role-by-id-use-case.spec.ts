@@ -1,23 +1,23 @@
 import { IRoleRepository } from '@/use-cases/roles/interfaces';
 import { makeRoleRepository } from '@/test/stubs';
 import { NonExistingRoleError } from '@/use-cases/roles/errors';
-import { ReadRoleUseCase } from '@/use-cases/roles/read-role';
+import { ReadRoleByIdUseCase } from '@/use-cases/roles/read-role-by-id';
 
 type SutTypes = {
-  sut: ReadRoleUseCase,
+  sut: ReadRoleByIdUseCase,
   roleRepository: IRoleRepository,
 };
 
 const makeSut = (): SutTypes => {
   const roleRepository = makeRoleRepository();
-  const sut = new ReadRoleUseCase(roleRepository);
+  const sut = new ReadRoleByIdUseCase(roleRepository);
   return {
     sut,
     roleRepository,
   };
 };
 
-describe('ReadRoleUseCase', () => {
+describe('ReadRoleByIdUseCase', () => {
   it('Should return an error if role do not exists', async () => {
     const { sut } = makeSut();
     const response = await sut.execute('any_role');

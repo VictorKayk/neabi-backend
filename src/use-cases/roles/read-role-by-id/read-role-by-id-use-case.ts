@@ -6,7 +6,7 @@ import { Either, error, success } from '@/shared';
 
 type Response = Either<NonExistingRoleError, IRoleRepositoryReturnData>;
 
-export class ReadRoleUseCase implements IUseCase {
+export class ReadRoleByIdUseCase implements IUseCase {
   constructor(
     private readonly roleRepository: IRoleRepository,
   ) { }

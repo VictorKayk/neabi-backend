@@ -1,19 +1,19 @@
-import { ReadRoleUseCase } from '@/use-cases/roles/read-role';
+import { ReadRoleByIdUseCase } from '@/use-cases/roles/read-role-by-id';
 import { NonExistingRoleError } from '@/use-cases/roles/errors';
 import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
-import { makeReadRoleUseCase } from '@/test/stubs';
+import { makeReadRoleByIdUseCase } from '@/test/stubs';
 import { error, success } from '@/shared';
-import { ReadRoleController } from '@/adapters/controllers/roles/read-role';
+import { ReadRoleByIdController } from '@/adapters/controllers/roles/read-role-by-id';
 
 type SutTypes = {
-  sut: ReadRoleController,
-  useCase: ReadRoleUseCase,
+  sut: ReadRoleByIdController,
+  useCase: ReadRoleByIdUseCase,
 };
 
 const makeSut = (): SutTypes => {
-  const useCase = makeReadRoleUseCase();
-  const sut = new ReadRoleController(useCase);
+  const useCase = makeReadRoleByIdUseCase();
+  const sut = new ReadRoleByIdController(useCase);
 
   return {
     sut,
@@ -21,7 +21,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('ReadRole Controller ', () => {
+describe('ReadRoleById Controller ', () => {
   it('Should call ReadUserUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
 

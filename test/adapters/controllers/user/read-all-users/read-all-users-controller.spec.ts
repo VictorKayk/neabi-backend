@@ -3,7 +3,7 @@ import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 import { ServerError } from '@/adapters/errors';
 import { serverError } from '@/adapters/util/http';
 import { UserBuilder } from '@/test/builders/user-builder';
-import { ReadAllUsersController } from '@/adapters/controllers/user/read-all-users-controller';
+import { ReadAllUsersController } from '@/adapters/controllers/user/read-all-users';
 
 type SutTypes = {
   sut: ReadAllUsersController,

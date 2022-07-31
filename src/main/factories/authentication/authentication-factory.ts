@@ -1,4 +1,4 @@
-import { AuthenticationMiddleware } from '@/adapters/middleware/authentication/authentication-middleware';
+import { AuthenticationMiddleware } from '@/adapters/middleware/authentication';
 import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IMiddleware } from '@/adapters/middleware/interfaces';
 import { UserRepository } from '@/infra/repositories';

@@ -1,5 +1,5 @@
 import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
-import { ReadAllUsersController } from '@/adapters/controllers/user/read-all-users-controller';
+import { ReadAllUsersController } from '@/adapters/controllers/user/read-all-users';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UserRepository } from '@/infra/repositories';
 

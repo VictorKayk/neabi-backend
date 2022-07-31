@@ -1,5 +1,5 @@
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
-import { UpdateUserController } from '@/adapters/controllers/user/update-user-controller';
+import { UpdateUserController } from '@/adapters/controllers/user/update-user';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UserRepository } from '@/infra/repositories';
 import { BcryptAdapter } from '@/infra/criptography';

@@ -1,5 +1,5 @@
-import { CreateRoleUseCase } from '@/use-cases/roles/create-role';
-import { ReadRoleByIdUseCase } from '@/use-cases/roles/read-role-by-id';
+import { CreateRoleUseCase } from '@/use-cases/role/create-role';
+import { ReadRoleByIdUseCase } from '@/use-cases/role/read-role-by-id';
 import { makeRoleRepository, makeIdGenerator } from '@/test/stubs';
 
 export const makeCreateRoleUseCase = (): CreateRoleUseCase => {

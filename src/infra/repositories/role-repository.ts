@@ -1,4 +1,4 @@
-import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/roles/interfaces';
+import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/role/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class RoleRepository implements IRoleRepository {

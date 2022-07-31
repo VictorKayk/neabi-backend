@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { IEncrypter, IDecrypter, IPayload } from '@/use-cases/user/interfaces';
 import { Either, success, error } from '@/shared';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { UnauthorizedError } from '@/use-cases/errors';
 
 export class JwtAdapter implements IEncrypter, IDecrypter {
   constructor(

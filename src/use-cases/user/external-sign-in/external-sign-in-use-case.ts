@@ -1,14 +1,13 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError } from '@/entities/value-object/errors';
 import {
-  IIdGenerator,
-  IUseCase,
   IUserData,
   IUserVisibleData,
   IUserRepository,
   IEncrypter,
   IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
+import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
 import { getUserVisibleData } from '@/use-cases/user/util';
 import { Either, error, success } from '@/shared';
 

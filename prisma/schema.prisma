@@ -15,4 +15,24 @@ model User {
   accessToken String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  RolesOnUser RolesOnUser[]
+}
+
+model Roles {
+  id        String   @id
+  role      String   @unique
+  createdAt DateTime @default(now())
+
+  RolesOnUser RolesOnUser[]
+}
+
+model RolesOnUser {
+  userId    String
+  rolesId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  roles     Roles    @relation(fields: [rolesId], references: [id])
+
+  @@id([userId, rolesId])
 }

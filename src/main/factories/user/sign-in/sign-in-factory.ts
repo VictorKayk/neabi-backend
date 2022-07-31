@@ -1,5 +1,5 @@
 import { SignInUseCase } from '@/use-cases/user/sign-in';
-import { SignInController } from '@/adapters/controllers/user/sign-in-controller';
+import { SignInController } from '@/adapters/controllers/user/sign-in';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UserRepository } from '@/infra/repositories';
 import { BcryptAdapter, JwtAdapter } from '@/infra/criptography';

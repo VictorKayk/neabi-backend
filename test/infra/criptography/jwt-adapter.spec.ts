@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { JwtAdapter } from '@/infra/criptography';
 import { IPayload } from '@/use-cases/user/interfaces';
-import { UnauthorizedError } from '@/use-cases/user/errors';
+import { UnauthorizedError } from '@/use-cases/errors';
 
 interface SutTypes {
   sut: JwtAdapter

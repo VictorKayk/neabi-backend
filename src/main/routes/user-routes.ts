@@ -13,7 +13,7 @@ import {
   makeUpdateUserByIdController,
   makeUpdateUserController,
 } from '@/main/factories/user';
-import { authentication, googleLoginAuth, googleLoginAuthCb } from '@/main/middlewares/user';
+import { authentication, googleLoginAuth, googleLoginAuthCb } from '@/main/middlewares/authentication';
 
 export function user(router: Router) {
   router.post('/signup', routerAdapter(makeSignUpController()));

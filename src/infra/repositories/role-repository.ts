@@ -1,4 +1,4 @@
-import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/roles/interfaces';
+import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/role/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class RoleRepository implements IRoleRepository {
@@ -10,14 +10,14 @@ export class RoleRepository implements IRoleRepository {
   }
 
   async findByRole(role: string): Promise<IRoleRepositoryReturnData | null> {
-    const roleReturnData = prisma.roles.findFirst({
+    const roleReturnData = await prisma.roles.findFirst({
       where: { role },
     });
     return roleReturnData;
   }
 
   async findById(id: string): Promise<IRoleRepositoryReturnData | null> {
-    const roleReturnData = prisma.roles.findFirst({
+    const roleReturnData = await prisma.roles.findFirst({
       where: {
         id,
       },

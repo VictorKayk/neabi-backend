@@ -2,7 +2,7 @@ import {
   IRoleRepository,
   IRoleData,
   IRoleRepositoryReturnData,
-} from '@/use-cases/roles/interfaces';
+} from '@/use-cases/role/interfaces';
 
 export const makeRoleRepository = (): IRoleRepository => {
   class RoleRepositoryStub implements IRoleRepository {

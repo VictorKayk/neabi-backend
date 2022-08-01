@@ -71,8 +71,7 @@ describe('DeleteRoleById Controller ', () => {
 
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      id: 'invalid_id',
-      params: { id: 'any_id' },
+      params: { id: 'invalid_id' },
     });
     expect(response).toEqual(unauthorized(new NonExistingRoleError()));
   });

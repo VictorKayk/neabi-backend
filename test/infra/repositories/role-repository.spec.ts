@@ -21,6 +21,7 @@ describe('Role Repository Implementation', () => {
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const response = await sut.add({
@@ -39,6 +40,7 @@ describe('Role Repository Implementation', () => {
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const response = await sut.findByRole('any_role');
@@ -63,6 +65,7 @@ describe('Role Repository Implementation', () => {
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const response = await sut.findById('any_id');
@@ -78,5 +81,41 @@ describe('Role Repository Implementation', () => {
 
     const response = await sut.findById('any_id');
     expect(response).toBe(null);
+  });
+
+  it('Should return all roles on readAllRoles success', async () => {
+    const { sut } = makeSut();
+
+    const role = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
+    jest.spyOn(prisma.roles, 'findMany').mockResolvedValue([role, role, role]);
+
+    const response = await sut.readAllRoles();
+    expect(response).toEqual([role, role, role]);
+  });
+
+  it('Should return an role on deleteById success', async () => {
+    const { sut } = makeSut();
+
+    const role = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
+    jest.spyOn(prisma.roles, 'delete').mockResolvedValue(role);
+
+    const response = await sut.deleteById('any_id');
+    expect(response).toEqual(role);
+  });
+
+  it('Should return an role on updateById success', async () => {
+    const { sut } = makeSut();
+
+    const role = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
+    jest.spyOn(prisma.roles, 'update').mockResolvedValue(role);
+
+    const response = await sut.updateById({ id: 'any_id', role: 'any_role' });
+    expect(response).toEqual(role);
   });
 });

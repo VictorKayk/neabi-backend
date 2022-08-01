@@ -1,4 +1,4 @@
-import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/roles/interfaces';
+import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/role/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class RoleRepository implements IRoleRepository {
@@ -10,18 +10,38 @@ export class RoleRepository implements IRoleRepository {
   }
 
   async findByRole(role: string): Promise<IRoleRepositoryReturnData | null> {
-    const roleReturnData = prisma.roles.findFirst({
+    const roleReturnData = await prisma.roles.findFirst({
       where: { role },
     });
     return roleReturnData;
   }
 
   async findById(id: string): Promise<IRoleRepositoryReturnData | null> {
-    const roleReturnData = prisma.roles.findFirst({
+    const roleReturnData = await prisma.roles.findFirst({
       where: {
         id,
       },
     });
     return roleReturnData;
+  }
+
+  async readAllRoles(): Promise<IRoleRepositoryReturnData[] | []> {
+    const roles = await prisma.roles.findMany();
+    return roles;
+  }
+
+  async deleteById(id: string): Promise<IRoleRepositoryReturnData> {
+    const roles = await prisma.roles.delete({
+      where: { id },
+    });
+    return roles;
+  }
+
+  async updateById({ id, role }: IRoleData): Promise<IRoleRepositoryReturnData> {
+    const roleUpdated = await prisma.roles.update({
+      where: { id },
+      data: { role },
+    });
+    return roleUpdated;
   }
 }

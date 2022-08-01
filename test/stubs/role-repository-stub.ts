@@ -2,7 +2,7 @@ import {
   IRoleRepository,
   IRoleData,
   IRoleRepositoryReturnData,
-} from '@/use-cases/roles/interfaces';
+} from '@/use-cases/role/interfaces';
 
 export const makeRoleRepository = (): IRoleRepository => {
   class RoleRepositoryStub implements IRoleRepository {
@@ -14,10 +14,32 @@ export const makeRoleRepository = (): IRoleRepository => {
       return null;
     }
 
-    async add(userData: IRoleData): Promise<IRoleRepositoryReturnData> {
+    async add(roleData: IRoleData): Promise<IRoleRepositoryReturnData> {
       return {
-        ...userData,
+        ...roleData,
         createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+
+    async readAllRoles(): Promise<IRoleRepositoryReturnData[] | []> {
+      return [];
+    }
+
+    async deleteById(id: string): Promise<IRoleRepositoryReturnData> {
+      return {
+        id,
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+
+    async updateById(roleData: IRoleData): Promise<IRoleRepositoryReturnData> {
+      return {
+        ...roleData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
     }
   }

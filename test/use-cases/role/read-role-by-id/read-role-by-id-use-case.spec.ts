@@ -28,7 +28,9 @@ describe('ReadRoleByIdUseCase', () => {
   it('Should return role data on success', async () => {
     const { sut, roleRepository } = makeSut();
 
-    const findByIdReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
+    const findByIdReturn = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute('any_role');
@@ -36,6 +38,7 @@ describe('ReadRoleByIdUseCase', () => {
       id: findByIdReturn.id,
       role: findByIdReturn.role,
       createdAt: findByIdReturn.createdAt,
+      updatedAt: findByIdReturn.updatedAt,
     });
   });
 });

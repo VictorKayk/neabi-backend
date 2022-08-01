@@ -51,7 +51,9 @@ describe('DeleteRoleById Controller ', () => {
   it('Should return 200 on success', async () => {
     const { sut, useCase } = makeSut();
 
-    const useCaseReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
+    const useCaseReturn = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),

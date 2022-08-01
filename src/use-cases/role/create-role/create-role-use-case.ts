@@ -18,14 +18,14 @@ export class CreateRoleUseCase implements IUseCase {
     const roleOrError = Role.create(role);
     if (roleOrError.isError()) return error(roleOrError.value);
 
-    let userOrNull = await this.roleRepository.findByRole(role);
-    if (userOrNull) return error(new ExistingRoleError());
+    let roleOrNull = await this.roleRepository.findByRole(role);
+    if (roleOrNull) return error(new ExistingRoleError());
 
     let id: string;
     do {
       id = await this.idGenerator.generate();
-      userOrNull = await this.roleRepository.findById(id);
-    } while (userOrNull);
+      roleOrNull = await this.roleRepository.findById(id);
+    } while (roleOrNull);
 
     const roleData = await this.roleRepository.add({ id, role });
 

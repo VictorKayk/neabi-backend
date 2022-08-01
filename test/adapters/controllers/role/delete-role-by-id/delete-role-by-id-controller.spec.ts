@@ -1,19 +1,19 @@
-import { ReadRoleByIdUseCase } from '@/use-cases/role/read-role-by-id';
+import { DeleteRoleByIdUseCase } from '@/use-cases/role/delete-role-by-id';
 import { NonExistingRoleError } from '@/use-cases/role/errors';
 import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
-import { makeFakeRequestAuthenticated, makeReadRoleByIdUseCase } from '@/test/stubs';
+import { makeDeleteRoleByIdUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
 import { error, success } from '@/shared';
-import { ReadRoleByIdController } from '@/adapters/controllers/role/read-role-by-id';
+import { DeleteRoleByIdController } from '@/adapters/controllers/role/delete-role-by-id';
 
 type SutTypes = {
-  sut: ReadRoleByIdController,
-  useCase: ReadRoleByIdUseCase,
+  sut: DeleteRoleByIdController,
+  useCase: DeleteRoleByIdUseCase,
 };
 
 const makeSut = (): SutTypes => {
-  const useCase = makeReadRoleByIdUseCase();
-  const sut = new ReadRoleByIdController(useCase);
+  const useCase = makeDeleteRoleByIdUseCase();
+  const sut = new DeleteRoleByIdController(useCase);
 
   return {
     sut,
@@ -21,8 +21,8 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('ReadRoleById Controller ', () => {
-  it('Should call ReadRoleByIdUseCase with correct values', async () => {
+describe('DeleteRoleById Controller ', () => {
+  it('Should call DeleteRoleByIdUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');
@@ -37,11 +37,12 @@ describe('ReadRoleById Controller ', () => {
   it('Should return 500 if throws', async () => {
     const { sut, useCase } = makeSut();
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
 
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-
       params: { id: 'any_id' },
     });
     expect(response).toEqual(serverError(new ServerError()));
@@ -50,11 +51,7 @@ describe('ReadRoleById Controller ', () => {
   it('Should return 200 on success', async () => {
     const { sut, useCase } = makeSut();
 
-    const useCaseReturn = {
-      id: 'any_id',
-      role: 'any_role',
-      createdAt: new Date(),
-    };
+    const useCaseReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
@@ -69,12 +66,12 @@ describe('ReadRoleById Controller ', () => {
     const { sut, useCase } = makeSut();
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingRoleError()));
+
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
       id: 'invalid_id',
       params: { id: 'any_id' },
     });
-
     expect(response).toEqual(unauthorized(new NonExistingRoleError()));
   });
 });

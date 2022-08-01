@@ -29,4 +29,11 @@ export class RoleRepository implements IRoleRepository {
     const roles = await prisma.roles.findMany();
     return roles;
   }
+
+  async deleteById(id: string): Promise<IRoleRepositoryReturnData> {
+    const roles = await prisma.roles.delete({
+      where: { id },
+    });
+    return roles;
+  }
 }

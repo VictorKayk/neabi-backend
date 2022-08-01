@@ -5,4 +5,5 @@ export interface IRoleRepository {
   findById(id: string): Promise<IRoleRepositoryReturnData | null>
   add(roleData: IRoleData): Promise<IRoleRepositoryReturnData>
   readAllRoles(): Promise<IRoleRepositoryReturnData[] | []>
+  deleteById(id: string): Promise<IRoleRepositoryReturnData>
 }

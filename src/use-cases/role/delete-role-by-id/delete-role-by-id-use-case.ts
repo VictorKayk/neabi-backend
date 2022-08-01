@@ -6,7 +6,7 @@ import { Either, error, success } from '@/shared';
 
 type Response = Either<NonExistingRoleError, IRoleRepositoryReturnData>;
 
-export class ReadRoleByIdUseCase implements IUseCase {
+export class DeleteRoleByIdUseCase implements IUseCase {
   constructor(
     private readonly roleRepository: IRoleRepository,
   ) { }
@@ -14,6 +14,8 @@ export class ReadRoleByIdUseCase implements IUseCase {
   async execute(id: string): Promise<Response> {
     const roleOrNull = await this.roleRepository.findById(id);
     if (!roleOrNull) return error(new NonExistingRoleError());
-    return success(roleOrNull);
+
+    const role = await this.roleRepository.deleteById(id);
+    return success(role);
   }
 }

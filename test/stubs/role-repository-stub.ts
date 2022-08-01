@@ -14,15 +14,23 @@ export const makeRoleRepository = (): IRoleRepository => {
       return null;
     }
 
-    async add(userData: IRoleData): Promise<IRoleRepositoryReturnData> {
+    async add(roleData: IRoleData): Promise<IRoleRepositoryReturnData> {
       return {
-        ...userData,
+        ...roleData,
         createdAt: new Date(),
       };
     }
 
     async readAllRoles(): Promise<IRoleRepositoryReturnData[] | []> {
       return [];
+    }
+
+    async deleteById(id: string): Promise<IRoleRepositoryReturnData> {
+      return {
+        id,
+        role: 'any_role',
+        createdAt: new Date(),
+      };
     }
   }
   return new RoleRepositoryStub();

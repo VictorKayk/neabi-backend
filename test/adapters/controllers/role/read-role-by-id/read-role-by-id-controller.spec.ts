@@ -2,7 +2,7 @@ import { ReadRoleByIdUseCase } from '@/use-cases/role/read-role-by-id';
 import { NonExistingRoleError } from '@/use-cases/role/errors';
 import { ServerError } from '@/adapters/errors';
 import { serverError, unauthorized } from '@/adapters/util/http';
-import { makeReadRoleByIdUseCase } from '@/test/stubs';
+import { makeFakeRequestAuthenticated, makeReadRoleByIdUseCase } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { ReadRoleByIdController } from '@/adapters/controllers/role/read-role-by-id';
 
@@ -28,9 +28,7 @@ describe('ReadRoleById Controller ', () => {
     const useCaseSpy = jest.spyOn(useCase, 'execute');
 
     await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: 'any_id' },
     });
     expect(useCaseSpy).toHaveBeenCalledWith('any_id');
@@ -42,9 +40,8 @@ describe('ReadRoleById Controller ', () => {
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
+
       params: { id: 'any_id' },
     });
     expect(response).toEqual(serverError(new ServerError()));
@@ -60,9 +57,7 @@ describe('ReadRoleById Controller ', () => {
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
-      body: {},
+      ...makeFakeRequestAuthenticated(),
       params: { id: 'any_id' },
     });
 
@@ -70,14 +65,13 @@ describe('ReadRoleById Controller ', () => {
     expect(response.body).toEqual(useCaseReturn);
   });
 
-  it('Should return 401 if user do not exists', async () => {
+  it('Should return 401 if role do not exists', async () => {
     const { sut, useCase } = makeSut();
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingRoleError()));
     const response = await sut.handle({
+      ...makeFakeRequestAuthenticated(),
       id: 'invalid_id',
-      accessToken: 'any_accessToken',
-      body: {},
       params: { id: 'any_id' },
     });
 

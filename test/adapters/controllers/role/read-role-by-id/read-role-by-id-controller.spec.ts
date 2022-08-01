@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('ReadRoleById Controller ', () => {
-  it('Should call ReadUserUseCase with correct values', async () => {
+  it('Should call ReadRoleByIdUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');

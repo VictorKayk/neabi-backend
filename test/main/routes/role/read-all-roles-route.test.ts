@@ -17,35 +17,26 @@ jest.mock('jsonwebtoken', () => ({
     return { id: 'any_id' };
   },
 }));
-
 jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   ...new UserBuilder().build(),
   createdAt: new Date(),
   updatedAt: new Date(),
 });
 
-describe('ReadRole Route', () => {
-  it('Should return 200 on read role route success', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+describe('ReadAllRoles Route', () => {
+  it('Should return 200 on read all roles route success', async () => {
+    const roleReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
+    jest.spyOn(prisma.roles, 'findMany').mockResolvedValue([roleReturn, roleReturn]);
 
-    await request(app).get('/api/role/any_id')
+    await request(app).get('/api/role/all')
       .set('x-access-token', 'any_encrypted_string')
       .expect(200);
   });
 
-  it('Should return 401 if role do not exist in read role route', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
+  it('Should return 500 if read all roles route throws', async () => {
+    jest.spyOn(prisma.roles, 'findMany').mockImplementationOnce(() => { throw new Error(); });
 
-    await request(app).get('/api/role/any_id')
-      .set('x-access-token', 'any_encrypted_string')
-      .expect(401);
-  });
-
-  it('Should return 500 if read role route throws', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockImplementationOnce(() => { throw new Error(); });
-
-    await request(app).get('/api/role/any_id')
+    await request(app).get('/api/role/all')
       .set('x-access-token', 'any_encrypted_string')
       .expect(500);
   });

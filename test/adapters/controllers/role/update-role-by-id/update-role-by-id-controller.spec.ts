@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('UpdateRoleById Controller ', () => {
+describe('UpdateRoleById Controller', () => {
   it('Should call UpdateRoleByIdUseCase with correct values', async () => {
     const { sut, useCase } = makeSut();
 
@@ -73,7 +73,7 @@ describe('UpdateRoleById Controller ', () => {
     expect(response.body).toEqual(useCaseReturn);
   });
 
-  it('Should return 401 if role do not exists', async () => {
+  it('Should return 400 if role do not exists', async () => {
     const { sut, useCase } = makeSut();
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingRoleError()));
@@ -83,7 +83,7 @@ describe('UpdateRoleById Controller ', () => {
       body: { role: 'any_role' },
       params: { id: 'invalid_id' },
     });
-    expect(response).toEqual(unauthorized(new NonExistingRoleError()));
+    expect(response).toEqual(badRequest(new NonExistingRoleError()));
   });
 
   it('Should return 400 if call UpdateRoleUseCase with incorrect values', async () => {

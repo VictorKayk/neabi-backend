@@ -6,4 +6,5 @@ export interface IRoleRepository {
   add(roleData: IRoleData): Promise<IRoleRepositoryReturnData>
   readAllRoles(): Promise<IRoleRepositoryReturnData[] | []>
   deleteById(id: string): Promise<IRoleRepositoryReturnData>
+  updateById(roleData: IRoleData): Promise<IRoleRepositoryReturnData>
 }

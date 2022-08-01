@@ -21,7 +21,9 @@ describe('DeleteRoleByIdUseCase', () => {
   it('Should call deleteById with correct values', async () => {
     const { sut, roleRepository } = makeSut();
 
-    const findByIdReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
+    const findByIdReturn = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     const deleteSpy = jest.spyOn(roleRepository, 'deleteById');
 
@@ -32,7 +34,9 @@ describe('DeleteRoleByIdUseCase', () => {
   it('Should return user data on success', async () => {
     const { sut, roleRepository } = makeSut();
 
-    const findByIdReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
+    const findByIdReturn = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     jest.spyOn(roleRepository, 'deleteById').mockResolvedValue(findByIdReturn);
 

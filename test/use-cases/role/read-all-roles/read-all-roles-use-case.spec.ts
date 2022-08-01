@@ -21,8 +21,12 @@ describe('ReadAllRolesUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const readAllUsersReturn = [
-      { id: 'any_id', role: 'any_role', createdAt: new Date() },
-      { id: 'any_id', role: 'any_role', createdAt: new Date() },
+      {
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      },
+      {
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      },
     ];
     jest.spyOn(roleRepository, 'readAllRoles').mockResolvedValue(readAllUsersReturn);
 

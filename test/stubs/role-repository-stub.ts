@@ -18,6 +18,7 @@ export const makeRoleRepository = (): IRoleRepository => {
       return {
         ...roleData,
         createdAt: new Date(),
+        updatedAt: new Date(),
       };
     }
 
@@ -30,6 +31,15 @@ export const makeRoleRepository = (): IRoleRepository => {
         id,
         role: 'any_role',
         createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+
+    async updateById(roleData: IRoleData): Promise<IRoleRepositoryReturnData> {
+      return {
+        ...roleData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
     }
   }

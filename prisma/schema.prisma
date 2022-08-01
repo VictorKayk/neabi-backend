@@ -23,6 +23,7 @@ model Roles {
   id        String   @id
   role      String   @unique
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   RolesOnUser RolesOnUser[]
 }

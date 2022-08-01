@@ -27,7 +27,9 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
 describe('ReadRoleById Route', () => {
   it('Should return 200 on read role by id route success', async () => {
     jest.spyOn(prisma.roles, 'findFirst')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+      .mockResolvedValue({
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      });
 
     await request(app).get('/api/role/any_id')
       .set('x-access-token', 'any_encrypted_string')

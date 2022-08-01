@@ -37,10 +37,12 @@ describe('ReadAllRoles Controller ', () => {
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
+      updatedAt: new Date(),
     }, {
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
+      updatedAt: new Date(),
     }];
     jest.spyOn(useCase, 'execute').mockResolvedValue(useCaseReturn);
     const response = await sut.handle();

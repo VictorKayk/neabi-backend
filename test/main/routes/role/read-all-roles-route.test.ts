@@ -25,7 +25,9 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
 
 describe('ReadAllRoles Route', () => {
   it('Should return 200 on read all roles route success', async () => {
-    const roleReturn = { id: 'any_id', role: 'any_role', createdAt: new Date() };
+    const roleReturn = {
+      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
     jest.spyOn(prisma.roles, 'findMany').mockResolvedValue([roleReturn, roleReturn]);
 
     await request(app).get('/api/role/all')

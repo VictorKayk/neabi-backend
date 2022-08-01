@@ -36,4 +36,12 @@ export class RoleRepository implements IRoleRepository {
     });
     return roles;
   }
+
+  async updateById({ id, role }: IRoleData): Promise<IRoleRepositoryReturnData> {
+    const roleUpdated = await prisma.roles.update({
+      where: { id },
+      data: { role },
+    });
+    return roleUpdated;
+  }
 }

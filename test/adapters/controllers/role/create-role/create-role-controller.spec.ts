@@ -12,7 +12,7 @@ import {
   forbidden,
 } from '@/adapters/util/http';
 import { makeCreateRoleUseCase, makeIdGenerator, makeValidation } from '@/test/stubs';
-import { error } from '@/shared';
+import { error, success } from '@/shared';
 import { CreateRoleController } from '@/adapters/controllers/role/create-role';
 
 type SutTypes = {
@@ -56,13 +56,15 @@ describe('CreateRole Controller ', () => {
   });
 
   it('Should return 201 on success', async () => {
-    const { sut, idGenerator } = makeSut();
+    const { sut, idGenerator, useCase } = makeSut();
+
+    const useCaseReturn = {
+      id: await idGenerator.generate(), role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    };
+    jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
+
     const response = await sut.handle({ body: { role: 'any_role' } });
-    expect(response).toEqual(created({
-      id: await idGenerator.generate(),
-      role: 'any_role',
-      createdAt: response.body.createdAt,
-    }));
+    expect(response).toEqual(created(useCaseReturn));
   });
 
   it('Should return 400 if call CreateRoleUseCase with incorrect values', async () => {

@@ -58,6 +58,7 @@ describe('CreateRoleUseCase', () => {
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
+      updatedAt: new Date(),
     })));
     const error = await sut.execute('any_role');
     expect(error.isError()).toBe(true);
@@ -111,6 +112,7 @@ describe('CreateRoleUseCase', () => {
       id: await idGenerator.generate(),
       role: 'any_role',
       createdAt: value.createdAt,
+      updatedAt: value.updatedAt,
     });
   });
 });

@@ -1,6 +1,7 @@
 import { CreateRoleUseCase } from '@/use-cases/role/create-role';
 import { ReadRoleByIdUseCase } from '@/use-cases/role/read-role-by-id';
 import { ReadAllRolesUseCase } from '@/use-cases/role/read-all-roles';
+import { UpdateRoleByIdUseCase } from '@/use-cases/role/update-role-by-id';
 import { DeleteRoleByIdUseCase } from '@/use-cases/role/delete-role-by-id';
 import { makeRoleRepository, makeIdGenerator } from '@/test/stubs';
 
@@ -23,4 +24,9 @@ export const makeReadAllRolesUseCase = (): ReadAllRolesUseCase => {
 export const makeDeleteRoleByIdUseCase = (): DeleteRoleByIdUseCase => {
   const roleRepository = makeRoleRepository();
   return new DeleteRoleByIdUseCase(roleRepository);
+};
+
+export const makeUpdateRoleByIdUseCase = (): UpdateRoleByIdUseCase => {
+  const roleRepository = makeRoleRepository();
+  return new UpdateRoleByIdUseCase(roleRepository);
 };

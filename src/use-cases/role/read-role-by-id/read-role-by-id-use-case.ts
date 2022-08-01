@@ -12,8 +12,8 @@ export class ReadRoleByIdUseCase implements IUseCase {
   ) { }
 
   async execute(id: string): Promise<Response> {
-    const userOrNull = await this.roleRepository.findById(id);
-    if (!userOrNull) return error(new NonExistingRoleError());
-    return success(userOrNull);
+    const roleOrNull = await this.roleRepository.findById(id);
+    if (!roleOrNull) return error(new NonExistingRoleError());
+    return success(roleOrNull);
   }
 }

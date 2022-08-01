@@ -28,7 +28,9 @@ describe('CreateRole Route', () => {
   it('Should return 201 on create role route success', async () => {
     jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
     jest.spyOn(prisma.roles, 'create')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+      .mockResolvedValue({
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      });
 
     await request(app)
       .post('/api/role')
@@ -39,7 +41,9 @@ describe('CreateRole Route', () => {
 
   it('Should return 403 if account already exists on create role route', async () => {
     jest.spyOn(prisma.roles, 'findFirst')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+      .mockResolvedValue({
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      });
 
     await request(app)
       .post('/api/role')

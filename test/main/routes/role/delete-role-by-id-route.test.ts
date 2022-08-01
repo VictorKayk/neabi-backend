@@ -27,9 +27,13 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
 describe('DeleteRoleById Route', () => {
   it('Should return 200 on delete role by id route success', async () => {
     jest.spyOn(prisma.roles, 'findFirst')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+      .mockResolvedValue({
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      });
     jest.spyOn(prisma.roles, 'delete')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+      .mockResolvedValue({
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      });
 
     await request(app).delete('/api/role/any_id')
       .set('x-access-token', 'any_encrypted_string')
@@ -46,7 +50,9 @@ describe('DeleteRoleById Route', () => {
 
   it('Should return 500 if delete role by id route throws', async () => {
     jest.spyOn(prisma.roles, 'findFirst')
-      .mockResolvedValue({ id: 'any_id', role: 'any_role', createdAt: new Date() });
+      .mockResolvedValue({
+        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      });
     jest.spyOn(prisma.roles, 'delete').mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).delete('/api/role/any_id')

@@ -7,7 +7,7 @@ import {
   ok,
   badRequest,
 } from '@/adapters/util/http';
-import { NonExistingRoleError } from '@/use-cases/role/errors';
+import { ExistingRoleError } from '@/use-cases/role/errors';
 
 export class UpdateRoleByIdController implements IController {
   constructor(
@@ -25,7 +25,7 @@ export class UpdateRoleByIdController implements IController {
       const roleOrError = await this.updateRoleById.execute({ id, role });
       if (roleOrError.isError()) {
         if (
-          roleOrError.value instanceof NonExistingRoleError
+          roleOrError.value instanceof ExistingRoleError
         ) return unauthorized(roleOrError.value);
         return badRequest(roleOrError.value);
       }

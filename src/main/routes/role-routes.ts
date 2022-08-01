@@ -4,6 +4,7 @@ import {
   makeCreateRoleController,
   makeReadRoleByIdController,
   makeReadAllRolesController,
+  makeUpdateRoleByIdController,
   makeDeleteRoleByIdController,
 } from '@/main/factories/role';
 import { authentication } from '@/main/middlewares/authentication';
@@ -12,5 +13,6 @@ export function role(router: Router) {
   router.post('/role', authentication, routerAdapter(makeCreateRoleController()));
   router.get('/role/all', authentication, routerAdapter(makeReadAllRolesController()));
   router.get('/role/:id', authentication, routerAdapter(makeReadRoleByIdController()));
+  router.patch('/role/:id', authentication, routerAdapter(makeUpdateRoleByIdController()));
   router.delete('/role/:id', authentication, routerAdapter(makeDeleteRoleByIdController()));
 }

@@ -4,11 +4,11 @@ import { IUserHasRoleData, IUserHasRoleRepositoryReturnData, IUserHasRoleReposit
 
 export const makeUserHasRoleRepository = (): IUserHasRoleRepository => {
   class UserHasRoleRepositoryStub implements IUserHasRoleRepository {
-    async findUserById(idUser: string): Promise<IUserRepositoryReturnData | null> {
+    async findUserById(userId: string): Promise<IUserRepositoryReturnData | null> {
       return null;
     }
 
-    async findRoleById(idRole: string): Promise<IRoleRepositoryReturnData | null> {
+    async findRoleById(roleId: string): Promise<IRoleRepositoryReturnData | null> {
       return null;
     }
 

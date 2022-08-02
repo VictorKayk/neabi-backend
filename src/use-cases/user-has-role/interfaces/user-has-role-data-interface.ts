@@ -1,4 +1,4 @@
 export interface IUserHasRoleData {
-  idUser: string,
-  idRole: string,
+  userId: string,
+  roleId: string,
 }

@@ -19,9 +19,9 @@ export class AddRoleToUserController implements IController {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
 
-      const { idUser, idRole } = params;
+      const { userId, roleId } = params;
 
-      const roleOrError = await this.addRoleToUser.execute({ idUser, idRole });
+      const roleOrError = await this.addRoleToUser.execute({ userId, roleId });
       if (roleOrError.isError()) return forbidden(roleOrError.value);
 
       const roleData = roleOrError.value;

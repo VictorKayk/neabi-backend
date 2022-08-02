@@ -15,18 +15,18 @@ export class AddRoleToUserUseCase implements IUseCase {
     private readonly userHasRoleRepository: IUserHasRoleRepository,
   ) { }
 
-  async execute({ idUser, idRole }: IUserHasRoleData): Promise<Response> {
-    const userOrNull = await this.userHasRoleRepository.findUserById(idUser);
+  async execute({ userId, roleId }: IUserHasRoleData): Promise<Response> {
+    const userOrNull = await this.userHasRoleRepository.findUserById(userId);
     if (!userOrNull) return error(new NonExistingUserError());
 
-    const roleOrNull = await this.userHasRoleRepository.findRoleById(idRole);
+    const roleOrNull = await this.userHasRoleRepository.findRoleById(roleId);
     if (!roleOrNull) return error(new NonExistingRoleError());
 
     if (userOrNull.roles?.findIndex((role) => role.id === roleOrNull.id)) {
       return error(new UserAlreadyHaveThisRoleError());
     }
 
-    const roleData = await this.userHasRoleRepository.addRoleToUser({ idUser, idRole });
+    const roleData = await this.userHasRoleRepository.addRoleToUser({ userId, roleId });
     return success(roleData);
   }
 }

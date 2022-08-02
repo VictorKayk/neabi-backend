@@ -39,8 +39,8 @@ describe('AddRoleToUserController', () => {
 
     const useCaseSpy = jest.spyOn(useCase, 'execute');
 
-    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_idRole' } });
-    expect(useCaseSpy).toHaveBeenCalledWith({ idUser: 'any_idUser', idRole: 'any_idRole' });
+    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });
+    expect(useCaseSpy).toHaveBeenCalledWith({ userId: 'any_userId', roleId: 'any_roleId' });
   });
 
   it('Should return 500 if throws', async () => {
@@ -48,17 +48,17 @@ describe('AddRoleToUserController', () => {
 
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_idRole' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });
     expect(response).toEqual(serverError(new ServerError()));
   });
 
   it('Should return 201 on success', async () => {
     const { sut, useCase } = makeSut();
 
-    const useCaseReturn = { idUser: 'any_idUser', idRole: 'any_idRole', createdAt: new Date() };
+    const useCaseReturn = { userId: 'any_userId', roleId: 'any_roleId', createdAt: new Date() };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
 
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_idRole' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });
     expect(response).toEqual(created(useCaseReturn));
   });
 
@@ -69,7 +69,7 @@ describe('AddRoleToUserController', () => {
       error(new NonExistingRoleError()),
     )));
 
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_idRole' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });
     expect(response).toEqual(forbidden(new NonExistingRoleError()));
   });
 
@@ -80,7 +80,7 @@ describe('AddRoleToUserController', () => {
       error(new NonExistingUserError()),
     )));
 
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_idRole' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });
     expect(response).toEqual(forbidden(new NonExistingUserError()));
   });
 
@@ -91,21 +91,21 @@ describe('AddRoleToUserController', () => {
       error(new UserAlreadyHaveThisRoleError()),
     )));
 
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_idRole' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });
     expect(response).toEqual(forbidden(new UserAlreadyHaveThisRoleError()));
   });
 
   it('Should call Validation with correct values', async () => {
     const { sut, validation } = makeSut();
     const validationSpy = jest.spyOn(validation, 'validate');
-    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_role' } });
-    expect(validationSpy).toHaveBeenCalledWith({ idUser: 'any_idUser', idRole: 'any_role' });
+    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_role' } });
+    expect(validationSpy).toHaveBeenCalledWith({ userId: 'any_userId', roleId: 'any_role' });
   });
 
   it('Should return 400 if Validation returns an error', async () => {
     const { sut, validation } = makeSut();
     jest.spyOn(validation, 'validate').mockReturnValueOnce(new MissingParamsError('any_field'));
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { idUser: 'any_idUser', idRole: 'any_role' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_role' } });
     expect(response).toEqual(badRequest(new MissingParamsError('any_field')));
   });
 });

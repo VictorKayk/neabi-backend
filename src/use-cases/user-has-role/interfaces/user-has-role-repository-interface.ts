@@ -5,5 +5,6 @@ import { IUserHasRoleData, IUserHasRoleRepositoryReturnData } from '@/use-cases/
 export interface IUserHasRoleRepository {
   findUserById(userId: string): Promise<IUserRepositoryReturnData | null>
   findRoleById(idRole: string): Promise<IRoleRepositoryReturnData | null>
+  findUserHasRole(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData | null>
   addRoleToUser(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData>
 }

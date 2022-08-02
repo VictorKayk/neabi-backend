@@ -72,6 +72,30 @@ describe('UserHasRoleRepository Implementation', () => {
     expect(account).toBe(null);
   });
 
+  it('Should return an role on findUserHasRole success', async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(prisma.userHasRoles, 'findFirst').mockResolvedValue({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+    });
+
+    const response = await sut.findUserHasRole({ userId: 'any_userId', roleId: 'any_roleId' });
+    expect(response?.userId).toBe('any_userId');
+    expect(response?.roleId).toBe('any_roleId');
+    expect(response?.createdAt).toBeTruthy();
+  });
+
+  it('Should return null on findUserHasRole fails', async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(prisma.userHasRoles, 'findFirst').mockResolvedValue(null);
+
+    const response = await sut.findUserHasRole({ userId: 'any_userId', roleId: 'any_roleId' });
+    expect(response).toBe(null);
+  });
+
   it('Should return an RoleOnUser on addRoleToUser success', async () => {
     const { sut } = makeSut();
 

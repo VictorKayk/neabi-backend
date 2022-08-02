@@ -5,17 +5,25 @@ import prisma from '@/main/config/prisma';
 
 export class UserHasRoleRepository implements IUserHasRoleRepository {
   async findUserById(userId: string): Promise<IUserRepositoryReturnData | null> {
-    const user = await prisma.user.findFirst({
+    const userOrNull = await prisma.user.findFirst({
       where: { id: userId },
     });
-    return user;
+    return userOrNull;
   }
 
   async findRoleById(roleId: string): Promise<IRoleRepositoryReturnData | null> {
-    const role = await prisma.roles.findFirst({
+    const roleOrNull = await prisma.roles.findFirst({
       where: { id: roleId },
     });
-    return role;
+    return roleOrNull;
+  }
+
+  async findUserHasRole(userHasRole: IUserHasRoleData):
+    Promise<IUserHasRoleRepositoryReturnData | null> {
+    const userHasRoleOrNull = await prisma.userHasRoles.findFirst({
+      where: userHasRole,
+    });
+    return userHasRoleOrNull;
   }
 
   async addRoleToUser(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData> {

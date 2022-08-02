@@ -12,6 +12,11 @@ export const makeUserHasRoleRepository = (): IUserHasRoleRepository => {
       return null;
     }
 
+    async findUserHasRole(userHasRole: IUserHasRoleData):
+      Promise<IUserHasRoleRepositoryReturnData | null> {
+      return null;
+    }
+
     async addRoleToUser(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData> {
       return {
         ...userHasRole,

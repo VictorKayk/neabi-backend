@@ -74,17 +74,9 @@ describe('AddRoleToUserUseCase', () => {
 
   it('Should return an error if user already has the role', async () => {
     const { sut, userHasRoleRepository } = makeSut();
-    jest.spyOn(userHasRoleRepository, 'findUserById').mockResolvedValue({
-      id: 'any_role',
-      name: 'any_name',
-      email: 'any_email',
-      accessToken: 'any_token',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      roles: [{
-        id: 'any_roleId', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
-      }],
-    });
+    jest.spyOn(userHasRoleRepository, 'findUserHasRole')
+      .mockResolvedValue({ userId: 'any_userId', roleId: 'any_roleId', createdAt: new Date() });
+
     const error = await sut.execute({ userId: 'any_userId', roleId: 'any_roleId' });
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new UserAlreadyHaveThisRoleError());

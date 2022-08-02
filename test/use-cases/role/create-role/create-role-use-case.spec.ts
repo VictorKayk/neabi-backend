@@ -52,7 +52,7 @@ describe('CreateRoleUseCase', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it('Should return an error if user already exists', async () => {
+  it('Should return an error if role already exists', async () => {
     const { sut, roleRepository } = makeSut();
     jest.spyOn(roleRepository, 'findByRole').mockReturnValueOnce(new Promise((resolve) => resolve({
       id: 'any_id',

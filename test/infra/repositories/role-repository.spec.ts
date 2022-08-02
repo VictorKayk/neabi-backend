@@ -49,7 +49,7 @@ describe('Role Repository Implementation', () => {
     expect(response?.createdAt).toBeTruthy();
   });
 
-  it('Should return null on findByEmail fails', async () => {
+  it('Should return null on findByRole fails', async () => {
     const { sut } = makeSut();
 
     jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);

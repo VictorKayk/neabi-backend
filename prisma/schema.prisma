@@ -16,7 +16,7 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  RolesOnUser RolesOnUser[]
+  UserHasRoles UserHasRoles[]
 }
 
 model Roles {
@@ -25,10 +25,10 @@ model Roles {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  RolesOnUser RolesOnUser[]
+  UserHasRoles UserHasRoles[]
 }
 
-model RolesOnUser {
+model UserHasRoles {
   userId    String
   rolesId   String
   createdAt DateTime @default(now())

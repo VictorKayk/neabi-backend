@@ -30,10 +30,10 @@ model Roles {
 
 model UserHasRoles {
   userId    String
-  rolesId   String
+  roleId    String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
-  roles     Roles    @relation(fields: [rolesId], references: [id])
+  roles     Roles    @relation(fields: [roleId], references: [id])
 
-  @@id([userId, rolesId])
+  @@id([userId, roleId])
 }

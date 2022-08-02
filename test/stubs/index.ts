@@ -7,4 +7,5 @@ export * from '@/test/stubs/user-repository-stub';
 export * from '@/test/stubs/role-repository-stub';
 export * from '@/test/stubs/role-use-cases-stub';
 export * from '@/test/stubs/user-has-role-repository-stub';
+export * from '@/test/stubs/user-has-role-use-cases-stub';
 export * from '@/test/stubs/validation-stub';

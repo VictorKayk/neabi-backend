@@ -104,7 +104,7 @@ describe('UpdateRoleById Controller', () => {
       body: { role: 'any_role' },
       params: { id: 'invalid_id' },
     });
-    expect(validationSpy).toHaveBeenCalledWith({ role: 'any_role' });
+    expect(validationSpy).toHaveBeenCalledWith({ id: 'invalid_id', role: 'any_role' });
   });
 
   it('Should return 400 if Validation returns an error', async () => {

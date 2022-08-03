@@ -15,12 +15,13 @@ export class UpdateRoleByIdController implements IController {
     private readonly updateRoleById: UpdateRoleByIdUseCase,
   ) { }
 
-  async handle({ params: { id }, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ params, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
-      const validationError = this.validation.validate(body);
+      const validationError = this.validation.validate({ ...body, ...params });
       if (validationError) return badRequest(validationError);
 
       const { role } = body;
+      const { id } = params;
 
       const roleOrError = await this.updateRoleById.execute({ id, role });
       if (roleOrError.isError()) {

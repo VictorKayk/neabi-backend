@@ -26,12 +26,12 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
 
 describe('UpdateRoleById Route', () => {
   it('Should return 200 on update role by id route success', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
+    jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
         id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
       });
 
-    jest.spyOn(prisma.roles, 'update')
+    jest.spyOn(prisma.role, 'update')
       .mockResolvedValue({
         id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
       });
@@ -43,7 +43,7 @@ describe('UpdateRoleById Route', () => {
   });
 
   it('Should return 400 on update role by id route if params are invalid', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
+    jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
         id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
       });
@@ -55,7 +55,7 @@ describe('UpdateRoleById Route', () => {
   });
 
   it('Should return 401 on update role by id route if params are invalid', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
+    jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValueOnce({
         id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
       })
@@ -70,11 +70,11 @@ describe('UpdateRoleById Route', () => {
   });
 
   it('Should return 500 if update role by id route throws', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
+    jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
         id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
       });
-    jest.spyOn(prisma.roles, 'update').mockImplementationOnce(() => { throw new Error(); });
+    jest.spyOn(prisma.role, 'update').mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).patch('/api/role/any_id')
       .set('x-access-token', 'any_encrypted_string')

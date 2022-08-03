@@ -26,7 +26,7 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
 
 describe('ReadRoleById Route', () => {
   it('Should return 200 on read role by id route success', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
+    jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
         id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
       });
@@ -37,7 +37,7 @@ describe('ReadRoleById Route', () => {
   });
 
   it('Should return 401 if role do not exist in read role by id route', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
 
     await request(app).get('/api/role/any_id')
       .set('x-access-token', 'any_encrypted_string')
@@ -45,7 +45,7 @@ describe('ReadRoleById Route', () => {
   });
 
   it('Should return 500 if read role by id route throws', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockImplementationOnce(() => { throw new Error(); });
+    jest.spyOn(prisma.role, 'findFirst').mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).get('/api/role/any_id')
       .set('x-access-token', 'any_encrypted_string')

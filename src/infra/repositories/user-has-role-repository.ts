@@ -12,23 +12,24 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
   }
 
   async findRoleById(roleId: string): Promise<IRoleRepositoryReturnData | null> {
-    const roleOrNull = await prisma.roles.findFirst({
+    const roleOrNull = await prisma.role.findFirst({
       where: { id: roleId },
     });
     return roleOrNull;
   }
 
-  async findUserHasRole(userHasRole: IUserHasRoleData):
+  async findUserHasRole(userHasRoleData: IUserHasRoleData):
     Promise<IUserHasRoleRepositoryReturnData | null> {
     const userHasRoleOrNull = await prisma.userHasRoles.findFirst({
-      where: userHasRole,
+      where: userHasRoleData,
     });
     return userHasRoleOrNull;
   }
 
-  async addRoleToUser(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData> {
+  async addRoleToUser(userHasRoleData: IUserHasRoleData):
+    Promise<IUserHasRoleRepositoryReturnData> {
     const role = await prisma.userHasRoles.create({
-      data: userHasRole,
+      data: userHasRoleData,
     });
     return role;
   }

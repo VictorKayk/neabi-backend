@@ -28,7 +28,7 @@ describe('ReadAllRoles Route', () => {
     const roleReturn = {
       id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
     };
-    jest.spyOn(prisma.roles, 'findMany').mockResolvedValue([roleReturn, roleReturn]);
+    jest.spyOn(prisma.role, 'findMany').mockResolvedValue([roleReturn, roleReturn]);
 
     await request(app).get('/api/role/all')
       .set('x-access-token', 'any_encrypted_string')
@@ -36,7 +36,7 @@ describe('ReadAllRoles Route', () => {
   });
 
   it('Should return 500 if read all roles route throws', async () => {
-    jest.spyOn(prisma.roles, 'findMany').mockImplementationOnce(() => { throw new Error(); });
+    jest.spyOn(prisma.role, 'findMany').mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).get('/api/role/all')
       .set('x-access-token', 'any_encrypted_string')

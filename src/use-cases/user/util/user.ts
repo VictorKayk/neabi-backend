@@ -8,6 +8,5 @@ export function getUserVisibleData(userData: IUserRepositoryReturnData): IUserVi
     accessToken: userData.accessToken,
     createdAt: userData.createdAt,
     updatedAt: userData.updatedAt,
-    roles: userData?.roles,
   };
 }

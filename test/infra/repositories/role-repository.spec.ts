@@ -17,7 +17,7 @@ describe('Role Repository Implementation', () => {
   it('Should return an role on add success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'create').mockResolvedValue({
+    jest.spyOn(prisma.role, 'create').mockResolvedValue({
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
@@ -36,7 +36,7 @@ describe('Role Repository Implementation', () => {
   it('Should return an role on findByRole success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue({
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
@@ -52,7 +52,7 @@ describe('Role Repository Implementation', () => {
   it('Should return null on findByRole fails', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
 
     const response = await sut.findByRole('any_role');
     expect(response).toBe(null);
@@ -61,7 +61,7 @@ describe('Role Repository Implementation', () => {
   it('Should return an role on findById success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue({
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
       id: 'any_id',
       role: 'any_role',
       createdAt: new Date(),
@@ -77,7 +77,7 @@ describe('Role Repository Implementation', () => {
   it('Should return null on findById fails', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
 
     const response = await sut.findById('any_id');
     expect(response).toBe(null);
@@ -89,7 +89,7 @@ describe('Role Repository Implementation', () => {
     const role = {
       id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
     };
-    jest.spyOn(prisma.roles, 'findMany').mockResolvedValue([role, role, role]);
+    jest.spyOn(prisma.role, 'findMany').mockResolvedValue([role, role, role]);
 
     const response = await sut.readAllRoles();
     expect(response).toEqual([role, role, role]);
@@ -101,7 +101,7 @@ describe('Role Repository Implementation', () => {
     const role = {
       id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
     };
-    jest.spyOn(prisma.roles, 'delete').mockResolvedValue(role);
+    jest.spyOn(prisma.role, 'delete').mockResolvedValue(role);
 
     const response = await sut.deleteById('any_id');
     expect(response).toEqual(role);
@@ -113,7 +113,7 @@ describe('Role Repository Implementation', () => {
     const role = {
       id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
     };
-    jest.spyOn(prisma.roles, 'update').mockResolvedValue(role);
+    jest.spyOn(prisma.role, 'update').mockResolvedValue(role);
 
     const response = await sut.updateById({ id: 'any_id', role: 'any_role' });
     expect(response).toEqual(role);

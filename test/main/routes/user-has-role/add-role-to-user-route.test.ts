@@ -23,7 +23,7 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   createdAt: new Date(),
   updatedAt: new Date(),
 });
-jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue({
+jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
   id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
 });
 
@@ -52,7 +52,7 @@ describe('AddRoleToUserRoute', () => {
   });
 
   it('Should return 403 if role does not exists', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
 
     await request(app)
       .post('/api/user/any_userId/role/any_roleId')
@@ -74,7 +74,7 @@ describe('AddRoleToUserRoute', () => {
   });
 
   it('Should return 500 if add role to user route throws', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockImplementation(() => { throw new Error(); });
+    jest.spyOn(prisma.role, 'findFirst').mockImplementation(() => { throw new Error(); });
 
     await request(app)
       .post('/api/user/any_userId/role/any_roleId')

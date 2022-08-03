@@ -21,7 +21,7 @@ describe('UserHasRoleRepository Implementation', () => {
   it('Should return an role on findRoleById success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue({
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
       id: 'any_roleId',
       role: 'any_role',
       createdAt: new Date(),
@@ -37,7 +37,7 @@ describe('UserHasRoleRepository Implementation', () => {
   it('Should return null on findRoleById fails', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
 
     const response = await sut.findRoleById('any_roleId');
     expect(response).toBe(null);

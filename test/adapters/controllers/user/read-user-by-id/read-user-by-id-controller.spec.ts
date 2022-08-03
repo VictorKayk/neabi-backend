@@ -1,26 +1,31 @@
-import { makeFakeRequestAuthenticated, makeUserRepository } from '@/test/stubs';
+import { makeFakeRequestAuthenticated, makeUserRepository, makeValidation } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
-import { serverError, unauthorized } from '@/adapters/util/http';
+import { badRequest, serverError, unauthorized } from '@/adapters/util/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { ReadUserByIdController } from '@/adapters/controllers/user/read-user-by-id';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
+import { IValidation } from '@/adapters/controllers/interfaces';
+import { MissingParamsError } from '@/adapters/controllers/errors/missing-params-error';
 
 type SutTypes = {
   sut: ReadUserByIdController,
+  validation: IValidation,
   useCase: ReadUserUseCase,
   user: UserBuilder
 };
 
 const makeSut = (): SutTypes => {
+  const validation = makeValidation();
   const repository = makeUserRepository();
   const useCase = new ReadUserUseCase(repository);
-  const sut = new ReadUserByIdController(useCase);
+  const sut = new ReadUserByIdController(validation, useCase);
   const user = new UserBuilder();
 
   return {
     sut,
+    validation,
     useCase,
     user,
   };
@@ -80,5 +85,19 @@ describe('ReadUserById Controller ', () => {
     });
 
     expect(response).toEqual(unauthorized(new NonExistingUserError()));
+  });
+
+  it('Should call Validation with correct values', async () => {
+    const { sut, validation } = makeSut();
+    const validationSpy = jest.spyOn(validation, 'validate');
+    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
+    expect(validationSpy).toHaveBeenCalledWith({ id: 'any_id' });
+  });
+
+  it('Should return 400 if Validation returns an error', async () => {
+    const { sut, validation } = makeSut();
+    jest.spyOn(validation, 'validate').mockReturnValueOnce(new MissingParamsError('any_field'));
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
+    expect(response).toEqual(badRequest(new MissingParamsError('any_field')));
   });
 });

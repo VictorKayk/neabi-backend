@@ -16,16 +16,16 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  UserHasRoles UserHasRoles[]
+  userHasRoles UserHasRoles[]
 }
 
-model Roles {
+model Role {
   id        String   @id
   role      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  UserHasRoles UserHasRoles[]
+  userHasRoles UserHasRoles[]
 }
 
 model UserHasRoles {
@@ -33,7 +33,7 @@ model UserHasRoles {
   roleId    String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
-  roles     Roles    @relation(fields: [roleId], references: [id])
+  roles     Role     @relation(fields: [roleId], references: [id])
 
   @@id([userId, roleId])
 }

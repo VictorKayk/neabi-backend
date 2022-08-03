@@ -1,3 +1,4 @@
+import { makeUpdateUserByIdValidationFactory } from '@/main/factories/user';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 import { UpdateUserByIdController } from '@/adapters/controllers/user/update-user-by-id';
 import { IController } from '@/adapters/controllers/interfaces';
@@ -10,6 +11,8 @@ export function makeUpdateUserByIdController(): IController {
   const userRepository = new UserRepository();
   const bcryptAdapter = new BcryptAdapter(salt);
   const updateUserUseCase = new UpdateUserUseCase(userRepository, bcryptAdapter);
-  const updateUserByIdController = new UpdateUserByIdController(updateUserUseCase);
+  const updateUserByIdController = new UpdateUserByIdController(
+    makeUpdateUserByIdValidationFactory(), updateUserUseCase,
+  );
   return updateUserByIdController;
 }

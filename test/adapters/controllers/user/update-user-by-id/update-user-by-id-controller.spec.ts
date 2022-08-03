@@ -8,24 +8,29 @@ import {
   badRequest,
   forbidden,
 } from '@/adapters/util/http';
-import { makeUpdateUserUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
+import { makeUpdateUserUseCase, makeFakeRequestAuthenticated, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { UpdateUserByIdController } from '@/adapters/controllers/user/update-user-by-id';
+import { IValidation } from '@/adapters/controllers/interfaces';
+import { MissingParamsError } from '@/adapters/controllers/errors/missing-params-error';
 
 type SutTypes = {
   sut: UpdateUserByIdController,
+  validation: IValidation,
   useCase: UpdateUserUseCase,
   user: UserBuilder
 };
 
 const makeSut = (): SutTypes => {
+  const validation = makeValidation();
   const useCase = makeUpdateUserUseCase();
-  const sut = new UpdateUserByIdController(useCase);
+  const sut = new UpdateUserByIdController(validation, useCase);
   const user = new UserBuilder();
 
   return {
     sut,
+    validation,
     useCase,
     user,
   };
@@ -125,5 +130,19 @@ describe('UpdateUserById Controller ', () => {
       params: { id: user.build().id },
     });
     expect(response).toEqual(forbidden(new ExistingUserError()));
+  });
+
+  it('Should call Validation with correct values', async () => {
+    const { sut, validation } = makeSut();
+    const validationSpy = jest.spyOn(validation, 'validate');
+    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
+    expect(validationSpy).toHaveBeenCalledWith({ id: 'any_id' });
+  });
+
+  it('Should return 400 if Validation returns an error', async () => {
+    const { sut, validation } = makeSut();
+    jest.spyOn(validation, 'validate').mockReturnValueOnce(new MissingParamsError('any_field'));
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
+    expect(response).toEqual(badRequest(new MissingParamsError('any_field')));
   });
 });

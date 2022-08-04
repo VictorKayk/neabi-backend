@@ -45,7 +45,11 @@ describe('UpdateRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const repositoryReturn = {
-      id: 'invalid_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'invalid_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(repositoryReturn);
     jest.spyOn(roleRepository, 'findByRole').mockResolvedValue(repositoryReturn);
@@ -59,7 +63,11 @@ describe('UpdateRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const repositoryReturn = {
-      id: 'invalid_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'invalid_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(repositoryReturn);
     jest.spyOn(roleRepository, 'findByRole').mockResolvedValue({ ...repositoryReturn, id: 'another_id' });
@@ -73,7 +81,11 @@ describe('UpdateRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const findByIdReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     const updateSpy = jest.spyOn(roleRepository, 'updateById');
@@ -86,7 +98,11 @@ describe('UpdateRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const findByIdReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     jest.spyOn(roleRepository, 'updateById').mockRejectedValue(new Error());
@@ -99,7 +115,11 @@ describe('UpdateRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const findByIdReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     jest.spyOn(roleRepository, 'updateById').mockResolvedValue(findByIdReturn);

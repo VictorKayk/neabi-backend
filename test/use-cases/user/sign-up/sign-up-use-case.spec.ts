@@ -97,6 +97,7 @@ describe('SignUp Use Case', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     })));
     const error = await sut.execute(user.build());
     expect(error.isError()).toBe(true);

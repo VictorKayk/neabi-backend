@@ -22,15 +22,25 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   ...new UserBuilder().build(),
   createdAt: new Date(),
   updatedAt: new Date(),
+  isDeleted: false,
 });
 jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
-  id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+  id: 'any_id',
+  role: 'any_role',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isDeleted: false,
 });
 
 describe('AddRoleToUserRoute', () => {
   it('Should return 201 on add role to user route success', async () => {
     jest.spyOn(prisma.userHasRoles, 'create')
-      .mockResolvedValue({ userId: 'any_userId', roleId: 'any_roleId', createdAt: new Date() });
+      .mockResolvedValue({
+        userId: 'any_userId',
+        roleId: 'any_roleId',
+        createdAt: new Date(),
+        isDeleted: false,
+      });
 
     await request(app)
       .post('/api/user/any_userId/role/any_roleId')
@@ -43,6 +53,7 @@ describe('AddRoleToUserRoute', () => {
       ...new UserBuilder().build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     }).mockResolvedValueOnce(null);
 
     await request(app)
@@ -65,6 +76,7 @@ describe('AddRoleToUserRoute', () => {
       userId: new UserBuilder().build().id,
       roleId: 'any_id',
       createdAt: new Date(),
+      isDeleted: false,
     });
 
     await request(app)

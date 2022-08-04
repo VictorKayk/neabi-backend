@@ -22,18 +22,27 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   ...new UserBuilder().build(),
   createdAt: new Date(),
   updatedAt: new Date(),
+  isDeleted: false,
 });
 
 describe('UpdateRoleById Route', () => {
   it('Should return 200 on update role by id route success', async () => {
     jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     jest.spyOn(prisma.role, 'update')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app).patch('/api/role/any_id')
@@ -45,7 +54,11 @@ describe('UpdateRoleById Route', () => {
   it('Should return 400 on update role by id route if params are invalid', async () => {
     jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app).patch('/api/role/any_id')
@@ -57,10 +70,18 @@ describe('UpdateRoleById Route', () => {
   it('Should return 401 on update role by id route if params are invalid', async () => {
     jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValueOnce({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       })
       .mockResolvedValueOnce({
-        id: 'invalid_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'invalid_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app).patch('/api/role/any_id')
@@ -72,7 +93,11 @@ describe('UpdateRoleById Route', () => {
   it('Should return 500 if update role by id route throws', async () => {
     jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
     jest.spyOn(prisma.role, 'update').mockImplementationOnce(() => { throw new Error(); });
 

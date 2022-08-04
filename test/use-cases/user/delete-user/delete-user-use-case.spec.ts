@@ -38,6 +38,7 @@ describe('DeleteUserUseCase', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
 
@@ -53,6 +54,7 @@ describe('DeleteUserUseCase', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
     jest.spyOn(userRepository, 'deleteById').mockResolvedValue(findByIdReturn);

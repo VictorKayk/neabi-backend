@@ -21,7 +21,12 @@ const makeSut = (): SutTypes => {
   const sut = new UpdateUserUseCase(userRepository, hasher);
   const user = new UserBuilder();
 
-  const repositoryReturn = { ...user.build(), createdAt: new Date(), updatedAt: new Date() };
+  const repositoryReturn = {
+    ...user.build(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  };
 
   jest.spyOn(userRepository, 'findById').mockResolvedValue(repositoryReturn);
   jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(repositoryReturn);

@@ -33,7 +33,12 @@ describe('ReadUserUseCase', () => {
   it('Should return user data on success', async () => {
     const { sut, userRepository, user } = makeSut();
 
-    const findByIdReturn = { ...user.build(), createdAt: new Date(), updatedAt: new Date() };
+    const findByIdReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    };
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute(user.build().id);

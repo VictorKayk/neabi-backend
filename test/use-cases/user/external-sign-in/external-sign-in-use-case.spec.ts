@@ -83,6 +83,7 @@ describe('External Sign In Use Case', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     })));
     const userRepositorySpy = jest.spyOn(userRepository, 'updateByEmail');
 
@@ -99,6 +100,7 @@ describe('External Sign In Use Case', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     })));
     jest.spyOn(userRepository, 'updateByEmail').mockRejectedValue(new Error());
 
@@ -119,6 +121,7 @@ describe('External Sign In Use Case', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     })));
 
     const response = await sut.execute(user.build());

@@ -26,6 +26,7 @@ describe('UserHasRoleRepository Implementation', () => {
       role: 'any_role',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const response = await sut.findRoleById('any_roleId');
@@ -51,6 +52,7 @@ describe('UserHasRoleRepository Implementation', () => {
       id: 'any_userId',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const account = await sut.findUserById('any_userId');
@@ -79,6 +81,7 @@ describe('UserHasRoleRepository Implementation', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: new Date(),
+      isDeleted: false,
     });
 
     const response = await sut.findUserHasRole({ userId: 'any_userId', roleId: 'any_roleId' });
@@ -103,9 +106,15 @@ describe('UserHasRoleRepository Implementation', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: new Date(),
+      isDeleted: false,
     });
 
     const roleOnUser = await sut.addRoleToUser({ userId: 'any_userId', roleId: 'any_roleId' });
-    expect(roleOnUser).toEqual({ userId: 'any_userId', roleId: 'any_roleId', createdAt: roleOnUser.createdAt });
+    expect(roleOnUser).toEqual({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: roleOnUser.createdAt,
+      isDeleted: false,
+    });
   });
 });

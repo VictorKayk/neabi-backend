@@ -25,6 +25,7 @@ describe('User Repository Implementation', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const account = await sut.add(user.build());
@@ -44,6 +45,7 @@ describe('User Repository Implementation', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const account = await sut.findByEmail(user.build().email);
@@ -72,6 +74,7 @@ describe('User Repository Implementation', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const account = await sut.findById(user.build().id);
@@ -100,6 +103,7 @@ describe('User Repository Implementation', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const account = await sut.updateByEmail(user.build().email, user.build());
@@ -119,6 +123,7 @@ describe('User Repository Implementation', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const account = await sut.updateById(user.build().email, user.build());
@@ -134,10 +139,11 @@ describe('User Repository Implementation', () => {
   it('Should return an account on deleteById success', async () => {
     const { sut, user } = makeSut();
 
-    jest.spyOn(prisma.user, 'delete').mockResolvedValue({
+    jest.spyOn(prisma.user, 'update').mockResolvedValue({
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: true,
     });
 
     const account = await sut.deleteById(user.build().id);
@@ -157,6 +163,7 @@ describe('User Repository Implementation', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
 

@@ -21,6 +21,7 @@ export const makeUserRepository = (): IUserRepository => {
         ...userData,
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
@@ -31,6 +32,7 @@ export const makeUserRepository = (): IUserRepository => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
@@ -41,6 +43,7 @@ export const makeUserRepository = (): IUserRepository => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
@@ -50,6 +53,7 @@ export const makeUserRepository = (): IUserRepository => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: true,
       };
     }
 
@@ -59,11 +63,13 @@ export const makeUserRepository = (): IUserRepository => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       },
       {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       }];
     }
   }

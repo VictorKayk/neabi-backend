@@ -23,6 +23,7 @@ const makeSut = (): SutTypes => {
     ...user.build(),
     createdAt: new Date(),
     updatedAt: new Date(),
+    isDeleted: false,
   });
 
   return {

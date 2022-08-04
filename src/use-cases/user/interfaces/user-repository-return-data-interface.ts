@@ -5,4 +5,5 @@ export interface IUserRepositoryReturnData extends IUserData {
   accessToken: string,
   createdAt: Date,
   updatedAt: Date,
+  isDeleted: boolean,
 }

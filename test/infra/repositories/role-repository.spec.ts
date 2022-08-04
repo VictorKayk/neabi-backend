@@ -22,6 +22,7 @@ describe('Role Repository Implementation', () => {
       role: 'any_role',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const response = await sut.add({
@@ -41,6 +42,7 @@ describe('Role Repository Implementation', () => {
       role: 'any_role',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const response = await sut.findByRole('any_role');
@@ -66,6 +68,7 @@ describe('Role Repository Implementation', () => {
       role: 'any_role',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     const response = await sut.findById('any_id');
@@ -87,7 +90,11 @@ describe('Role Repository Implementation', () => {
     const { sut } = makeSut();
 
     const role = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(prisma.role, 'findMany').mockResolvedValue([role, role, role]);
 
@@ -99,9 +106,13 @@ describe('Role Repository Implementation', () => {
     const { sut } = makeSut();
 
     const role = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: true,
     };
-    jest.spyOn(prisma.role, 'delete').mockResolvedValue(role);
+    jest.spyOn(prisma.role, 'update').mockResolvedValue(role);
 
     const response = await sut.deleteById('any_id');
     expect(response).toEqual(role);
@@ -111,7 +122,11 @@ describe('Role Repository Implementation', () => {
     const { sut } = makeSut();
 
     const role = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(prisma.role, 'update').mockResolvedValue(role);
 

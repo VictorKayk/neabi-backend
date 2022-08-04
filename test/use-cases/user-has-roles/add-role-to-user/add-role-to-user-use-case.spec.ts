@@ -15,10 +15,16 @@ const makeSut = (): SutTypes => {
   const sut = new AddRoleToUserUseCase(userHasRoleRepository);
 
   jest.spyOn(userHasRoleRepository, 'findUserById').mockResolvedValue({
-    id: 'any_role', name: 'any_name', email: 'any_email', accessToken: 'any_token', createdAt: new Date(), updatedAt: new Date(),
+    id: 'any_role',
+    name: 'any_name',
+    email: 'any_email',
+    accessToken: 'any_token',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
   });
   jest.spyOn(userHasRoleRepository, 'findRoleById').mockResolvedValue({
-    id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+    id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(), isDeleted: false,
   });
 
   return {
@@ -75,7 +81,12 @@ describe('AddRoleToUserUseCase', () => {
   it('Should return an error if user already has the role', async () => {
     const { sut, userHasRoleRepository } = makeSut();
     jest.spyOn(userHasRoleRepository, 'findUserHasRole')
-      .mockResolvedValue({ userId: 'any_userId', roleId: 'any_roleId', createdAt: new Date() });
+      .mockResolvedValue({
+        userId: 'any_userId',
+        roleId: 'any_roleId',
+        createdAt: new Date(),
+        isDeleted: false,
+      });
 
     const error = await sut.execute({ userId: 'any_userId', roleId: 'any_roleId' });
     expect(error.isError()).toBe(true);
@@ -101,6 +112,11 @@ describe('AddRoleToUserUseCase', () => {
     const response = await sut.execute({ userId: 'any_userId', roleId: 'any_roleId' });
     const value = response.value as IUserHasRoleRepositoryReturnData;
     expect(response.isSuccess()).toBe(true);
-    expect(value).toEqual({ userId: 'any_userId', roleId: 'any_roleId', createdAt: value.createdAt });
+    expect(value).toEqual({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: value.createdAt,
+      isDeleted: false,
+    });
   });
 });

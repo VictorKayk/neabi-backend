@@ -59,6 +59,7 @@ describe('CreateRoleUseCase', () => {
       role: 'any_role',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     })));
     const error = await sut.execute('any_role');
     expect(error.isError()).toBe(true);
@@ -113,6 +114,7 @@ describe('CreateRoleUseCase', () => {
       role: 'any_role',
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,
+      isDeleted: value.isDeleted,
     });
   });
 });

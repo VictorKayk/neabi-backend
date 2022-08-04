@@ -35,6 +35,7 @@ describe('ReadAllUsers Route', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     };
 
     jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(userData);
@@ -51,6 +52,7 @@ describe('ReadAllUsers Route', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
     jest.spyOn(prisma.user, 'findMany').mockImplementationOnce(() => { throw new Error(); });
 

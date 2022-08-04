@@ -22,6 +22,7 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   ...new UserBuilder().build(),
   createdAt: new Date(),
   updatedAt: new Date(),
+  isDeleted: false,
 });
 
 describe('CreateRole Route', () => {
@@ -29,7 +30,11 @@ describe('CreateRole Route', () => {
     jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
     jest.spyOn(prisma.role, 'create')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app)
@@ -42,7 +47,11 @@ describe('CreateRole Route', () => {
   it('Should return 403 if account already exists on create role route', async () => {
     jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app)

@@ -19,6 +19,7 @@ export const makeRoleRepository = (): IRoleRepository => {
         ...roleData,
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
@@ -32,6 +33,7 @@ export const makeRoleRepository = (): IRoleRepository => {
         role: 'any_role',
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
@@ -40,6 +42,7 @@ export const makeRoleRepository = (): IRoleRepository => {
         ...roleData,
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
   }

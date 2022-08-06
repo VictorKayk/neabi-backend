@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('ReadAllUsersUseCase', () => {
-  it('Should return user data on success', async () => {
+  it('Should return users data on success', async () => {
     const { sut, user, userRepository } = makeSut();
 
     const readAllUsersReturn = [

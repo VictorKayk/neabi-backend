@@ -17,7 +17,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('ReadAllRolesUseCase', () => {
-  it('Should return role data on success', async () => {
+  it('Should return roles data on success', async () => {
     const { sut, roleRepository } = makeSut();
 
     const readAllUsersReturn = [

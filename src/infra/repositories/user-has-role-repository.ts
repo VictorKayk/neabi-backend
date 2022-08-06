@@ -8,7 +8,12 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
   async findUserById(userId: string): Promise<IUserRepositoryReturnData | null> {
     const userOrNull = await prisma.user.findFirst({
       where: { id: userId, isDeleted: false },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return userOrNull ? { ...userOrNull, roles: getUserRoles(userOrNull.userHasRoles) } : null;
   }

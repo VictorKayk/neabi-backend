@@ -17,7 +17,12 @@ export class UserRepository implements IUserRepository {
         updatedAt: new Date(),
         isDeleted: false,
       },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return { ...user, roles: getUserRoles(user.userHasRoles) };
   }
@@ -25,7 +30,12 @@ export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<IUserRepositoryReturnData | null> {
     const user = await prisma.user.findFirst({
       where: { email, isDeleted: false },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return user ? { ...user, roles: getUserRoles(user.userHasRoles) } : null;
   }
@@ -33,7 +43,12 @@ export class UserRepository implements IUserRepository {
   async findById(id: string): Promise<IUserRepositoryReturnData | null> {
     const user = await prisma.user.findFirst({
       where: { id, isDeleted: false },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return user ? { ...user, roles: getUserRoles(user.userHasRoles) } : null;
   }
@@ -43,7 +58,12 @@ export class UserRepository implements IUserRepository {
     const user = await prisma.user.update({
       where: { email },
       data: { ...userData, updatedAt: new Date() },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return { ...user, roles: getUserRoles(user.userHasRoles) };
   }
@@ -53,7 +73,12 @@ export class UserRepository implements IUserRepository {
     const user = await prisma.user.update({
       where: { id },
       data: { ...userData, updatedAt: new Date() },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return { ...user, roles: getUserRoles(user.userHasRoles) };
   }
@@ -62,7 +87,12 @@ export class UserRepository implements IUserRepository {
     const user = await prisma.user.update({
       where: { id },
       data: { isDeleted: true, updatedAt: new Date() },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return { ...user, roles: getUserRoles(user.userHasRoles) };
   }
@@ -75,12 +105,17 @@ export class UserRepository implements IUserRepository {
         id: { contains: id, mode: 'insensitive' },
         name: { contains: name, mode: 'insensitive' },
         email: { contains: email, mode: 'insensitive' },
-        userHasRoles: { some: { roles: { role: { contains: role, mode: 'insensitive' } } } },
+        userHasRoles: { some: { roles: { role: { contains: role, mode: 'insensitive' }, isDeleted: false } } },
       },
       take: 100,
       skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
-      include: { userHasRoles: { select: { roles: true } } },
+      include: {
+        userHasRoles: {
+          where: { roles: { isDeleted: false } },
+          select: { roles: true },
+        },
+      },
     });
     return users.map((user) => ({ ...user, roles: getUserRoles(user.userHasRoles) }));
   }

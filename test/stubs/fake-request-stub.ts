@@ -16,8 +16,10 @@ export const makeFakeRequest = (): IHttpRequest => {
 export const makeFakeRequestAuthenticated = (): IHttpRequestAuthenticated => {
   const user = new UserBuilder();
   return {
-    id: 'any_id',
-    accessToken: 'any_token',
+    user: {
+      id: 'any_id',
+      accessToken: 'any_token',
+    },
     body: {
       name: user.build().name,
       email: user.build().email,

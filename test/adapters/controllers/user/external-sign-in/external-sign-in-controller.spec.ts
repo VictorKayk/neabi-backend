@@ -30,7 +30,13 @@ const makeSut = (): SutTypes => {
   const user = new UserBuilder();
 
   jest.spyOn(useCase, 'execute')
-    .mockResolvedValue(success({ ...user.build(), createdAt: new Date(), updatedAt: new Date() }));
+    .mockResolvedValue(success({
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
+    }));
 
   return {
     sut,

@@ -2,6 +2,8 @@ import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import { ok, serverError, badRequest } from '@/adapters/util/http';
+import { getUserVisibleData } from '@/adapters/controllers/user/utils';
+import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 
 export class ExternalSignInController implements IController {
   constructor(
@@ -9,7 +11,7 @@ export class ExternalSignInController implements IController {
     private readonly externalSignIn: ExternalSignInUseCase,
   ) { }
 
-  async handle({ body }: IHttpRequest): Promise<IHttpResponse> {
+  async handle({ body }: IHttpRequest): Promise<IHttpResponse<IUserVisibleData>> {
     try {
       const validationError = this.validation.validate(body);
       if (validationError) return badRequest(validationError);
@@ -18,7 +20,7 @@ export class ExternalSignInController implements IController {
       const accountOrError = await this.externalSignIn.execute({ name, email });
       if (accountOrError.isError()) return badRequest(accountOrError.value);
 
-      const account = accountOrError.value;
+      const account = getUserVisibleData(accountOrError.value);
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

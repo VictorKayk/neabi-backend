@@ -1,17 +1,17 @@
 import { IHttpResponse } from '@/adapters/interfaces';
 import { ServerError } from '@/adapters/errors';
 
-export const ok = (data: any): IHttpResponse => ({
+export const ok = (data: any): IHttpResponse<any> => ({
   statusCode: 200,
   body: data,
 });
 
-export const created = (data: any): IHttpResponse => ({
+export const created = (data: any): IHttpResponse<any> => ({
   statusCode: 201,
   body: data,
 });
 
-export const badRequest = (error: Error): IHttpResponse => ({
+export const badRequest = (error: Error): IHttpResponse<any> => ({
   statusCode: 400,
   body: {
     name: error.name,
@@ -19,7 +19,7 @@ export const badRequest = (error: Error): IHttpResponse => ({
   },
 });
 
-export const unauthorized = (error: Error): IHttpResponse => ({
+export const unauthorized = (error: Error): IHttpResponse<any> => ({
   statusCode: 401,
   body: {
     name: error.name,
@@ -27,7 +27,7 @@ export const unauthorized = (error: Error): IHttpResponse => ({
   },
 });
 
-export const forbidden = (error: Error): IHttpResponse => ({
+export const forbidden = (error: Error): IHttpResponse<any> => ({
   statusCode: 403,
   body: {
     name: error.name,
@@ -35,7 +35,7 @@ export const forbidden = (error: Error): IHttpResponse => ({
   },
 });
 
-export const serverError = (error: Error): IHttpResponse => ({
+export const serverError = (error: Error): IHttpResponse<any> => ({
   statusCode: 500,
   body: new ServerError(error.stack),
 });

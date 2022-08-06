@@ -8,11 +8,14 @@ import {
   forbidden,
 } from '@/adapters/util/http';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
+import { getUserVisibleData } from '@/adapters/controllers/user/utils';
+import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 
 export class UpdateUserController implements IController {
   constructor(private readonly updateUser: UpdateUserUseCase) { }
 
-  async handle({ id, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ user: { id }, body }: IHttpRequestAuthenticated):
+    Promise<IHttpResponse<IUserVisibleData>> {
     try {
       const { name, email, password } = body;
       const accountOrError = await this.updateUser.execute({
@@ -30,7 +33,7 @@ export class UpdateUserController implements IController {
         return badRequest(accountOrError.value);
       }
 
-      const account = accountOrError.value;
+      const account = getUserVisibleData(accountOrError.value);
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

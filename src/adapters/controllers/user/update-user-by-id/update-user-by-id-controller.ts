@@ -1,6 +1,6 @@
 import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
 import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
-import { IController } from '@/adapters/controllers/interfaces';
+import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   ok,
   serverError,
@@ -8,18 +8,26 @@ import {
   forbidden,
 } from '@/adapters/util/http';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
+import { getUserCriticalData } from '@/adapters/controllers/user/utils';
+import { IUserCriticalData } from '@/adapters/controllers/user/interfaces';
 
 export class UpdateUserByIdController implements IController {
-  constructor(private readonly updateUser: UpdateUserUseCase) { }
+  constructor(
+    private readonly validation: IValidation,
+    private readonly updateUser: UpdateUserUseCase,
+  ) { }
 
-  async handle({ params: { id }, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ params, body }: IHttpRequestAuthenticated):
+    Promise<IHttpResponse<IUserCriticalData>> {
     try {
+      const validationError = this.validation.validate(params);
+      if (validationError) return badRequest(validationError);
+
+      const { id } = params;
       const { name, email, password } = body;
+
       const accountOrError = await this.updateUser.execute({
-        id,
-        userData: {
-          name, email, password,
-        },
+        id, userData: { name, email, password },
       });
 
       if (accountOrError.isError()) {
@@ -30,7 +38,7 @@ export class UpdateUserByIdController implements IController {
         return badRequest(accountOrError.value);
       }
 
-      const account = accountOrError.value;
+      const account = getUserCriticalData(accountOrError.value);
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

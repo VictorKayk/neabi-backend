@@ -1,10 +1,9 @@
-import { IUserRepository, IUserVisibleData } from '@/use-cases/user/interfaces';
+import { IUserRepository, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { Either, error, success } from '@/shared';
-import { getUserVisibleData } from '@/use-cases/user/util';
 
-type Response = Either<NonExistingUserError, IUserVisibleData>;
+type Response = Either<NonExistingUserError, IUserRepositoryReturnData>;
 
 export class ReadUserUseCase implements IUseCase {
   constructor(
@@ -14,8 +13,7 @@ export class ReadUserUseCase implements IUseCase {
   async execute(id: string): Promise<Response> {
     const userOrNull = await this.userRepository.findById(id);
     if (!userOrNull) return error(new NonExistingUserError());
-    const userVisibleData = getUserVisibleData(userOrNull);
 
-    return success(userVisibleData);
+    return success(userOrNull);
   }
 }

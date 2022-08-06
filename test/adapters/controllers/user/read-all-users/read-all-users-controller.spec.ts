@@ -1,3 +1,4 @@
+import { getUserCriticalData } from '@/adapters/controllers/user/utils';
 import { makeUserRepository } from '@/test/stubs';
 import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 import { ServerError } from '@/adapters/errors';
@@ -32,7 +33,7 @@ describe('ReadUser Controller ', () => {
       throw new Error();
     });
 
-    const response = await sut.handle();
+    const response = await sut.handle({});
     expect(response).toEqual(serverError(new ServerError()));
   });
 
@@ -43,17 +44,21 @@ describe('ReadUser Controller ', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     },
     {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     }];
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(useCaseReturn);
-    const response = await sut.handle();
 
+    const response = await sut.handle({});
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(useCaseReturn);
+    expect(response.body).toEqual(useCaseReturn.map((account) => getUserCriticalData(account)));
   });
 });

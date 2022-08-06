@@ -55,7 +55,12 @@ describe('AddRoleToUserController', () => {
   it('Should return 201 on success', async () => {
     const { sut, useCase } = makeSut();
 
-    const useCaseReturn = { userId: 'any_userId', roleId: 'any_roleId', createdAt: new Date() };
+    const useCaseReturn = {
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      isDeleted: false,
+    };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
 
     const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_userId', roleId: 'any_roleId' } });

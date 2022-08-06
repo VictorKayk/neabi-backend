@@ -59,6 +59,8 @@ describe('UpdateUser Controller ', () => {
       accessToken: 'any_token',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     }));
 
     const response = await sut.handle(makeFakeRequestAuthenticated());
@@ -75,8 +77,10 @@ describe('UpdateUser Controller ', () => {
   it('Should return 400 if call UpdateUserUseCase with incorrect values', async () => {
     const { sut } = makeSut();
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
+      user: {
+        id: 'any_id',
+        accessToken: 'any_accessToken',
+      },
       body: {
         ...makeFakeRequestAuthenticated().body,
         email: '',

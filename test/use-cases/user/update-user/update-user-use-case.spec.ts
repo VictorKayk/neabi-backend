@@ -5,7 +5,6 @@ import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository, makeHasher } from '@/test/stubs';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
-import { getUserVisibleData } from '@/use-cases/user/util';
 
 type SutTypes = {
   userRepository: IUserRepository,
@@ -21,7 +20,13 @@ const makeSut = (): SutTypes => {
   const sut = new UpdateUserUseCase(userRepository, hasher);
   const user = new UserBuilder();
 
-  const repositoryReturn = { ...user.build(), createdAt: new Date(), updatedAt: new Date() };
+  const repositoryReturn = {
+    ...user.build(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+    roles: [],
+  };
 
   jest.spyOn(userRepository, 'findById').mockResolvedValue(repositoryReturn);
   jest.spyOn(userRepository, 'findByEmail').mockResolvedValue(repositoryReturn);
@@ -106,7 +111,7 @@ describe('UpdateUserUseCase', () => {
 
     const response = await sut.execute({ id: user.build().id, userData: { name: 'new_name' } });
     expect(response.value)
-      .toEqual(getUserVisibleData({ ...repositoryReturn, name: 'new_name' }));
+      .toEqual({ ...repositoryReturn, name: 'new_name' });
   });
 
   it('Should update email', async () => {
@@ -122,7 +127,7 @@ describe('UpdateUserUseCase', () => {
 
     const response = await sut.execute({ id: user.build().id, userData: { email: 'new_email@test.com' } });
     expect(response.value)
-      .toEqual(getUserVisibleData({ ...repositoryReturn, email: 'new_email@test.com' }));
+      .toEqual({ ...repositoryReturn, email: 'new_email@test.com' });
   });
 
   it('Should update email if it is the same email as the user', async () => {
@@ -140,7 +145,7 @@ describe('UpdateUserUseCase', () => {
       id: user.build().id,
       userData: { email: repositoryReturn.email },
     });
-    expect(response.value).toEqual(getUserVisibleData(repositoryReturn));
+    expect(response.value).toEqual(repositoryReturn);
   });
 
   it('Should return an error if email is already taken by any other user', async () => {
@@ -164,7 +169,6 @@ describe('UpdateUserUseCase', () => {
       user,
       userRepository,
       repositoryReturn,
-      hasher,
     } = makeSut();
 
     jest.spyOn(userRepository, 'findById').mockResolvedValue({ ...repositoryReturn, password: null });
@@ -215,11 +219,17 @@ describe('UpdateUserUseCase', () => {
         password: 'new_password_1',
       },
     });
-    expect(response.value).toEqual(getUserVisibleData({
-      ...repositoryReturn,
+    const value = response.value as IUserRepositoryReturnData;
+    expect(value).toEqual({
+      ...user.build(),
+      createdAt: value.createdAt,
+      updatedAt: value.updatedAt,
+      isDeleted: false,
+      roles: [],
+      password: 'new_password_1',
       name: 'new_name',
       email: 'new_email@test.com',
-    }));
+    });
   });
 
   it('Should throw if updateById throws', async () => {
@@ -242,6 +252,6 @@ describe('UpdateUserUseCase', () => {
     jest.spyOn(userRepository, 'updateById').mockResolvedValue(repositoryReturn);
 
     const response = await sut.execute({ id: user.build().id, userData: {} });
-    expect(response.value).toEqual(getUserVisibleData(repositoryReturn));
+    expect(response.value).toEqual(repositoryReturn);
   });
 });

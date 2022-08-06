@@ -1,14 +1,17 @@
 export interface IHttpRequest {
-  body: any,
+  body?: any,
   params?: any,
+  query?: any,
 }
 
 export interface IHttpRequestAuthenticated extends IHttpRequest {
-  id: string,
-  accessToken: string,
+  user: {
+    id: string,
+    accessToken: string,
+  }
 }
 
-export interface IHttpResponse {
+export interface IHttpResponse<T = any> {
   statusCode: number
-  body: any
+  body: T
 }

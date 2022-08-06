@@ -21,6 +21,7 @@ export const makeUserHasRoleRepository = (): IUserHasRoleRepository => {
       return {
         ...userHasRole,
         createdAt: new Date(),
+        isDeleted: false,
       };
     }
   }

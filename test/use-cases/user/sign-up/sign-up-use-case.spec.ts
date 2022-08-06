@@ -6,7 +6,7 @@ import {
   IUserRepository,
   IHasher,
   IEncrypter,
-  IUserVisibleData,
+  IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
@@ -97,6 +97,8 @@ describe('SignUp Use Case', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     })));
     const error = await sut.execute(user.build());
     expect(error.isError()).toBe(true);
@@ -197,15 +199,18 @@ describe('SignUp Use Case', () => {
       user,
       idGenerator,
       encrypter,
+      hasher,
     } = makeSut();
     const response = await sut.execute(user.build());
-    const value = response.value as IUserVisibleData;
+    const value = response.value as IUserRepositoryReturnData;
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({
+      ...user.build(),
       id: await idGenerator.generate(),
-      name: user.build().name,
-      email: user.build().email,
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
+      password: await hasher.hash(user.build().password),
+      isDeleted: false,
+      roles: [],
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,
     });

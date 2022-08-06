@@ -59,7 +59,11 @@ describe('CreateRole Controller ', () => {
     const { sut, idGenerator, useCase } = makeSut();
 
     const useCaseReturn = {
-      id: await idGenerator.generate(), role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: await idGenerator.generate(),
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
 

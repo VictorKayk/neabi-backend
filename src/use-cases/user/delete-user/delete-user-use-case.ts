@@ -1,10 +1,9 @@
-import { IUserRepository, IUserVisibleData } from '@/use-cases/user/interfaces';
+import { IUserRepository, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { Either, error, success } from '@/shared';
-import { getUserVisibleData } from '@/use-cases/user/util';
 
-type Response = Either<NonExistingUserError, IUserVisibleData>;
+type Response = Either<NonExistingUserError, IUserRepositoryReturnData>;
 
 export class DeleteUserUseCase implements IUseCase {
   constructor(
@@ -16,8 +15,7 @@ export class DeleteUserUseCase implements IUseCase {
     if (!userOrNull) return error(new NonExistingUserError());
 
     const deletedUser = await this.userRepository.deleteById(id);
-    const userVisibleData = getUserVisibleData(deletedUser);
 
-    return success(userVisibleData);
+    return success(deletedUser);
   }
 }

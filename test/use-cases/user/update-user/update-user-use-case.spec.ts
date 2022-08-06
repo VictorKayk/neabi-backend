@@ -5,7 +5,7 @@ import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository, makeHasher } from '@/test/stubs';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
-import { getUserVisibleData } from '@/use-cases/user/util';
+import { getUserVisibleData } from '@/use-cases/user/utils';
 
 type SutTypes = {
   userRepository: IUserRepository,
@@ -26,6 +26,7 @@ const makeSut = (): SutTypes => {
     createdAt: new Date(),
     updatedAt: new Date(),
     isDeleted: false,
+    roles: [],
   };
 
   jest.spyOn(userRepository, 'findById').mockResolvedValue(repositoryReturn);

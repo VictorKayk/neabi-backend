@@ -1,7 +1,7 @@
 import { IUserRepository } from '@/use-cases/user/interfaces';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
-import { getUserVisibleData } from '@/use-cases/user/util';
+import { getUserVisibleData } from '@/use-cases/user/utils';
 import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 
 type SutTypes = {
@@ -32,9 +32,14 @@ describe('ReadAllUsersUseCase', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        roles: [],
       },
       {
-        ...user.build(), createdAt: new Date(), updatedAt: new Date(), isDeleted: false,
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+        roles: [],
       },
     ];
     jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue(readAllUsersReturn);

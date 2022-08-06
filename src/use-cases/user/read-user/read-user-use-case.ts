@@ -2,7 +2,7 @@ import { IUserRepository, IUserVisibleData } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { Either, error, success } from '@/shared';
-import { getUserVisibleData } from '@/use-cases/user/util';
+import { getUserVisibleData } from '@/use-cases/user/utils';
 
 type Response = Either<NonExistingUserError, IUserVisibleData>;
 

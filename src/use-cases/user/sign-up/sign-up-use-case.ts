@@ -9,7 +9,7 @@ import {
 import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
 import { IUserRequired } from '@/use-cases/user/sign-up/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors/existing-user-error';
-import { getUserVisibleData } from '@/use-cases/user/util';
+import { getUserVisibleData } from '@/use-cases/user/utils';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<

@@ -9,7 +9,7 @@ import {
 import { IUseCase } from '@/use-cases/interfaces';
 import { IUserSignIn } from '@/use-cases/user/sign-in/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
-import { getUserVisibleData } from '@/use-cases/user/util';
+import { getUserVisibleData } from '@/use-cases/user/utils';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<

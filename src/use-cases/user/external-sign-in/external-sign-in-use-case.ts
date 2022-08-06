@@ -8,7 +8,7 @@ import {
   IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
 import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
-import { getUserVisibleData } from '@/use-cases/user/util';
+import { getUserVisibleData } from '@/use-cases/user/utils';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<

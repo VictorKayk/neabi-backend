@@ -22,6 +22,7 @@ const makeSut = (): SutTypes => {
     createdAt: new Date(),
     updatedAt: new Date(),
     isDeleted: false,
+    roles: [],
   });
   jest.spyOn(userHasRoleRepository, 'findRoleById').mockResolvedValue({
     id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(), isDeleted: false,

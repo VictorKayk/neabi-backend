@@ -35,6 +35,7 @@ const makeSut = (): SutTypes => {
     createdAt: new Date(),
     updatedAt: new Date(),
     isDeleted: false,
+    roles: [],
   });
 
   return {

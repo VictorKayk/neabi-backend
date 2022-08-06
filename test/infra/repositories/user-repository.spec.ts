@@ -164,6 +164,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      roles: [],
     };
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
 
@@ -180,6 +181,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      roles: [],
     };
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([correctUserRepositoryReturn, correctUserRepositoryReturn]);
 

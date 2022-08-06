@@ -2,13 +2,15 @@ import { IUserHasRoleData, IUserHasRoleRepository, IUserHasRoleRepositoryReturnD
 import { IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
+import { getUserRoles } from '@/infra/repositories/utils';
 
 export class UserHasRoleRepository implements IUserHasRoleRepository {
   async findUserById(userId: string): Promise<IUserRepositoryReturnData | null> {
     const userOrNull = await prisma.user.findFirst({
       where: { id: userId, isDeleted: false },
+      include: { userHasRoles: { select: { roles: true } } },
     });
-    return userOrNull;
+    return userOrNull ? { ...userOrNull, roles: getUserRoles(userOrNull.userHasRoles) } : null;
   }
 
   async findRoleById(roleId: string): Promise<IRoleRepositoryReturnData | null> {

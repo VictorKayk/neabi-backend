@@ -38,6 +38,7 @@ describe('ReadUserUseCase', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      roles: [],
     };
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
 

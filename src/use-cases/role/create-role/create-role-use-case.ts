@@ -19,7 +19,12 @@ export class CreateRoleUseCase implements IUseCase {
     if (roleOrError.isError()) return error(roleOrError.value);
 
     let roleOrNull = await this.roleRepository.findByRole(role);
-    if (roleOrNull) return error(new ExistingRoleError());
+    if (roleOrNull) {
+      if (!roleOrNull.isDeleted) return error(new ExistingRoleError());
+
+      const roleData = await this.roleRepository.updateById(roleOrNull.id, { isDeleted: false });
+      return success(roleData);
+    }
 
     let id: string;
     do {

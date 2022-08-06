@@ -66,6 +66,36 @@ describe('CreateRoleUseCase', () => {
     expect(error.value).toEqual(new ExistingRoleError());
   });
 
+  it('Should return an role if role already exists and have been deleted', async () => {
+    const { sut, roleRepository } = makeSut();
+
+    jest.spyOn(roleRepository, 'findByRole').mockReturnValueOnce(new Promise((resolve) => resolve({
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: true,
+    })));
+    jest.spyOn(roleRepository, 'updateById').mockReturnValueOnce(new Promise((resolve) => resolve({
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    })));
+
+    const response = await sut.execute('any_role');
+    const value = response.value as IRoleRepositoryReturnData;
+    expect(response.isSuccess()).toBe(true);
+    expect(value).toEqual({
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: value.createdAt,
+      updatedAt: value.updatedAt,
+      isDeleted: false,
+    });
+  });
+
   it('Should throw if IdGenerator throws', async () => {
     const { sut, idGenerator } = makeSut();
     jest.spyOn(idGenerator, 'generate').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));

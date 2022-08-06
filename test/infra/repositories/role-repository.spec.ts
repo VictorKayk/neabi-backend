@@ -146,7 +146,7 @@ describe('Role Repository Implementation', () => {
     };
     jest.spyOn(prisma.role, 'update').mockResolvedValue(role);
 
-    const response = await sut.updateById({ id: 'any_id', role: 'any_role' });
+    const response = await sut.updateById('any_id', { role: 'any_role' });
     expect(response).toEqual(role);
   });
 });

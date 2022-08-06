@@ -1,5 +1,5 @@
 import {
-  IRoleRepositoryReturnData, IRoleData, IRoleRepository, IRoleDataQuery,
+  IRoleRepositoryReturnData, IRoleData, IRoleRepository, IRoleDataQuery, IRoleEditableData,
 } from '@/use-cases/role/interfaces';
 import prisma from '@/main/config/prisma';
 
@@ -18,7 +18,7 @@ export class RoleRepository implements IRoleRepository {
 
   async findByRole(role: string): Promise<IRoleRepositoryReturnData | null> {
     const roleReturnData = await prisma.role.findFirst({
-      where: { role, isDeleted: false },
+      where: { role },
     });
     return roleReturnData;
   }
@@ -52,10 +52,11 @@ export class RoleRepository implements IRoleRepository {
     return roles;
   }
 
-  async updateById({ id, role }: IRoleData): Promise<IRoleRepositoryReturnData> {
+  async updateById(id: string, { role, isDeleted }: IRoleEditableData):
+    Promise<IRoleRepositoryReturnData> {
     const roleUpdated = await prisma.role.update({
       where: { id },
-      data: { role, updatedAt: new Date() },
+      data: { role, isDeleted, updatedAt: new Date() },
     });
     return roleUpdated;
   }

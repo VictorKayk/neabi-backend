@@ -2,6 +2,7 @@ import {
   IRoleRepository,
   IRoleData,
   IRoleRepositoryReturnData,
+  IRoleEditableData,
 } from '@/use-cases/role/interfaces';
 
 export const makeRoleRepository = (): IRoleRepository => {
@@ -37,12 +38,14 @@ export const makeRoleRepository = (): IRoleRepository => {
       };
     }
 
-    async updateById(roleData: IRoleData): Promise<IRoleRepositoryReturnData> {
+    async updateById(id: string, roleData: IRoleEditableData): Promise<IRoleRepositoryReturnData> {
       return {
-        ...roleData,
+        id,
         createdAt: new Date(),
         updatedAt: new Date(),
-        isDeleted: false,
+        ...roleData,
+        isDeleted: roleData.isDeleted || false,
+        role: roleData.role || 'any_role',
       };
     }
   }

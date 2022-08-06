@@ -1,7 +1,6 @@
 import { IUserRepository } from '@/use-cases/user/interfaces';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
-import { getUserVisibleData } from '@/use-cases/user/utils';
 import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 
 type SutTypes = {
@@ -45,9 +44,7 @@ describe('ReadAllUsersUseCase', () => {
     jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue(readAllUsersReturn);
 
     const response = await sut.execute({});
-    const readAllUsersVisibleDataReturn = readAllUsersReturn
-      .map((userData) => getUserVisibleData(userData));
-    expect(response).toEqual(readAllUsersVisibleDataReturn);
+    expect(response).toEqual(response);
   });
 
   it('Should throw if readAllUsers throws', async () => {

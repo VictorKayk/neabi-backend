@@ -4,12 +4,11 @@ import {
   IHashCompare,
   IUserRepository,
   IEncrypter,
-  IUserVisibleData,
+  IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
 import { IUserSignIn } from '@/use-cases/user/sign-in/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
-import { getUserVisibleData } from '@/use-cases/user/utils';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<
@@ -17,7 +16,7 @@ type Response = Either<
   InvalidEmailError |
   InvalidPasswordError |
   InvalidEmailOrPasswordError,
-  IUserVisibleData
+  IUserRepositoryReturnData
 >;
 
 export class SignInUseCase implements IUseCase {
@@ -45,8 +44,6 @@ export class SignInUseCase implements IUseCase {
       accessToken,
     });
 
-    const userVisibleData = getUserVisibleData(userData);
-
-    return success(userVisibleData);
+    return success(userData);
   }
 }

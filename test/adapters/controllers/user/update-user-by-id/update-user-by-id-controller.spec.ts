@@ -74,6 +74,8 @@ describe('UpdateUserById Controller ', () => {
       accessToken: 'any_token',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     }));
 
     const response = await sut.handle({
@@ -87,6 +89,8 @@ describe('UpdateUserById Controller ', () => {
       accessToken: response.body.accessToken,
       createdAt: response.body.createdAt,
       updatedAt: response.body.updatedAt,
+      isDeleted: response.body.isDeleted,
+      roles: response.body.roles,
     }));
   });
 

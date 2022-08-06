@@ -1,3 +1,4 @@
+import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { makeUserRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
@@ -37,7 +38,7 @@ describe('DeleteUser Controller ', () => {
         id: user.build().id,
         accessToken: 'any_accessToken',
       },
-      body: {},
+
     });
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
   });
@@ -54,7 +55,7 @@ describe('DeleteUser Controller ', () => {
         id: user.build().id,
         accessToken: 'any_accessToken',
       },
-      body: {},
+
     });
     expect(response).toEqual(serverError(new ServerError()));
   });
@@ -66,6 +67,8 @@ describe('DeleteUser Controller ', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
@@ -73,11 +76,10 @@ describe('DeleteUser Controller ', () => {
         id: user.build().id,
         accessToken: 'any_accessToken',
       },
-      body: {},
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(useCaseReturn);
+    expect(response.body).toEqual(getUserVisibleData(useCaseReturn));
   });
 
   it('Should return 401 if user do not exists', async () => {
@@ -90,7 +92,7 @@ describe('DeleteUser Controller ', () => {
         id: 'invalid_id',
         accessToken: 'any_accessToken',
       },
-      body: {},
+
     });
     expect(response).toEqual(unauthorized(new NonExistingUserError()));
   });

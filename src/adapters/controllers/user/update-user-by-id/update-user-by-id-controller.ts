@@ -8,6 +8,8 @@ import {
   forbidden,
 } from '@/adapters/util/http';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
+import { getUserCriticalData } from '@/adapters/controllers/user/utils';
+import { IUserCriticalData } from '@/adapters/controllers/user/interfaces';
 
 export class UpdateUserByIdController implements IController {
   constructor(
@@ -15,7 +17,8 @@ export class UpdateUserByIdController implements IController {
     private readonly updateUser: UpdateUserUseCase,
   ) { }
 
-  async handle({ params, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ params, body }: IHttpRequestAuthenticated):
+    Promise<IHttpResponse<IUserCriticalData>> {
     try {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
@@ -35,7 +38,7 @@ export class UpdateUserByIdController implements IController {
         return badRequest(accountOrError.value);
       }
 
-      const account = accountOrError.value;
+      const account = getUserCriticalData(accountOrError.value);
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

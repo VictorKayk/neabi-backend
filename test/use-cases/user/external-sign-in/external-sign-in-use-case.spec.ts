@@ -3,7 +3,7 @@ import { InvalidNameError, InvalidEmailError } from '@/entities/value-object/err
 import {
   IUserRepository,
   IEncrypter,
-  IUserVisibleData,
+  IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
 import { IIdGenerator } from '@/use-cases/interfaces';
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
@@ -88,7 +88,7 @@ describe('External Sign In Use Case', () => {
     })));
     const userRepositorySpy = jest.spyOn(userRepository, 'updateByEmail');
 
-    const response = await (await sut.execute(user.build())).value as IUserVisibleData;
+    const response = await (await sut.execute(user.build())).value as IUserRepositoryReturnData;
     expect(userRepositorySpy).toHaveBeenCalledWith(user.build().email, {
       accessToken: await encrypter.encrypt(response.id),
     });
@@ -128,12 +128,13 @@ describe('External Sign In Use Case', () => {
     })));
 
     const response = await sut.execute(user.build());
-    const value = response.value as IUserVisibleData;
+    const value = response.value as IUserRepositoryReturnData;
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({
+      ...user.build(),
       id: await idGenerator.generate(),
-      name: user.build().name,
-      email: user.build().email,
+      isDeleted: false,
+      roles: [],
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,
@@ -220,12 +221,14 @@ describe('External Sign In Use Case', () => {
       encrypter,
     } = makeSut();
     const response = await sut.execute(user.build());
-    const value = response.value as IUserVisibleData;
+    const value = response.value as IUserRepositoryReturnData;
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({
       id: await idGenerator.generate(),
       name: user.build().name,
       email: user.build().email,
+      isDeleted: false,
+      roles: [],
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,

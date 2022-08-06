@@ -1,5 +1,4 @@
 export * from '@/use-cases/user/interfaces/user-data-interface';
-export * from '@/use-cases/user/interfaces/user-visible-data-interface';
 export * from '@/use-cases/user/interfaces/user-editable-data-interface';
 export * from '@/use-cases/user/interfaces/user-repository-interface';
 export * from '@/use-cases/user/interfaces/user-repository-return-data-interface';

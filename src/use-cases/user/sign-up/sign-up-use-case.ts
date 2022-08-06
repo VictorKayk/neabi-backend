@@ -2,14 +2,13 @@ import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 import {
   IHasher,
-  IUserVisibleData,
+  IUserRepositoryReturnData,
   IUserRepository,
   IEncrypter,
 } from '@/use-cases/user/interfaces';
 import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
 import { IUserRequired } from '@/use-cases/user/sign-up/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors/existing-user-error';
-import { getUserVisibleData } from '@/use-cases/user/utils';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<
@@ -17,7 +16,7 @@ type Response = Either<
   InvalidEmailError |
   InvalidPasswordError |
   ExistingUserError,
-  IUserVisibleData
+  IUserRepositoryReturnData
 >;
 
 export class SignUpUseCase implements IUseCase {
@@ -52,8 +51,6 @@ export class SignUpUseCase implements IUseCase {
       accessToken,
     });
 
-    const userVisibleData = getUserVisibleData(userData);
-
-    return success(userVisibleData);
+    return success(userData);
   }
 }

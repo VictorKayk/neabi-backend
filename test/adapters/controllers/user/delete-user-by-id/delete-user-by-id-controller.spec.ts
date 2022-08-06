@@ -1,3 +1,4 @@
+import { getUserCriticalData } from '@/adapters/controllers/user/utils';
 import { makeFakeRequestAuthenticated, makeUserRepository, makeValidation } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
@@ -65,6 +66,8 @@ describe('DeleteUser Controller ', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
@@ -73,7 +76,7 @@ describe('DeleteUser Controller ', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(useCaseReturn);
+    expect(response.body).toEqual(getUserCriticalData(useCaseReturn));
   });
 
   it('Should return 401 if user do not exists', async () => {

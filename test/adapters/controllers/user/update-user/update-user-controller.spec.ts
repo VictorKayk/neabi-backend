@@ -59,6 +59,8 @@ describe('UpdateUser Controller ', () => {
       accessToken: 'any_token',
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
     }));
 
     const response = await sut.handle(makeFakeRequestAuthenticated());

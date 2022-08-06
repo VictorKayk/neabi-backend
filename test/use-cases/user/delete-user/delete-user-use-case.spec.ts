@@ -2,7 +2,6 @@ import { IUserRepository } from '@/use-cases/user/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
-import { getUserVisibleData } from '@/use-cases/user/utils';
 import { DeleteUserUseCase } from '@/use-cases/user/delete-user';
 
 type SutTypes = {
@@ -62,6 +61,6 @@ describe('DeleteUserUseCase', () => {
     jest.spyOn(userRepository, 'deleteById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute(user.build().id);
-    expect(response.value).toEqual(getUserVisibleData(findByIdReturn));
+    expect(response.value).toEqual(findByIdReturn);
   });
 });

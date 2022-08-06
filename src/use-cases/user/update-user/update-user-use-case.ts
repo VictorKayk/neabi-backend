@@ -3,12 +3,11 @@ import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/ent
 import {
   IHasher,
   IUserEditableData,
-  IUserVisibleData,
+  IUserRepositoryReturnData,
   IUserRepository,
 } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
 import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
-import { getUserVisibleData } from '@/use-cases/user/utils';
 import { Either, error, success } from '@/shared';
 
 interface Request {
@@ -22,7 +21,7 @@ type Response = Either<
   InvalidPasswordError |
   NonExistingUserError |
   ExistingUserError,
-  IUserVisibleData
+  IUserRepositoryReturnData
 >;
 
 export class UpdateUserUseCase implements IUseCase {
@@ -55,8 +54,6 @@ export class UpdateUserUseCase implements IUseCase {
       password: newPassword,
     });
 
-    const userVisibleData = getUserVisibleData(userData);
-
-    return success(userVisibleData);
+    return success(userData);
   }
 }

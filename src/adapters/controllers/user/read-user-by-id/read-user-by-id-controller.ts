@@ -4,6 +4,8 @@ import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   badRequest, ok, serverError, unauthorized,
 } from '@/adapters/util/http';
+import { getUserCriticalData } from '@/adapters/controllers/user/utils';
+import { IUserCriticalData } from '@/adapters/controllers/user/interfaces';
 
 export class ReadUserByIdController implements IController {
   constructor(
@@ -11,7 +13,7 @@ export class ReadUserByIdController implements IController {
     private readonly readUserUseCase: ReadUserUseCase,
   ) { }
 
-  async handle({ params }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ params }: IHttpRequestAuthenticated): Promise<IHttpResponse<IUserCriticalData>> {
     try {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
@@ -23,7 +25,7 @@ export class ReadUserByIdController implements IController {
         return unauthorized(accountOrError.value);
       }
 
-      const account = accountOrError.value;
+      const account = getUserCriticalData(accountOrError.value);
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

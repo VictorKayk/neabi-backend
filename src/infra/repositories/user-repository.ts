@@ -27,7 +27,6 @@ export class UserRepository implements IUserRepository {
       where: { email, isDeleted: false },
       include: { userHasRoles: { select: { roles: true } } },
     });
-    console.log(user);
     return user ? { ...user, roles: getUserRoles(user.userHasRoles) } : null;
   }
 
@@ -36,7 +35,6 @@ export class UserRepository implements IUserRepository {
       where: { id, isDeleted: false },
       include: { userHasRoles: { select: { roles: true } } },
     });
-    console.log(user);
     return user ? { ...user, roles: getUserRoles(user.userHasRoles) } : null;
   }
 

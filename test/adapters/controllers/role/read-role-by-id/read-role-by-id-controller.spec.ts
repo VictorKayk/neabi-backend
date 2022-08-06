@@ -78,7 +78,10 @@ describe('ReadRoleById Controller ', () => {
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingRoleError()));
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      id: 'invalid_id',
+      user: {
+        id: 'invalid_id',
+        accessToken: makeFakeRequestAuthenticated().user.accessToken,
+      },
       params: { id: 'any_id' },
     });
 

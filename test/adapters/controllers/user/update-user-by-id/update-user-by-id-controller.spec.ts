@@ -93,8 +93,10 @@ describe('UpdateUserById Controller ', () => {
   it('Should return 400 if call UpdateUserUseCase with incorrect values', async () => {
     const { sut, user } = makeSut();
     const response = await sut.handle({
-      id: 'any_id',
-      accessToken: 'any_accessToken',
+      user: {
+        id: 'any_id',
+        accessToken: 'any_accessToken',
+      },
       body: {
         ...makeFakeRequestAuthenticated().body,
         email: '',

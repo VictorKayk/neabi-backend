@@ -8,7 +8,7 @@ export class ReadUserController implements IController {
     private readonly readUserUseCase: ReadUserUseCase,
   ) { }
 
-  async handle({ id }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ user: { id } }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
       const accountOrError = await this.readUserUseCase.execute(id);
       if (accountOrError.isError()) {

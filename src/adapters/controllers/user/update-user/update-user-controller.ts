@@ -12,7 +12,7 @@ import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 export class UpdateUserController implements IController {
   constructor(private readonly updateUser: UpdateUserUseCase) { }
 
-  async handle({ id, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ user: { id }, body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
       const { name, email, password } = body;
       const accountOrError = await this.updateUser.execute({

@@ -33,8 +33,10 @@ describe('DeleteUser Controller ', () => {
     const useCaseSpy = jest.spyOn(useCase, 'execute');
 
     await sut.handle({
-      id: user.build().id,
-      accessToken: 'any_accessToken',
+      user: {
+        id: user.build().id,
+        accessToken: 'any_accessToken',
+      },
       body: {},
     });
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
@@ -48,8 +50,10 @@ describe('DeleteUser Controller ', () => {
     });
 
     const response = await sut.handle({
-      id: user.build().id,
-      accessToken: 'any_accessToken',
+      user: {
+        id: user.build().id,
+        accessToken: 'any_accessToken',
+      },
       body: {},
     });
     expect(response).toEqual(serverError(new ServerError()));
@@ -65,8 +69,10 @@ describe('DeleteUser Controller ', () => {
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
-      id: user.build().id,
-      accessToken: 'any_accessToken',
+      user: {
+        id: user.build().id,
+        accessToken: 'any_accessToken',
+      },
       body: {},
     });
 
@@ -80,8 +86,10 @@ describe('DeleteUser Controller ', () => {
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingUserError()));
 
     const response = await sut.handle({
-      id: 'invalid_id',
-      accessToken: 'any_accessToken',
+      user: {
+        id: 'invalid_id',
+        accessToken: 'any_accessToken',
+      },
       body: {},
     });
     expect(response).toEqual(unauthorized(new NonExistingUserError()));

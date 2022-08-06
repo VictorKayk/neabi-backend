@@ -8,7 +8,7 @@ export class DeleteUserController implements IController {
     private readonly deleteUserUseCase: DeleteUserUseCase,
   ) { }
 
-  async handle({ id }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
+  async handle({ user: { id } }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
     try {
       const accountOrError = await this.deleteUserUseCase.execute(id);
       if (accountOrError.isError()) {

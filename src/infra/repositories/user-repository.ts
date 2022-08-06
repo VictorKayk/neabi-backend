@@ -24,7 +24,8 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return { ...user, roles: getUserRoles(user.userHasRoles) };
+    const { userHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
   }
 
   async findByEmail(email: string): Promise<IUserRepositoryReturnData | null> {
@@ -37,7 +38,11 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return user ? { ...user, roles: getUserRoles(user.userHasRoles) } : null;
+    if (user) {
+      const { userHasRoles, ...userWithoutUserHasRoles } = user;
+      return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    }
+    return null;
   }
 
   async findById(id: string): Promise<IUserRepositoryReturnData | null> {
@@ -50,7 +55,11 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return user ? { ...user, roles: getUserRoles(user.userHasRoles) } : null;
+    if (user) {
+      const { userHasRoles, ...userWithoutUserHasRoles } = user;
+      return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    }
+    return null;
   }
 
   async updateByEmail(email: string, userData: IUserEditableData):
@@ -65,7 +74,8 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return { ...user, roles: getUserRoles(user.userHasRoles) };
+    const { userHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
   }
 
   async updateById(id: string, userData: IUserEditableData):
@@ -80,7 +90,8 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return { ...user, roles: getUserRoles(user.userHasRoles) };
+    const { userHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
   }
 
   async deleteById(id: string): Promise<IUserRepositoryReturnData> {
@@ -94,7 +105,8 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return { ...user, roles: getUserRoles(user.userHasRoles) };
+    const { userHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
   }
 
   async readAllUsers({
@@ -117,6 +129,9 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return users.map((user) => ({ ...user, roles: getUserRoles(user.userHasRoles) }));
+    return users.map((user) => {
+      const { userHasRoles, ...userWithoutUserHasRoles } = user;
+      return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    });
   }
 }

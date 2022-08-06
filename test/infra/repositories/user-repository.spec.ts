@@ -1,3 +1,4 @@
+import { getUserRoles } from '@/infra/repositories/utils';
 import { UserRepository } from '@/infra/repositories';
 import { UserBuilder } from '@/test/builders/user-builder';
 import prisma from '@/main/config/prisma';
@@ -96,6 +97,42 @@ describe('User Repository Implementation', () => {
     expect(account).toBe(null);
   });
 
+  it('Should return all accounts with user roles', async () => {
+    const { sut, user } = makeSut();
+
+    const userRepositoryReturn = {
+      ...user.build(),
+      name: 'any_name',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      userHasRoles: [{
+        roles: {
+          id: 'any_id',
+          role: 'any_role',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          isDeleted: false,
+        },
+      }],
+    };
+    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(userRepositoryReturn);
+
+    const correctUserRepositoryReturn = {
+      name: userRepositoryReturn.name,
+      createdAt: userRepositoryReturn.createdAt,
+      updatedAt: userRepositoryReturn.updatedAt,
+      isDeleted: userRepositoryReturn.isDeleted,
+      id: userRepositoryReturn.id,
+      email: userRepositoryReturn.email,
+      password: userRepositoryReturn.password,
+      accessToken: userRepositoryReturn.accessToken,
+      roles: getUserRoles(userRepositoryReturn.userHasRoles),
+    };
+    const account = await sut.findById(user.build().id);
+    expect(account).toEqual(correctUserRepositoryReturn);
+  });
+
   it('Should return an account on updateByEmail success', async () => {
     const { sut, user } = makeSut();
 
@@ -172,20 +209,19 @@ describe('User Repository Implementation', () => {
     expect(account).toEqual([userRepositoryReturn, userRepositoryReturn]);
   });
 
-  it('Should return all accounts or an empty array that match with the query params on readAllUser success', async () => {
+  it('Should return all accounts or an empty array on the first page', async () => {
     const { sut, user } = makeSut();
 
-    const correctUserRepositoryReturn = {
+    const userRepositoryReturn = {
       ...user.build(),
-      name: 'any_name',
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
       roles: [],
     };
-    jest.spyOn(prisma.user, 'findMany').mockResolvedValue([correctUserRepositoryReturn, correctUserRepositoryReturn]);
+    jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
 
-    const account = await sut.readAllUsers({ name: 'any_' });
-    expect(account).toEqual([correctUserRepositoryReturn, correctUserRepositoryReturn]);
+    const account = await sut.readAllUsers({ page: 1 });
+    expect(account).toEqual([userRepositoryReturn, userRepositoryReturn]);
   });
 });

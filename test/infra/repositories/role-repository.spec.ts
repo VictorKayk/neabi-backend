@@ -118,6 +118,22 @@ describe('Role Repository Implementation', () => {
     expect(response).toEqual([role, role, role]);
   });
 
+  it('Should return all roles on the first page', async () => {
+    const { sut } = makeSut();
+
+    const role = {
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    };
+    jest.spyOn(prisma.role, 'findMany').mockResolvedValue([role, role, role]);
+
+    const response = await sut.readAllRoles({ page: 1 });
+    expect(response).toEqual([role, role, role]);
+  });
+
   it('Should return an role on deleteById success', async () => {
     const { sut } = makeSut();
 

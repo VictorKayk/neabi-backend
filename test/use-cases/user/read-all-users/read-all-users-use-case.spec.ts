@@ -39,7 +39,7 @@ describe('ReadAllUsersUseCase', () => {
     ];
     jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue(readAllUsersReturn);
 
-    const response = await sut.execute();
+    const response = await sut.execute({});
     const readAllUsersVisibleDataReturn = readAllUsersReturn
       .map((userData) => getUserVisibleData(userData));
     expect(response).toEqual(readAllUsersVisibleDataReturn);
@@ -48,7 +48,7 @@ describe('ReadAllUsersUseCase', () => {
   it('Should throw if readAllUsers throws', async () => {
     const { sut, userRepository } = makeSut();
     jest.spyOn(userRepository, 'readAllUsers').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute();
+    const promise = sut.execute({});
     await expect(promise).rejects.toThrow();
   });
 });

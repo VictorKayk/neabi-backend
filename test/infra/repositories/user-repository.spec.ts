@@ -167,7 +167,23 @@ describe('User Repository Implementation', () => {
     };
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
 
-    const account = await sut.readAllUsers();
+    const account = await sut.readAllUsers({});
     expect(account).toEqual([userRepositoryReturn, userRepositoryReturn]);
+  });
+
+  it('Should return all accounts or an empty array that match with the query params on readAllUser success', async () => {
+    const { sut, user } = makeSut();
+
+    const correctUserRepositoryReturn = {
+      ...user.build(),
+      name: 'any_name',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    };
+    jest.spyOn(prisma.user, 'findMany').mockResolvedValue([correctUserRepositoryReturn, correctUserRepositoryReturn]);
+
+    const account = await sut.readAllUsers({ name: 'any_' });
+    expect(account).toEqual([correctUserRepositoryReturn, correctUserRepositoryReturn]);
   });
 });

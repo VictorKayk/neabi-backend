@@ -3,6 +3,7 @@ import {
   IUserRepositoryData,
   IUserRepository,
   IUserEditableData,
+  IUserDataQuery,
 } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
 
@@ -59,9 +60,19 @@ export class UserRepository implements IUserRepository {
     return user;
   }
 
-  async readAllUsers(): Promise<IUserRepositoryReturnData[] | []> {
+  async readAllUsers({
+    id, name, email, role, page,
+  }: IUserDataQuery): Promise<IUserRepositoryReturnData[] | []> {
     const user = await prisma.user.findMany({
-      where: { isDeleted: false },
+      where: {
+        id: { contains: id, mode: 'insensitive' },
+        name: { contains: name, mode: 'insensitive' },
+        email: { contains: email, mode: 'insensitive' },
+        userHasRoles: { some: { roles: { role: { contains: role, mode: 'insensitive' } } } },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 1,
+      orderBy: { isDeleted: 'asc' },
     });
     return user;
   }

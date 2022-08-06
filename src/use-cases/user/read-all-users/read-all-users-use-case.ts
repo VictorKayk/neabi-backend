@@ -1,4 +1,4 @@
-import { IUserRepository, IUserVisibleData } from '@/use-cases/user/interfaces';
+import { IUserDataQuery, IUserRepository, IUserVisibleData } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
 import { getUserVisibleData } from '@/use-cases/user/util';
 
@@ -9,8 +9,8 @@ export class ReadAllUsersUseCase implements IUseCase {
     private readonly userRepository: IUserRepository,
   ) { }
 
-  async execute(): Promise<Response> {
-    const users = await this.userRepository.readAllUsers();
+  async execute(userQuery: IUserDataQuery): Promise<Response> {
+    const users = await this.userRepository.readAllUsers(userQuery);
     const usersVisibleData = users.map((user) => getUserVisibleData(user));
     return usersVisibleData;
   }

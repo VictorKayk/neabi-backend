@@ -32,7 +32,7 @@ describe('ReadUser Controller ', () => {
       throw new Error();
     });
 
-    const response = await sut.handle();
+    const response = await sut.handle({});
     expect(response).toEqual(serverError(new ServerError()));
   });
 
@@ -51,8 +51,8 @@ describe('ReadUser Controller ', () => {
     }];
 
     jest.spyOn(useCase, 'execute').mockResolvedValue(useCaseReturn);
-    const response = await sut.handle();
 
+    const response = await sut.handle({});
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(useCaseReturn);
   });

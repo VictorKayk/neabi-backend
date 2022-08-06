@@ -25,7 +25,7 @@ export class RoleRepository implements IRoleRepository {
 
   async findById(id: string): Promise<IRoleRepositoryReturnData | null> {
     const roleReturnData = await prisma.role.findFirst({
-      where: { id, isDeleted: false },
+      where: { id },
     });
     return roleReturnData;
   }
@@ -38,7 +38,7 @@ export class RoleRepository implements IRoleRepository {
         role: { contains: role, mode: 'insensitive' },
       },
       take: 100,
-      skip: page && page >= 1 ? (page - 1) * 100 : 1,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
     });
     return roles;

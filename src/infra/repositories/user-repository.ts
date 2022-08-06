@@ -78,7 +78,7 @@ export class UserRepository implements IUserRepository {
         userHasRoles: { some: { roles: { role: { contains: role, mode: 'insensitive' } } } },
       },
       take: 100,
-      skip: page && page >= 1 ? (page - 1) * 100 : 1,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
       include: { userHasRoles: { select: { roles: true } } },
     });

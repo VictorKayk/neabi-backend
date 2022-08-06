@@ -98,7 +98,23 @@ describe('Role Repository Implementation', () => {
     };
     jest.spyOn(prisma.role, 'findMany').mockResolvedValue([role, role, role]);
 
-    const response = await sut.readAllRoles();
+    const response = await sut.readAllRoles({});
+    expect(response).toEqual([role, role, role]);
+  });
+
+  it('Should return all roles with correct name on readAllRoles success', async () => {
+    const { sut } = makeSut();
+
+    const role = {
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    };
+    jest.spyOn(prisma.role, 'findMany').mockResolvedValue([role, role, role]);
+
+    const response = await sut.readAllRoles({ role: 'any' });
     expect(response).toEqual([role, role, role]);
   });
 

@@ -1,4 +1,6 @@
-import { IRoleRepositoryReturnData, IRoleData, IRoleRepository } from '@/use-cases/role/interfaces';
+import {
+  IRoleRepositoryReturnData, IRoleData, IRoleRepository, IRoleDataQuery,
+} from '@/use-cases/role/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class RoleRepository implements IRoleRepository {
@@ -28,9 +30,16 @@ export class RoleRepository implements IRoleRepository {
     return roleReturnData;
   }
 
-  async readAllRoles(): Promise<IRoleRepositoryReturnData[] | []> {
+  async readAllRoles({ id, role, page }: IRoleDataQuery):
+    Promise<IRoleRepositoryReturnData[] | []> {
     const roles = await prisma.role.findMany({
-      where: { isDeleted: false },
+      where: {
+        id: { contains: id, mode: 'insensitive' },
+        role: { contains: role, mode: 'insensitive' },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 1,
+      orderBy: { isDeleted: 'asc' },
     });
     return roles;
   }

@@ -26,7 +26,7 @@ describe('ReadAllRoles Controller ', () => {
 
     jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
-    const response = await sut.handle();
+    const response = await sut.handle({});
     expect(response).toEqual(serverError(new ServerError()));
   });
 
@@ -47,7 +47,7 @@ describe('ReadAllRoles Controller ', () => {
       isDeleted: false,
     }];
     jest.spyOn(useCase, 'execute').mockResolvedValue(useCaseReturn);
-    const response = await sut.handle();
+    const response = await sut.handle({});
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(useCaseReturn);

@@ -75,6 +75,7 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
     const rolesData = await prisma.userHasRoles.findMany({
       where: {
         userId,
+        isDeleted: false,
         roles: {
           id: { contains: id, mode: 'insensitive' },
           role: { contains: role, mode: 'insensitive' },

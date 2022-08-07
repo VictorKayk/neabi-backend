@@ -81,6 +81,7 @@ describe('UserHasRoleRepository Implementation', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: new Date(),
+      updatedAt: new Date(),
       isDeleted: false,
     });
 
@@ -106,6 +107,7 @@ describe('UserHasRoleRepository Implementation', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: new Date(),
+      updatedAt: new Date(),
       isDeleted: false,
     });
 
@@ -114,7 +116,29 @@ describe('UserHasRoleRepository Implementation', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: roleOnUser.createdAt,
+      updatedAt: roleOnUser.updatedAt,
       isDeleted: false,
+    });
+  });
+
+  it('Should return an RoleOnUser on removeRoleFromUser success', async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(prisma.userHasRoles, 'update').mockResolvedValue({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: true,
+    });
+
+    const roleOnUser = await sut.removeRoleFromUser({ userId: 'any_userId', roleId: 'any_roleId' });
+    expect(roleOnUser).toEqual({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: roleOnUser.createdAt,
+      updatedAt: roleOnUser.updatedAt,
+      isDeleted: true,
     });
   });
 });

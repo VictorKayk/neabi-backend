@@ -20,7 +20,7 @@ describe('ReadAllRolesUseCase', () => {
   it('Should return roles data on success', async () => {
     const { sut, roleRepository } = makeSut();
 
-    const readAllUsersReturn = [
+    const readAllRolesReturn = [
       {
         id: 'any_id',
         role: 'any_role',
@@ -36,10 +36,10 @@ describe('ReadAllRolesUseCase', () => {
         isDeleted: false,
       },
     ];
-    jest.spyOn(roleRepository, 'readAllRoles').mockResolvedValue(readAllUsersReturn);
+    jest.spyOn(roleRepository, 'readAllRoles').mockResolvedValue(readAllRolesReturn);
 
     const response = await sut.execute({});
-    expect(response).toEqual(readAllUsersReturn);
+    expect(response).toEqual(readAllRolesReturn);
   });
 
   it('Should throw if readAllRoles throws', async () => {

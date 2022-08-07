@@ -59,6 +59,7 @@ describe('AddRoleToUserController', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: new Date(),
+      updatedAt: new Date(),
       isDeleted: false,
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));

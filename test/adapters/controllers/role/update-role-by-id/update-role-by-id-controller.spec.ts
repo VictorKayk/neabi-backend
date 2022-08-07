@@ -60,7 +60,11 @@ describe('UpdateRoleById Controller', () => {
     const { sut, useCase } = makeSut();
 
     const useCaseReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
@@ -104,7 +108,7 @@ describe('UpdateRoleById Controller', () => {
       body: { role: 'any_role' },
       params: { id: 'invalid_id' },
     });
-    expect(validationSpy).toHaveBeenCalledWith({ role: 'any_role' });
+    expect(validationSpy).toHaveBeenCalledWith({ id: 'invalid_id', role: 'any_role' });
   });
 
   it('Should return 400 if Validation returns an error', async () => {

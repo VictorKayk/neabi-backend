@@ -13,27 +13,32 @@ model User {
   email       String   @unique
   password    String?
   accessToken String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime
+  updatedAt   DateTime
+  isDeleted   Boolean
 
-  RolesOnUser RolesOnUser[]
+  userHasRoles UserHasRoles[]
 }
 
-model Roles {
+model Role {
   id        String   @id
   role      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime
+  updatedAt DateTime
+  isDeleted Boolean
 
-  RolesOnUser RolesOnUser[]
+  userHasRoles UserHasRoles[]
 }
 
-model RolesOnUser {
+model UserHasRoles {
   userId    String
-  rolesId   String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  roles     Roles    @relation(fields: [rolesId], references: [id])
+  roleId    String
+  createdAt DateTime
+  updatedAt DateTime
+  isDeleted Boolean
 
-  @@id([userId, rolesId])
+  user  User @relation(fields: [userId], references: [id])
+  roles Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
 }

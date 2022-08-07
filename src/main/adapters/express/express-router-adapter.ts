@@ -10,9 +10,12 @@ export function routerAdapter(controller: IController) {
         ...req.body,
         ...req.user?._json,
       },
-      id: req.id,
-      accessToken: req.accessToken,
+      user: {
+        id: req.id,
+        accessToken: req.accessToken,
+      },
       params: req.params,
+      query: req.query,
     };
     const httpResponse = await controller.handle(httpRequest);
     res.status(httpResponse.statusCode).json(httpResponse.body);

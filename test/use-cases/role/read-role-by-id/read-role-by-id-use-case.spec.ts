@@ -29,7 +29,11 @@ describe('ReadRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const findByIdReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
 
@@ -39,6 +43,7 @@ describe('ReadRoleByIdUseCase', () => {
       role: findByIdReturn.role,
       createdAt: findByIdReturn.createdAt,
       updatedAt: findByIdReturn.updatedAt,
+      isDeleted: findByIdReturn.isDeleted,
     });
   });
 });

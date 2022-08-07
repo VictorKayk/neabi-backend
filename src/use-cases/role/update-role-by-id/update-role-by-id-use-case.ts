@@ -16,12 +16,12 @@ export class UpdateRoleByIdUseCase implements IUseCase {
     if (roleOrError.isError()) return error(roleOrError.value);
 
     let roleOrNull = await this.roleRepository.findById(id);
-    if (!roleOrNull) return error(new NonExistingRoleError());
+    if (!roleOrNull || roleOrNull.isDeleted) return error(new NonExistingRoleError());
 
     roleOrNull = await this.roleRepository.findByRole(role);
     if (roleOrNull && roleOrNull.id !== id) return error(new ExistingRoleError());
 
-    const roleUpdated = await this.roleRepository.updateById({ id, role });
+    const roleUpdated = await this.roleRepository.updateById(id, { role });
     return success(roleUpdated);
   }
 }

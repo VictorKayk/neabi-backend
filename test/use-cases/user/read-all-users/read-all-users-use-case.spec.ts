@@ -1,7 +1,6 @@
 import { IUserRepository } from '@/use-cases/user/interfaces';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository } from '@/test/stubs';
-import { getUserVisibleData } from '@/use-cases/user/util';
 import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 
 type SutTypes = {
@@ -23,25 +22,33 @@ const makeSut = (): SutTypes => {
 };
 
 describe('ReadAllUsersUseCase', () => {
-  it('Should return user data on success', async () => {
+  it('Should call readAllUsers with correct values', async () => {
+    const { sut, userRepository } = makeSut();
+    const userRepositorySpy = jest.spyOn(userRepository, 'readAllUsers');
+    await sut.execute({ page: 1 });
+    expect(userRepositorySpy).toHaveBeenCalledWith({ page: 1 });
+  });
+
+  it('Should return users data on success', async () => {
     const { sut, user, userRepository } = makeSut();
 
-    const readAllUsersReturn = [
-      { ...user.build(), createdAt: new Date(), updatedAt: new Date() },
-      { ...user.build(), createdAt: new Date(), updatedAt: new Date() },
-    ];
-    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue(readAllUsersReturn);
+    const userReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
+    };
+    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue([userReturn, userReturn]);
 
-    const response = await sut.execute();
-    const readAllUsersVisibleDataReturn = readAllUsersReturn
-      .map((userData) => getUserVisibleData(userData));
-    expect(response).toEqual(readAllUsersVisibleDataReturn);
+    const response = await sut.execute({});
+    expect(response).toEqual([userReturn, userReturn]);
   });
 
   it('Should throw if readAllUsers throws', async () => {
     const { sut, userRepository } = makeSut();
     jest.spyOn(userRepository, 'readAllUsers').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute();
+    const promise = sut.execute({});
     await expect(promise).rejects.toThrow();
   });
 });

@@ -1,3 +1,4 @@
+import { IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
 import { IUserData } from '@/use-cases/user/interfaces';
 
 export interface IUserRepositoryReturnData extends IUserData {
@@ -5,4 +6,6 @@ export interface IUserRepositoryReturnData extends IUserData {
   accessToken: string,
   createdAt: Date,
   updatedAt: Date,
+  isDeleted: boolean,
+  roles: [] | IRoleRepositoryReturnData[],
 }

@@ -34,7 +34,12 @@ describe('SignUp Route', () => {
 
     jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
     jest.spyOn(prisma.user, 'create')
-      .mockResolvedValue({ ...user.build(), createdAt: new Date(), updatedAt: new Date() });
+      .mockResolvedValue({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      });
 
     await request(app)
       .post('/api/signup')
@@ -53,6 +58,7 @@ describe('SignUp Route', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     await request(app)

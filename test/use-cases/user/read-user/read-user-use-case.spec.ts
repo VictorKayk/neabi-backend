@@ -33,17 +33,16 @@ describe('ReadUserUseCase', () => {
   it('Should return user data on success', async () => {
     const { sut, userRepository, user } = makeSut();
 
-    const findByIdReturn = { ...user.build(), createdAt: new Date(), updatedAt: new Date() };
+    const findByIdReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
+    };
     jest.spyOn(userRepository, 'findById').mockResolvedValue(findByIdReturn);
 
     const response = await sut.execute(user.build().id);
-    expect(response.value).toEqual({
-      id: findByIdReturn.id,
-      name: findByIdReturn.name,
-      email: findByIdReturn.email,
-      accessToken: findByIdReturn.accessToken,
-      createdAt: findByIdReturn.createdAt,
-      updatedAt: findByIdReturn.updatedAt,
-    });
+    expect(response.value).toEqual(findByIdReturn);
   });
 });

@@ -1,5 +1,5 @@
 import { IUseCase } from '@/use-cases/interfaces';
-import { IRoleRepositoryReturnData, IRoleRepository } from '@/use-cases/role/interfaces';
+import { IRoleRepositoryReturnData, IRoleRepository, IRoleDataQuery } from '@/use-cases/role/interfaces';
 
 type Response = IRoleRepositoryReturnData[] | [];
 
@@ -8,8 +8,8 @@ export class ReadAllRolesUseCase implements IUseCase {
     private readonly roleRepository: IRoleRepository,
   ) { }
 
-  async execute(): Promise<Response> {
-    const roles = await this.roleRepository.readAllRoles();
+  async execute(roleDataQuery: IRoleDataQuery): Promise<Response> {
+    const roles = await this.roleRepository.readAllRoles(roleDataQuery);
     return roles;
   }
 }

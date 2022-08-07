@@ -2,6 +2,7 @@ import {
   IRoleRepository,
   IRoleData,
   IRoleRepositoryReturnData,
+  IRoleEditableData,
 } from '@/use-cases/role/interfaces';
 
 export const makeRoleRepository = (): IRoleRepository => {
@@ -19,6 +20,7 @@ export const makeRoleRepository = (): IRoleRepository => {
         ...roleData,
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
@@ -32,14 +34,18 @@ export const makeRoleRepository = (): IRoleRepository => {
         role: 'any_role',
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       };
     }
 
-    async updateById(roleData: IRoleData): Promise<IRoleRepositoryReturnData> {
+    async updateById(id: string, roleData: IRoleEditableData): Promise<IRoleRepositoryReturnData> {
       return {
-        ...roleData,
+        id,
         createdAt: new Date(),
         updatedAt: new Date(),
+        ...roleData,
+        isDeleted: roleData.isDeleted || false,
+        role: roleData.role || 'any_role',
       };
     }
   }

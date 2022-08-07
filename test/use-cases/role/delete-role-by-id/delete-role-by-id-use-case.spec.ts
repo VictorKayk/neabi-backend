@@ -22,7 +22,11 @@ describe('DeleteRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const findByIdReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     const deleteSpy = jest.spyOn(roleRepository, 'deleteById');
@@ -35,7 +39,11 @@ describe('DeleteRoleByIdUseCase', () => {
     const { sut, roleRepository } = makeSut();
 
     const findByIdReturn = {
-      id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
     };
     jest.spyOn(roleRepository, 'findById').mockResolvedValue(findByIdReturn);
     jest.spyOn(roleRepository, 'deleteById').mockResolvedValue(findByIdReturn);

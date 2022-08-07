@@ -22,14 +22,19 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   ...new UserBuilder().build(),
   createdAt: new Date(),
   updatedAt: new Date(),
+  isDeleted: false,
 });
 
 describe('CreateRole Route', () => {
   it('Should return 201 on create role route success', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockResolvedValue(null);
-    jest.spyOn(prisma.roles, 'create')
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.role, 'create')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app)
@@ -40,9 +45,13 @@ describe('CreateRole Route', () => {
   });
 
   it('Should return 403 if account already exists on create role route', async () => {
-    jest.spyOn(prisma.roles, 'findFirst')
+    jest.spyOn(prisma.role, 'findFirst')
       .mockResolvedValue({
-        id: 'any_id', role: 'any_role', createdAt: new Date(), updatedAt: new Date(),
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
       });
 
     await request(app)
@@ -53,7 +62,7 @@ describe('CreateRole Route', () => {
   });
 
   it('Should return 500 if create role route throws', async () => {
-    jest.spyOn(prisma.roles, 'findFirst').mockImplementation(() => { throw new Error(); });
+    jest.spyOn(prisma.role, 'findFirst').mockImplementation(() => { throw new Error(); });
 
     await request(app)
       .post('/api/role')

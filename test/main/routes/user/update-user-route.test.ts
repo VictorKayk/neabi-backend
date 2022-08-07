@@ -43,11 +43,13 @@ describe('UpdateUser Route', () => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       })
       .mockResolvedValueOnce({
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -55,6 +57,7 @@ describe('UpdateUser Route', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     await request(app).patch('/api/user')
@@ -75,11 +78,13 @@ describe('UpdateUser Route', () => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       })
       .mockResolvedValueOnce({
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -101,6 +106,7 @@ describe('UpdateUser Route', () => {
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -121,6 +127,7 @@ describe('UpdateUser Route', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     });
 
     await request(app).patch('/api/user')
@@ -140,6 +147,7 @@ describe('UpdateUser Route', () => {
       ...user.build(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      isDeleted: false,
     }).mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).patch('/api/user')

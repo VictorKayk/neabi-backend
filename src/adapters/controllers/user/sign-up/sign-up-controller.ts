@@ -8,6 +8,8 @@ import {
   forbidden,
 } from '@/adapters/util/http';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
+import { getUserVisibleData } from '@/adapters/controllers/user/utils';
+import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 
 export class SignUpController implements IController {
   constructor(
@@ -15,7 +17,7 @@ export class SignUpController implements IController {
     private readonly signUp: SignUpUseCase,
   ) { }
 
-  async handle({ body }: IHttpRequest): Promise<IHttpResponse> {
+  async handle({ body }: IHttpRequest): Promise<IHttpResponse<IUserVisibleData>> {
     try {
       const validationError = this.validation.validate(body);
       if (validationError) return badRequest(validationError);
@@ -30,7 +32,7 @@ export class SignUpController implements IController {
         return badRequest(accountOrError.value);
       }
 
-      const account = accountOrError.value;
+      const account = getUserVisibleData(accountOrError.value);
       return created(account);
     } catch (error) {
       return serverError(error as Error);

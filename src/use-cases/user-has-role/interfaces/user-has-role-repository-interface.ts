@@ -1,4 +1,4 @@
-import { IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
+import { IRoleDataQuery, IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { IUserHasRoleData, IUserHasRoleRepositoryReturnData, IUserHasRoleEditableData } from '@/use-cases/user-has-role/interfaces';
 
@@ -11,4 +11,6 @@ export interface IUserHasRoleRepository {
   updateRoleFromUser(
     userHasRole: IUserHasRoleData, userHasRoleEditableData: IUserHasRoleEditableData,
   ): Promise<IUserHasRoleRepositoryReturnData>
+  readAllRolesFromUser(userId: string, roleDataQuery: IRoleDataQuery)
+    : Promise<IRoleRepositoryReturnData[] | []>
 }

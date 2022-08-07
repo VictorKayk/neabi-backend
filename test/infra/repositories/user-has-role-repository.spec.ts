@@ -162,4 +162,73 @@ describe('UserHasRoleRepository Implementation', () => {
       isDeleted: false,
     });
   });
+
+  it('Should return all roles on readAllRolesFromUser success', async () => {
+    const { sut } = makeSut();
+
+    const userHasRoles = {
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: {
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      },
+    };
+    jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
+
+    const response = await sut.readAllRolesFromUser('any_userId', {});
+    expect(response).toEqual([userHasRoles.roles, userHasRoles.roles, userHasRoles.roles]);
+  });
+
+  it('Should return all roles with correct name on readAllRolesFromUser success', async () => {
+    const { sut } = makeSut();
+
+    const userHasRoles = {
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: {
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      },
+    };
+    jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
+
+    const response = await sut.readAllRolesFromUser('any_userId', { role: 'any' });
+    expect(response).toEqual([userHasRoles.roles, userHasRoles.roles, userHasRoles.roles]);
+  });
+
+  it('Should return all roles on the first page', async () => {
+    const { sut } = makeSut();
+
+    const userHasRoles = {
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: {
+        id: 'any_id',
+        role: 'any_role',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      },
+    };
+    jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
+
+    const response = await sut.readAllRolesFromUser('any_userId', { page: 1 });
+    expect(response).toEqual([userHasRoles.roles, userHasRoles.roles, userHasRoles.roles]);
+  });
 });

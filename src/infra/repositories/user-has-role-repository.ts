@@ -4,7 +4,7 @@ import {
   IUserHasRoleRepository,
   IUserHasRoleRepositoryReturnData,
 } from '@/use-cases/user-has-role/interfaces';
-import { IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
+import { IRoleDataQuery, IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
 import { getUserRoles } from '@/infra/repositories/utils';
@@ -68,5 +68,24 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
       data: { ...userHasRoleEditableData, updatedAt: new Date() },
     });
     return userHasRoleData;
+  }
+
+  async readAllRolesFromUser(userId: string, { id, role, page }: IRoleDataQuery):
+    Promise<[] | IRoleRepositoryReturnData[]> {
+    const rolesData = await prisma.userHasRoles.findMany({
+      where: {
+        userId,
+        isDeleted: false,
+        roles: {
+          id: { contains: id, mode: 'insensitive' },
+          role: { contains: role, mode: 'insensitive' },
+        },
+      },
+      select: { roles: true },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
+      orderBy: { isDeleted: 'asc' },
+    });
+    return getUserRoles(rolesData);
   }
 }

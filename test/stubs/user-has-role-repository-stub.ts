@@ -1,4 +1,4 @@
-import { IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
+import { IRoleDataQuery, IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import {
   IUserHasRoleData,
@@ -51,6 +51,11 @@ export const makeUserHasRoleRepository = (): IUserHasRoleRepository => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+    }
+
+    async readAllRolesFromUser(userId: string, roleDataQuery: IRoleDataQuery):
+      Promise<IRoleRepositoryReturnData[] | []> {
+      return [];
     }
   }
   return new UserHasRoleRepositoryStub();

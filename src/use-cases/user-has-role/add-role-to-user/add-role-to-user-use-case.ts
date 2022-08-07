@@ -24,7 +24,15 @@ export class AddRoleToUserUseCase implements IUseCase {
 
     const userAlreadyHasThisRoleOrNull = await this.userHasRoleRepository
       .findUserHasRole({ userId, roleId });
-    if (userAlreadyHasThisRoleOrNull) return error(new UserAlreadyHaveThisRoleError());
+
+    if (userAlreadyHasThisRoleOrNull) {
+      if (userAlreadyHasThisRoleOrNull.isDeleted) {
+        const roleData = await this.userHasRoleRepository
+          .updateRoleFromUser({ userId, roleId }, { isDeleted: false });
+        return success(roleData);
+      }
+      return error(new UserAlreadyHaveThisRoleError());
+    }
 
     const roleData = await this.userHasRoleRepository.addRoleToUser({ userId, roleId });
     return success(roleData);

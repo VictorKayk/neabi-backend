@@ -79,6 +79,36 @@ describe('AddRoleToUserUseCase', () => {
     expect(error.value).toEqual(new NonExistingRoleError());
   });
 
+  it('Should return an UserHasRole if UserHasRole already exists and have been deleted', async () => {
+    const { sut, userHasRoleRepository } = makeSut();
+
+    jest.spyOn(userHasRoleRepository, 'findUserHasRole').mockReturnValueOnce(new Promise((resolve) => resolve({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: true,
+    })));
+    jest.spyOn(userHasRoleRepository, 'updateRoleFromUser').mockReturnValueOnce(new Promise((resolve) => resolve({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    })));
+
+    const response = await sut.execute({ userId: 'any_userId', roleId: 'any_roleId' });
+    const value = response.value as IUserHasRoleRepositoryReturnData;
+    expect(response.isSuccess()).toBe(true);
+    expect(value).toEqual({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: value.createdAt,
+      updatedAt: value.updatedAt,
+      isDeleted: false,
+    });
+  });
+
   it('Should return an error if user already has the role', async () => {
     const { sut, userHasRoleRepository } = makeSut();
     jest.spyOn(userHasRoleRepository, 'findUserHasRole')

@@ -32,11 +32,9 @@ jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
   isDeleted: false,
 });
 
-describe('AddRoleToUserRoute', () => {
-  it('Should return 201 on add role to user route success', async () => {
-    jest.spyOn(prisma.userHasRoles, 'findFirst').mockResolvedValue(null);
-
-    jest.spyOn(prisma.userHasRoles, 'create')
+describe('RemoveRoleFromUserRoute', () => {
+  it('Should return 200 on remove role from user route success', async () => {
+    jest.spyOn(prisma.userHasRoles, 'findFirst')
       .mockResolvedValue({
         userId: 'any_userId',
         roleId: 'any_roleId',
@@ -44,11 +42,19 @@ describe('AddRoleToUserRoute', () => {
         updatedAt: new Date(),
         isDeleted: false,
       });
+    jest.spyOn(prisma.userHasRoles, 'update')
+      .mockResolvedValue({
+        userId: 'any_userId',
+        roleId: 'any_roleId',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: true,
+      });
 
     await request(app)
-      .post('/api/user/any_userId/role/any_roleId')
+      .delete('/api/user/any_userId/role/any_roleId')
       .set('x-access-token', 'any_encrypted_string')
-      .expect(201);
+      .expect(200);
   });
 
   it('Should return 403 if user does not exists', async () => {
@@ -60,7 +66,7 @@ describe('AddRoleToUserRoute', () => {
     }).mockResolvedValueOnce(null);
 
     await request(app)
-      .post('/api/user/any_userId/role/any_roleId')
+      .delete('/api/user/any_userId/role/any_roleId')
       .set('x-access-token', 'any_encrypted_string')
       .expect(403);
   });
@@ -69,34 +75,12 @@ describe('AddRoleToUserRoute', () => {
     jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
 
     await request(app)
-      .post('/api/user/any_userId/role/any_roleId')
+      .delete('/api/user/any_userId/role/any_roleId')
       .set('x-access-token', 'any_encrypted_string')
       .expect(403);
   });
 
-  it('Should return 403 if user already has the role', async () => {
-    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
-      id: 'any_id',
-      role: 'any_role',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      isDeleted: false,
-    });
-    jest.spyOn(prisma.userHasRoles, 'findFirst').mockResolvedValue({
-      userId: new UserBuilder().build().id,
-      roleId: 'any_id',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      isDeleted: false,
-    });
-
-    await request(app)
-      .post('/api/user/any_userId/role/any_roleId')
-      .set('x-access-token', 'any_encrypted_string')
-      .expect(403);
-  });
-
-  it('Should return 500 if add role to user route throws', async () => {
+  it('Should return 403 if user does not have the role', async () => {
     jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
       id: 'any_id',
       role: 'any_role',
@@ -105,10 +89,33 @@ describe('AddRoleToUserRoute', () => {
       isDeleted: false,
     });
     jest.spyOn(prisma.userHasRoles, 'findFirst').mockResolvedValue(null);
-    jest.spyOn(prisma.userHasRoles, 'create').mockImplementation(() => { throw new Error(); });
 
     await request(app)
-      .post('/api/user/any_userId/role/any_roleId')
+      .delete('/api/user/any_userId/role/any_roleId')
+      .set('x-access-token', 'any_encrypted_string')
+      .expect(403);
+  });
+
+  it('Should return 500 if remove role from user route throws', async () => {
+    jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    });
+    jest.spyOn(prisma.userHasRoles, 'findFirst')
+      .mockResolvedValue({
+        userId: 'any_userId',
+        roleId: 'any_roleId',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      });
+    jest.spyOn(prisma.userHasRoles, 'update').mockImplementation(() => { throw new Error(); });
+
+    await request(app)
+      .delete('/api/user/any_userId/role/any_roleId')
       .set('x-access-token', 'any_encrypted_string')
       .expect(500);
   });

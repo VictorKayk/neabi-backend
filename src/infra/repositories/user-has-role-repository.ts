@@ -25,10 +25,10 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
     return roleOrNull;
   }
 
-  async findUserHasRole(userHasRoleData: IUserHasRoleData):
+  async findUserHasRole({ roleId, userId }: IUserHasRoleData):
     Promise<IUserHasRoleRepositoryReturnData | null> {
     const userHasRoleOrNull = await prisma.userHasRoles.findFirst({
-      where: { ...userHasRoleData, isDeleted: false },
+      where: { roleId, userId, isDeleted: false },
     });
     return userHasRoleOrNull;
   }
@@ -39,8 +39,18 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
       data: {
         ...userHasRoleData,
         createdAt: new Date(),
+        updatedAt: new Date(),
         isDeleted: false,
       },
+    });
+    return role;
+  }
+
+  async removeRoleFromUser(userHasRole: IUserHasRoleData):
+    Promise<IUserHasRoleRepositoryReturnData> {
+    const role = await prisma.userHasRoles.update({
+      where: { userId_roleId: userHasRole },
+      data: { isDeleted: true, updatedAt: new Date() },
     });
     return role;
   }

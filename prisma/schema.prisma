@@ -33,10 +33,12 @@ model Role {
 model UserHasRoles {
   userId    String
   roleId    String
-  createdAt DateTime @default(now())
+  createdAt DateTime
+  updatedAt DateTime
   isDeleted Boolean
-  user      User     @relation(fields: [userId], references: [id])
-  roles     Role     @relation(fields: [roleId], references: [id])
+
+  user  User @relation(fields: [userId], references: [id])
+  roles Role @relation(fields: [roleId], references: [id])
 
   @@id([userId, roleId])
 }

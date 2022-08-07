@@ -21,6 +21,17 @@ export const makeUserHasRoleRepository = (): IUserHasRoleRepository => {
       return {
         ...userHasRole,
         createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      };
+    }
+
+    async removeRoleFromUser(userHasRole: IUserHasRoleData):
+      Promise<IUserHasRoleRepositoryReturnData> {
+      return {
+        ...userHasRole,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         isDeleted: false,
       };
     }

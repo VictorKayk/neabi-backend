@@ -22,29 +22,27 @@ const makeSut = (): SutTypes => {
 };
 
 describe('ReadAllUsersUseCase', () => {
+  it('Should call readAllUsers with correct values', async () => {
+    const { sut, userRepository } = makeSut();
+    const userRepositorySpy = jest.spyOn(userRepository, 'readAllUsers');
+    await sut.execute({ page: 1 });
+    expect(userRepositorySpy).toHaveBeenCalledWith({ page: 1 });
+  });
+
   it('Should return users data on success', async () => {
     const { sut, user, userRepository } = makeSut();
 
-    const readAllUsersReturn = [
-      {
-        ...user.build(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isDeleted: false,
-        roles: [],
-      },
-      {
-        ...user.build(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isDeleted: false,
-        roles: [],
-      },
-    ];
-    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue(readAllUsersReturn);
+    const userReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      roles: [],
+    };
+    jest.spyOn(userRepository, 'readAllUsers').mockResolvedValue([userReturn, userReturn]);
 
     const response = await sut.execute({});
-    expect(response).toEqual(response);
+    expect(response).toEqual([userReturn, userReturn]);
   });
 
   it('Should throw if readAllUsers throws', async () => {

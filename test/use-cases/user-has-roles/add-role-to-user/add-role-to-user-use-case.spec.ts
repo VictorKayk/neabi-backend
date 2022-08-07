@@ -86,12 +86,20 @@ describe('AddRoleToUserUseCase', () => {
         userId: 'any_userId',
         roleId: 'any_roleId',
         createdAt: new Date(),
+        updatedAt: new Date(),
         isDeleted: false,
       });
 
     const error = await sut.execute({ userId: 'any_userId', roleId: 'any_roleId' });
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new UserAlreadyHaveThisRoleError());
+  });
+
+  it('Should throw if findUserHasRole throws', async () => {
+    const { sut, userHasRoleRepository } = makeSut();
+    jest.spyOn(userHasRoleRepository, 'findUserHasRole').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute({ userId: 'any_userId', roleId: 'any_roleId' });
+    await expect(promise).rejects.toThrow();
   });
 
   it('Should call addRoleToUser with correct values', async () => {
@@ -117,6 +125,7 @@ describe('AddRoleToUserUseCase', () => {
       userId: 'any_userId',
       roleId: 'any_roleId',
       createdAt: value.createdAt,
+      updatedAt: value.updatedAt,
       isDeleted: false,
     });
   });

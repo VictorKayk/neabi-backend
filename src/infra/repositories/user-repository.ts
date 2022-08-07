@@ -117,7 +117,14 @@ export class UserRepository implements IUserRepository {
         id: { contains: id, mode: 'insensitive' },
         name: { contains: name, mode: 'insensitive' },
         email: { contains: email, mode: 'insensitive' },
-        userHasRoles: { some: { roles: { role: { contains: role, mode: 'insensitive' }, isDeleted: false } } },
+        userHasRoles: {
+          some: {
+            roles: {
+              role: { contains: role, mode: 'insensitive' },
+              isDeleted: false,
+            },
+          },
+        },
       },
       take: 100,
       skip: page && page >= 1 ? (page - 1) * 100 : 0,

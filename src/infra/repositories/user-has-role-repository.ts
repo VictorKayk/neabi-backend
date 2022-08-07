@@ -39,8 +39,18 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
       data: {
         ...userHasRoleData,
         createdAt: new Date(),
+        updatedAt: new Date(),
         isDeleted: false,
       },
+    });
+    return role;
+  }
+
+  async removeRoleFromUser(userHasRole: IUserHasRoleData):
+    Promise<IUserHasRoleRepositoryReturnData> {
+    const role = await prisma.userHasRoles.update({
+      where: { userId_roleId: userHasRole },
+      data: { isDeleted: true, updatedAt: new Date() },
     });
     return role;
   }

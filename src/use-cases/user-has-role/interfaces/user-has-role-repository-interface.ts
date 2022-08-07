@@ -7,4 +7,5 @@ export interface IUserHasRoleRepository {
   findRoleById(idRole: string): Promise<IRoleRepositoryReturnData | null>
   findUserHasRole(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData | null>
   addRoleToUser(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData>
+  removeRoleFromUser(userHasRole: IUserHasRoleData): Promise<IUserHasRoleRepositoryReturnData>
 }

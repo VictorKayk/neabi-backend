@@ -19,7 +19,7 @@ export class UserRepository implements IUserRepository {
       },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },
@@ -33,7 +33,7 @@ export class UserRepository implements IUserRepository {
       where: { email, isDeleted: false },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },
@@ -50,7 +50,7 @@ export class UserRepository implements IUserRepository {
       where: { id, isDeleted: false },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },
@@ -69,7 +69,7 @@ export class UserRepository implements IUserRepository {
       data: { ...userData, updatedAt: new Date() },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },
@@ -85,7 +85,7 @@ export class UserRepository implements IUserRepository {
       data: { ...userData, updatedAt: new Date() },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },
@@ -100,7 +100,7 @@ export class UserRepository implements IUserRepository {
       data: { isDeleted: true, updatedAt: new Date() },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },
@@ -124,7 +124,7 @@ export class UserRepository implements IUserRepository {
       orderBy: { isDeleted: 'asc' },
       include: {
         userHasRoles: {
-          where: { roles: { isDeleted: false } },
+          where: { isDeleted: false, roles: { isDeleted: false } },
           select: { roles: true },
         },
       },

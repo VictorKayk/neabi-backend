@@ -141,4 +141,25 @@ describe('UserHasRoleRepository Implementation', () => {
       isDeleted: true,
     });
   });
+
+  it('Should return an RoleOnUser on updateRoleFromUser success', async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(prisma.userHasRoles, 'update').mockResolvedValue({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    });
+
+    const roleOnUser = await sut.updateRoleFromUser({ userId: 'any_userId', roleId: 'any_roleId' }, { isDeleted: false });
+    expect(roleOnUser).toEqual({
+      userId: 'any_userId',
+      roleId: 'any_roleId',
+      createdAt: roleOnUser.createdAt,
+      updatedAt: roleOnUser.updatedAt,
+      isDeleted: false,
+    });
+  });
 });

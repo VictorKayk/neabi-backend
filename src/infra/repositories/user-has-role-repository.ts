@@ -1,4 +1,9 @@
-import { IUserHasRoleData, IUserHasRoleRepository, IUserHasRoleRepositoryReturnData } from '@/use-cases/user-has-role/interfaces';
+import {
+  IUserHasRoleData,
+  IUserHasRoleEditableData,
+  IUserHasRoleRepository,
+  IUserHasRoleRepositoryReturnData,
+} from '@/use-cases/user-has-role/interfaces';
 import { IRoleRepositoryReturnData } from '@/use-cases/role/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
@@ -35,7 +40,7 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
 
   async addRoleToUser(userHasRoleData: IUserHasRoleData):
     Promise<IUserHasRoleRepositoryReturnData> {
-    const role = await prisma.userHasRoles.create({
+    const userHasRole = await prisma.userHasRoles.create({
       data: {
         ...userHasRoleData,
         createdAt: new Date(),
@@ -43,15 +48,25 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
         isDeleted: false,
       },
     });
-    return role;
+    return userHasRole;
   }
 
   async removeRoleFromUser(userHasRole: IUserHasRoleData):
     Promise<IUserHasRoleRepositoryReturnData> {
-    const role = await prisma.userHasRoles.update({
+    const userHasRoleData = await prisma.userHasRoles.update({
       where: { userId_roleId: userHasRole },
       data: { isDeleted: true, updatedAt: new Date() },
     });
-    return role;
+    return userHasRoleData;
+  }
+
+  async updateRoleFromUser(
+    userHasRole: IUserHasRoleData, userHasRoleEditableData: IUserHasRoleEditableData,
+  ): Promise<IUserHasRoleRepositoryReturnData> {
+    const userHasRoleData = await prisma.userHasRoles.update({
+      where: { userId_roleId: userHasRole },
+      data: { ...userHasRoleEditableData, updatedAt: new Date() },
+    });
+    return userHasRoleData;
   }
 }

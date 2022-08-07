@@ -17,29 +17,27 @@ const makeSut = (): SutTypes => {
 };
 
 describe('ReadAllRolesUseCase', () => {
+  it('Should call readAllRoles with correct values', async () => {
+    const { sut, roleRepository } = makeSut();
+    const roleRepositorySpy = jest.spyOn(roleRepository, 'readAllRoles');
+    await sut.execute({ page: 1 });
+    expect(roleRepositorySpy).toHaveBeenCalledWith({ page: 1 });
+  });
+
   it('Should return roles data on success', async () => {
     const { sut, roleRepository } = makeSut();
 
-    const readAllRolesReturn = [
-      {
-        id: 'any_id',
-        role: 'any_role',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isDeleted: false,
-      },
-      {
-        id: 'any_id',
-        role: 'any_role',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isDeleted: false,
-      },
-    ];
-    jest.spyOn(roleRepository, 'readAllRoles').mockResolvedValue(readAllRolesReturn);
+    const roleReturn = {
+      id: 'any_id',
+      role: 'any_role',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    };
+    jest.spyOn(roleRepository, 'readAllRoles').mockResolvedValue([roleReturn, roleReturn]);
 
     const response = await sut.execute({});
-    expect(response).toEqual(readAllRolesReturn);
+    expect(response).toEqual([roleReturn, roleReturn]);
   });
 
   it('Should throw if readAllRoles throws', async () => {

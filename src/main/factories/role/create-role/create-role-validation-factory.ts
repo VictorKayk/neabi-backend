@@ -1,4 +1,4 @@
-import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/controllers/util/validations';
+import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/controllers/utils/validations';
 
 export const makeCreateRoleValidationFactory = (): ValidationComposite => new ValidationComposite([
   new RequiredFieldsValidation(['role']),

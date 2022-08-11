@@ -15,9 +15,11 @@ model User {
   accessToken String   @unique
   createdAt   DateTime
   updatedAt   DateTime
+  isVerified  Boolean
   isDeleted   Boolean
 
-  userHasRoles UserHasRoles[]
+  userHasRoles           UserHasRoles[]
+  EmailVerificationToken EmailVerificationToken[]
 }
 
 model Role {
@@ -41,4 +43,16 @@ model UserHasRoles {
   roles Role @relation(fields: [roleId], references: [id])
 
   @@id([userId, roleId])
+}
+
+model EmailVerificationToken {
+  userId    String
+  token     String   @unique
+  createdAt DateTime
+  expiresAt DateTime
+  isDeleted Boolean
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([userId])
 }

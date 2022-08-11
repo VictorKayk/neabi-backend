@@ -44,12 +44,14 @@ describe('UpdateUserById Route', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       })
       .mockResolvedValueOnce({
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -58,6 +60,7 @@ describe('UpdateUserById Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     await request(app).patch('/api/user/any_id')
@@ -79,12 +82,14 @@ describe('UpdateUserById Route', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       })
       .mockResolvedValueOnce({
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -107,6 +112,7 @@ describe('UpdateUserById Route', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -128,6 +134,7 @@ describe('UpdateUserById Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     await request(app).patch('/api/user/any_id')
@@ -148,6 +155,7 @@ describe('UpdateUserById Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     }).mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).patch('/api/user/any_id')

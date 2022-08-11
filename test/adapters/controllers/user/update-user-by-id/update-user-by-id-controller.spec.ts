@@ -75,6 +75,7 @@ describe('UpdateUserById Controller ', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     }));
 
@@ -87,6 +88,7 @@ describe('UpdateUserById Controller ', () => {
       name: makeFakeRequestAuthenticated().body.name,
       email: makeFakeRequestAuthenticated().body.email,
       accessToken: response.body.accessToken,
+      isVerified: false,
       createdAt: response.body.createdAt,
       updatedAt: response.body.updatedAt,
       isDeleted: response.body.isDeleted,

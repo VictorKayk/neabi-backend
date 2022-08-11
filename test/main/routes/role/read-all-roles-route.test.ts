@@ -22,6 +22,7 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   createdAt: new Date(),
   updatedAt: new Date(),
   isDeleted: false,
+  isVerified: false,
 });
 
 describe('ReadAllRoles Route', () => {

@@ -39,6 +39,7 @@ describe('SignUp Route', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       });
 
     await request(app)
@@ -59,6 +60,7 @@ describe('SignUp Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     await request(app)

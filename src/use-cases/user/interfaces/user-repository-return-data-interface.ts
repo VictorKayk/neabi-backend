@@ -7,5 +7,6 @@ export interface IUserRepositoryReturnData extends IUserData {
   createdAt: Date,
   updatedAt: Date,
   isDeleted: boolean,
+  isVerified: boolean,
   roles: [] | IRoleRepositoryReturnData[],
 }

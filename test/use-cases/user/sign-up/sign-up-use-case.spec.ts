@@ -98,6 +98,7 @@ describe('SignUp Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
     const error = await sut.execute(user.build());
@@ -210,6 +211,7 @@ describe('SignUp Use Case', () => {
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       password: await hasher.hash(user.build().password),
       isDeleted: false,
+      isVerified: false,
       roles: [],
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,

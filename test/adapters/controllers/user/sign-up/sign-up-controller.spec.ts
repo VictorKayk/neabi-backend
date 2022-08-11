@@ -76,6 +76,7 @@ describe('SignUpUseCase Controller ', () => {
       id: await idGenerator.generate(),
       name: makeFakeRequest().body.name,
       email: makeFakeRequest().body.email,
+      isVerified: false,
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: response.body.createdAt,
       updatedAt: response.body.updatedAt,

@@ -23,6 +23,7 @@ jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
   createdAt: new Date(),
   updatedAt: new Date(),
   isDeleted: false,
+  isVerified: false,
 });
 jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
   id: 'any_id',
@@ -57,6 +58,7 @@ describe('AddRoleToUserRoute', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     }).mockResolvedValueOnce(null);
 
     await request(app)

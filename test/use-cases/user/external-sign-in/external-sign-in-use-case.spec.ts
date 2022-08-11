@@ -84,6 +84,7 @@ describe('External Sign In Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
     const userRepositorySpy = jest.spyOn(userRepository, 'updateByEmail');
@@ -102,6 +103,7 @@ describe('External Sign In Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
     jest.spyOn(userRepository, 'updateByEmail').mockRejectedValue(new Error());
@@ -124,6 +126,7 @@ describe('External Sign In Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
 
@@ -134,6 +137,7 @@ describe('External Sign In Use Case', () => {
       ...user.build(),
       id: await idGenerator.generate(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: value.createdAt,
@@ -228,6 +232,7 @@ describe('External Sign In Use Case', () => {
       name: user.build().name,
       email: user.build().email,
       isDeleted: false,
+      isVerified: false,
       roles: [],
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: value.createdAt,

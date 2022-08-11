@@ -60,6 +60,7 @@ describe('UpdateUser Controller ', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     }));
 
@@ -69,6 +70,7 @@ describe('UpdateUser Controller ', () => {
       name: makeFakeRequestAuthenticated().body.name,
       email: makeFakeRequestAuthenticated().body.email,
       accessToken: response.body.accessToken,
+      isVerified: false,
       createdAt: response.body.createdAt,
       updatedAt: response.body.updatedAt,
     }));

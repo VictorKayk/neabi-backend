@@ -37,6 +37,7 @@ describe('DeleteUserById Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     jest.spyOn(prisma.user, 'update').mockResolvedValue({
@@ -44,6 +45,7 @@ describe('DeleteUserById Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: true,
+      isVerified: false,
     });
 
     await request(app).delete('/api/user/any_id')
@@ -59,6 +61,7 @@ describe('DeleteUserById Route', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
+        isVerified: false,
       })
       .mockResolvedValueOnce(null);
 
@@ -74,6 +77,7 @@ describe('DeleteUserById Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     }).mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).delete('/api/user/any_id')

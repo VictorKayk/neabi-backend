@@ -5,8 +5,10 @@ import { UuidAdapter } from '@/infra/universally-unique-identifier';
 import { VerificationTokenRepository, UserRepository } from '@/infra/repositories';
 import { BcryptAdapter, JwtAdapter } from '@/infra/criptography';
 import { makeSignUpValidationFactory } from '@/main/factories/user';
-import env from '@/main/config/env';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { EmailService } from '@/infra/services';
+import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
+import env from '@/main/config/env';
 
 export function makeSignUpController(): IController {
   const salt = env.bcryptSalt;
@@ -22,8 +24,19 @@ export function makeSignUpController(): IController {
     verificationTokenRepository, uuidAdapter,
   );
 
+  const emailService = new EmailService(
+    env.emailHost,
+    env.emailPort,
+    env.emailFrom,
+    { user: env.emailUser, pass: env.emailPassword },
+  );
+  const sendVerificationTokenUseCase = new SendVerificationTokenUseCase(env.baseUrl, emailService);
+
   const signUpController = new SignUpController(
-    makeSignUpValidationFactory(), signUpUseCase, addVerificationTokenUseCase,
+    makeSignUpValidationFactory(),
+    signUpUseCase,
+    addVerificationTokenUseCase,
+    sendVerificationTokenUseCase,
   );
   return signUpController;
 }

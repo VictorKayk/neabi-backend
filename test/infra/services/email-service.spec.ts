@@ -14,7 +14,7 @@ const makeSut = (): SutTypes => {
   const pass = 'any_password';
   const from = `${fromName} ${fromEmail}`;
 
-  const sut = new EmailService(host, port, { user, pass }, from);
+  const sut = new EmailService(host, port, from, { user, pass });
 
   return {
     sut,

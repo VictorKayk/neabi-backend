@@ -9,8 +9,8 @@ export class EmailService implements IEmailService {
   constructor(
     private readonly host: string,
     private readonly port: number,
-    private readonly auth: IAuth,
     private readonly from: string,
+    private readonly auth: IAuth,
   ) {
     this.transporter = nodemailer.createTransport({
       host: this.host,

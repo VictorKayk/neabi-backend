@@ -10,11 +10,13 @@ import {
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
+import { AddEmailVerificationTokenUseCase } from '@/use-cases/email-verification-token/add-email-verification-token';
 
 export class SignUpController implements IController {
   constructor(
     private readonly validation: IValidation,
     private readonly signUp: SignUpUseCase,
+    private readonly addEmailVerificationToken: AddEmailVerificationTokenUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse<IUserVisibleData>> {
@@ -30,6 +32,13 @@ export class SignUpController implements IController {
           return forbidden(accountOrError.value);
         }
         return badRequest(accountOrError.value);
+      }
+
+      const expiresInHours = 1;
+      const emailVerificationTokenOrError = await this.addEmailVerificationToken
+        .execute(accountOrError.value.id, expiresInHours);
+      if (emailVerificationTokenOrError.isError()) {
+        return forbidden(emailVerificationTokenOrError.value);
       }
 
       const account = getUserVisibleData(accountOrError.value);

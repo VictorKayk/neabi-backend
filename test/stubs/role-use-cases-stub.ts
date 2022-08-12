@@ -3,11 +3,11 @@ import { ReadRoleByIdUseCase } from '@/use-cases/role/read-role-by-id';
 import { ReadAllRolesUseCase } from '@/use-cases/role/read-all-roles';
 import { UpdateRoleByIdUseCase } from '@/use-cases/role/update-role-by-id';
 import { DeleteRoleByIdUseCase } from '@/use-cases/role/delete-role-by-id';
-import { makeRoleRepository, makeIdGenerator } from '@/test/stubs';
+import { makeRoleRepository, makeUniversallyUniqueIdentifierGenerator } from '@/test/stubs';
 
 export const makeCreateRoleUseCase = (): CreateRoleUseCase => {
   const roleRepository = makeRoleRepository();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   return new CreateRoleUseCase(roleRepository, idGenerator);
 };
 

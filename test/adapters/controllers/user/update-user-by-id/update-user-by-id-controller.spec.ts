@@ -47,7 +47,7 @@ describe('UpdateUserById Controller ', () => {
       params: { id: user.build().id },
     });
     expect(useCaseSpy).toHaveBeenCalledWith({
-      id: 'any_id',
+      id: 'any_uuid',
       userData: { ...makeFakeRequestAuthenticated().body },
     });
   });

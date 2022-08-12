@@ -1,7 +1,7 @@
 import { InvalidEmailError } from '@/entities/value-object/errors';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { IEncrypter } from '@/use-cases/user/interfaces';
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors';
 import { SignUpController } from '@/adapters/controllers/user/sign-up';
 import { IValidation } from '@/adapters/controllers/interfaces';
@@ -17,7 +17,7 @@ import {
   makeSignUpUseCase,
   makeFakeRequest,
   makeEncrypter,
-  makeIdGenerator,
+  makeUniversallyUniqueIdentifierGenerator,
   makeValidation,
 } from '@/test/stubs';
 import { error } from '@/shared';
@@ -26,7 +26,7 @@ type SutTypes = {
   sut: SignUpController,
   validation: IValidation,
   useCase: SignUpUseCase,
-  idGenerator: IIdGenerator,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
 };
 
@@ -34,7 +34,7 @@ const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const useCase = makeSignUpUseCase();
   const sut = new SignUpController(validation, useCase);
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
 
   return {

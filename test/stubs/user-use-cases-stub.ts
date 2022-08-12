@@ -6,7 +6,7 @@ import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import {
   makeUserRepository,
   makeHasher,
-  makeIdGenerator,
+  makeUniversallyUniqueIdentifierGenerator,
   makeEncrypter,
   makeHashCompare,
   makeDecrypter,
@@ -15,7 +15,7 @@ import {
 export const makeSignUpUseCase = (): SignUpUseCase => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
   return new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
 };
@@ -29,7 +29,7 @@ export const makeSignInUseCase = (): SignInUseCase => {
 
 export const makeExternalSignInUseCase = (): ExternalSignInUseCase => {
   const userRepository = makeUserRepository();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
   return new ExternalSignInUseCase(userRepository, idGenerator, encrypter);
 };

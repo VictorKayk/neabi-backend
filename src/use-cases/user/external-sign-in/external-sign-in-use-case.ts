@@ -6,7 +6,7 @@ import {
   IEncrypter,
   IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
-import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator, IUseCase } from '@/use-cases/interfaces';
 import { Either, error, success } from '@/shared';
 
 type Response = Either<
@@ -18,7 +18,7 @@ type Response = Either<
 export class ExternalSignInUseCase implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
-    private readonly idGenerator: IIdGenerator,
+    private readonly idGenerator: IUniversallyUniqueIdentifierGenerator,
     private readonly encrypter: IEncrypter,
   ) { }
 

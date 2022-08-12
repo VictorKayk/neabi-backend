@@ -1,7 +1,7 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import {
   IUserRepository,
   IHasher,
@@ -14,13 +14,13 @@ import {
   makeUserRepository,
   makeEncrypter,
   makeHasher,
-  makeIdGenerator,
+  makeUniversallyUniqueIdentifierGenerator,
 } from '@/test/stubs/';
 
 type SutTypes = {
   userRepository: IUserRepository,
   hasher: IHasher,
-  idGenerator: IIdGenerator,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
   sut: SignUpUseCase,
   user: UserBuilder,
@@ -29,7 +29,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
   const sut = new SignUpUseCase(userRepository, hasher, idGenerator, encrypter);
   const user = new UserBuilder();

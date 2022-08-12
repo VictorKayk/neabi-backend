@@ -1,6 +1,6 @@
 export class UserBuilder {
   private user = {
-    id: 'any_id',
+    id: 'any_uuid',
     name: 'any_name',
     email: 'any_email@test.com',
     password: 'any_password1',

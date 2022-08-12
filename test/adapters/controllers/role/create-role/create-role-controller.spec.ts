@@ -1,5 +1,5 @@
 import { CreateRoleUseCase } from '@/use-cases/role/create-role';
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { ExistingRoleError } from '@/use-cases/role/errors';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
@@ -11,7 +11,7 @@ import {
   badRequest,
   forbidden,
 } from '@/adapters/util/http';
-import { makeCreateRoleUseCase, makeIdGenerator, makeValidation } from '@/test/stubs';
+import { makeCreateRoleUseCase, makeUniversallyUniqueIdentifierGenerator, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { CreateRoleController } from '@/adapters/controllers/role/create-role';
 
@@ -19,14 +19,14 @@ type SutTypes = {
   sut: CreateRoleController,
   validation: IValidation,
   useCase: CreateRoleUseCase,
-  idGenerator: IIdGenerator,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
 };
 
 const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const useCase = makeCreateRoleUseCase();
   const sut = new CreateRoleController(validation, useCase);
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
 
   return {
     sut,

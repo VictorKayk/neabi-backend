@@ -5,18 +5,18 @@ import {
   IEncrypter,
   IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,
   makeEncrypter,
-  makeIdGenerator,
+  makeUniversallyUniqueIdentifierGenerator,
 } from '@/test/stubs/';
 
 type SutTypes = {
   userRepository: IUserRepository,
-  idGenerator: IIdGenerator,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
   sut: ExternalSignInUseCase,
   user: UserBuilder,
@@ -24,7 +24,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
   const sut = new ExternalSignInUseCase(userRepository, idGenerator, encrypter);
   const user = new UserBuilder();

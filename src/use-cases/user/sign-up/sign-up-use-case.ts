@@ -6,7 +6,7 @@ import {
   IUserRepository,
   IEncrypter,
 } from '@/use-cases/user/interfaces';
-import { IIdGenerator, IUseCase } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator, IUseCase } from '@/use-cases/interfaces';
 import { IUserRequired } from '@/use-cases/user/sign-up/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors/existing-user-error';
 import { Either, error, success } from '@/shared';
@@ -23,7 +23,7 @@ export class SignUpUseCase implements IUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly hasher: IHasher,
-    private readonly idGenerator: IIdGenerator,
+    private readonly idGenerator: IUniversallyUniqueIdentifierGenerator,
     private readonly encrypter: IEncrypter,
   ) { }
 

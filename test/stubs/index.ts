@@ -11,3 +11,4 @@ export * from '@/test/stubs/user-has-role-use-cases-stub';
 export * from '@/test/stubs/validation-stub';
 export * from '@/test/stubs/verification-token-repository-stub';
 export * from '@/test/stubs/verification-token-use-cases-stub';
+export * from '@/test/stubs/email-service-use-cases-stub';

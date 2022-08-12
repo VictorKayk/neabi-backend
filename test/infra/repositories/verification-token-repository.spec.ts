@@ -1,14 +1,14 @@
-import { EmailVerificationTokenRepository } from '@/infra/repositories';
+import { VerificationTokenRepository } from '@/infra/repositories';
 import { UserBuilder } from '@/test/builders/user-builder';
 import prisma from '@/main/config/prisma';
 
 type SutTypes = {
-  sut: EmailVerificationTokenRepository,
+  sut: VerificationTokenRepository,
   user: UserBuilder,
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new EmailVerificationTokenRepository();
+  const sut = new VerificationTokenRepository();
   const user = new UserBuilder();
 
   return {
@@ -17,7 +17,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('EmailVerificationTokenRepository Implementation', () => {
+describe('VerificationTokenRepository Implementation', () => {
   it('Should return an account on findUserById success', async () => {
     const { sut, user } = makeSut();
 
@@ -48,10 +48,10 @@ describe('EmailVerificationTokenRepository Implementation', () => {
     const account = await sut.findUserById('any_userId');
     expect(account).toBe(null);
   });
-  it('Should return an account on findEmailValidationTokenByUserId success', async () => {
+  it('Should return an account on findVerificationTokenByUserId success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.emailVerificationToken, 'findFirst').mockResolvedValue({
+    jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue({
       userId: 'any_userId',
       token: 'any_token',
       createdAt: new Date(),
@@ -59,7 +59,7 @@ describe('EmailVerificationTokenRepository Implementation', () => {
       isDeleted: false,
     });
 
-    const account = await sut.findEmailValidationTokenByUserId('any_userId');
+    const account = await sut.findVerificationTokenByUserId('any_userId');
     expect(account?.userId).toBe('any_userId');
     expect(account?.token).toBe('any_token');
     expect(account?.isDeleted).toBe(false);
@@ -67,19 +67,19 @@ describe('EmailVerificationTokenRepository Implementation', () => {
     expect(account?.expiresAt).toBeTruthy();
   });
 
-  it('Should return null on findEmailValidationTokenByUserId fails', async () => {
+  it('Should return null on findVerificationTokenByUserId fails', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.emailVerificationToken, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue(null);
 
-    const account = await sut.findEmailValidationTokenByUserId('any_userId');
+    const account = await sut.findVerificationTokenByUserId('any_userId');
     expect(account).toBe(null);
   });
 
-  it('Should return an EmailValidationToken on deleteEmailValidationTokenByUserId success', async () => {
+  it('Should return an VerificationToken on deleteVerificationTokenByUserId success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.emailVerificationToken, 'update').mockResolvedValue({
+    jest.spyOn(prisma.verificationToken, 'update').mockResolvedValue({
       userId: 'any_userId',
       token: 'any_token',
       createdAt: new Date(),
@@ -87,20 +87,20 @@ describe('EmailVerificationTokenRepository Implementation', () => {
       isDeleted: true,
     });
 
-    const emailVerificationToken = await sut.deleteEmailValidationTokenByUserId('any_userId');
-    expect(emailVerificationToken).toEqual({
+    const verificationToken = await sut.deleteVerificationTokenByUserId('any_userId');
+    expect(verificationToken).toEqual({
       userId: 'any_userId',
       token: 'any_token',
-      createdAt: emailVerificationToken.createdAt,
-      expiresAt: emailVerificationToken.expiresAt,
+      createdAt: verificationToken.createdAt,
+      expiresAt: verificationToken.expiresAt,
       isDeleted: true,
     });
   });
 
-  it('Should return an EmailValidationToken on add success', async () => {
+  it('Should return an VerificationToken on add success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.emailVerificationToken, 'create').mockResolvedValue({
+    jest.spyOn(prisma.verificationToken, 'create').mockResolvedValue({
       userId: 'any_userId',
       token: 'any_token',
       createdAt: new Date(),
@@ -108,12 +108,12 @@ describe('EmailVerificationTokenRepository Implementation', () => {
       isDeleted: false,
     });
 
-    const emailVerificationToken = await sut.add({ userId: 'any_userId', token: 'any_token', expiresInHours: 1 });
-    expect(emailVerificationToken).toEqual({
+    const verificationToken = await sut.add({ userId: 'any_userId', token: 'any_token', expiresInHours: 1 });
+    expect(verificationToken).toEqual({
       userId: 'any_userId',
       token: 'any_token',
-      createdAt: emailVerificationToken.createdAt,
-      expiresAt: emailVerificationToken.expiresAt,
+      createdAt: verificationToken.createdAt,
+      expiresAt: verificationToken.expiresAt,
       isDeleted: false,
     });
   });

@@ -19,16 +19,16 @@ import {
   makeEncrypter,
   makeUniversallyUniqueIdentifierGenerator,
   makeValidation,
-  makeAddEmailVerificationTokenUseCase,
+  makeAddVerificationTokenUseCase,
 } from '@/test/stubs';
 import { error, success } from '@/shared';
-import { AddEmailVerificationTokenUseCase } from '@/use-cases/email-verification-token/add-email-verification-token';
+import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 
 type SutTypes = {
   sut: SignUpController,
   validation: IValidation,
   signUpUseCase: SignUpUseCase,
-  addEmailVerificationTokenUseCase: AddEmailVerificationTokenUseCase,
+  addVerificationTokenUseCase: AddVerificationTokenUseCase,
   idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
 };
@@ -36,8 +36,8 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const signUpUseCase = makeSignUpUseCase();
-  const addEmailVerificationTokenUseCase = makeAddEmailVerificationTokenUseCase();
-  const sut = new SignUpController(validation, signUpUseCase, addEmailVerificationTokenUseCase);
+  const addVerificationTokenUseCase = makeAddVerificationTokenUseCase();
+  const sut = new SignUpController(validation, signUpUseCase, addVerificationTokenUseCase);
   const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
 
@@ -45,7 +45,7 @@ const makeSut = (): SutTypes => {
     sut,
     validation,
     signUpUseCase,
-    addEmailVerificationTokenUseCase,
+    addVerificationTokenUseCase,
     encrypter,
     idGenerator,
   };
@@ -76,10 +76,10 @@ describe('SignUpUseCase Controller ', () => {
 
   it('Should return 201 on SignUpUseCase success', async () => {
     const {
-      sut, encrypter, idGenerator, addEmailVerificationTokenUseCase,
+      sut, encrypter, idGenerator, addVerificationTokenUseCase,
     } = makeSut();
 
-    jest.spyOn(addEmailVerificationTokenUseCase, 'execute').mockResolvedValue(success({
+    jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
       userId: await idGenerator.generate(),
       token: 'any_token',
       createdAt: new Date(),
@@ -133,28 +133,28 @@ describe('SignUpUseCase Controller ', () => {
     expect(response).toEqual(forbidden(new ExistingUserError()));
   });
 
-  it('Should call EmailValidationTokenUseCase with correct values', async () => {
-    const { sut, addEmailVerificationTokenUseCase, idGenerator } = makeSut();
+  it('Should call VerificationTokenUseCase with correct values', async () => {
+    const { sut, addVerificationTokenUseCase, idGenerator } = makeSut();
 
-    const useCaseSpy = jest.spyOn(addEmailVerificationTokenUseCase, 'execute');
+    const useCaseSpy = jest.spyOn(addVerificationTokenUseCase, 'execute');
 
     await sut.handle(makeFakeRequest());
     expect(useCaseSpy).toHaveBeenCalledWith(await idGenerator.generate(), 1);
   });
 
-  it('Should return 500 if EmailValidationTokenUseCase throws', async () => {
-    const { sut, addEmailVerificationTokenUseCase } = makeSut();
+  it('Should return 500 if VerificationTokenUseCase throws', async () => {
+    const { sut, addVerificationTokenUseCase } = makeSut();
 
-    jest.spyOn(addEmailVerificationTokenUseCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
+    jest.spyOn(addVerificationTokenUseCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(serverError(new ServerError()));
   });
 
-  it('Should return 403 if user does not exists in EmailValidationTokenUseCase', async () => {
-    const { sut, addEmailVerificationTokenUseCase } = makeSut();
+  it('Should return 403 if user does not exists in VerificationTokenUseCase', async () => {
+    const { sut, addVerificationTokenUseCase } = makeSut();
 
-    jest.spyOn(addEmailVerificationTokenUseCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
+    jest.spyOn(addVerificationTokenUseCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new NonExistingUserError()),
     )));
 

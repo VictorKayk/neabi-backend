@@ -2,11 +2,11 @@ import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { SignUpController } from '@/adapters/controllers/user/sign-up';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UuidAdapter } from '@/infra/universally-unique-identifier';
-import { EmailVerificationTokenRepository, UserRepository } from '@/infra/repositories';
+import { VerificationTokenRepository, UserRepository } from '@/infra/repositories';
 import { BcryptAdapter, JwtAdapter } from '@/infra/criptography';
 import { makeSignUpValidationFactory } from '@/main/factories/user';
 import env from '@/main/config/env';
-import { AddEmailVerificationTokenUseCase } from '@/use-cases/email-verification-token/add-email-verification-token';
+import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 
 export function makeSignUpController(): IController {
   const salt = env.bcryptSalt;
@@ -17,13 +17,13 @@ export function makeSignUpController(): IController {
 
   const signUpUseCase = new SignUpUseCase(userRepository, bcryptAdapter, uuidAdapter, jwtAdapter);
 
-  const emailVerificationTokenRepository = new EmailVerificationTokenRepository();
-  const addEmailVerificationTokenUseCase = new AddEmailVerificationTokenUseCase(
-    emailVerificationTokenRepository, uuidAdapter,
+  const verificationTokenRepository = new VerificationTokenRepository();
+  const addVerificationTokenUseCase = new AddVerificationTokenUseCase(
+    verificationTokenRepository, uuidAdapter,
   );
 
   const signUpController = new SignUpController(
-    makeSignUpValidationFactory(), signUpUseCase, addEmailVerificationTokenUseCase,
+    makeSignUpValidationFactory(), signUpUseCase, addVerificationTokenUseCase,
   );
   return signUpController;
 }

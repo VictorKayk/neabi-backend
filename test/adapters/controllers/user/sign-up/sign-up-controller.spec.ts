@@ -2,7 +2,7 @@ import { InvalidEmailError } from '@/entities/value-object/errors';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { IEncrypter } from '@/use-cases/user/interfaces';
 import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
-import { ExistingUserError } from '@/use-cases/user/errors';
+import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
 import { SignUpController } from '@/adapters/controllers/user/sign-up';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
@@ -19,28 +19,33 @@ import {
   makeEncrypter,
   makeUniversallyUniqueIdentifierGenerator,
   makeValidation,
+  makeAddEmailVerificationTokenUseCase,
 } from '@/test/stubs';
-import { error } from '@/shared';
+import { error, success } from '@/shared';
+import { AddEmailVerificationTokenUseCase } from '@/use-cases/email-verification-token/add-email-verification-token';
 
 type SutTypes = {
   sut: SignUpController,
   validation: IValidation,
-  useCase: SignUpUseCase,
+  signUpUseCase: SignUpUseCase,
+  addEmailVerificationTokenUseCase: AddEmailVerificationTokenUseCase,
   idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
 };
 
 const makeSut = (): SutTypes => {
   const validation = makeValidation();
-  const useCase = makeSignUpUseCase();
-  const sut = new SignUpController(validation, useCase);
+  const signUpUseCase = makeSignUpUseCase();
+  const addEmailVerificationTokenUseCase = makeAddEmailVerificationTokenUseCase();
+  const sut = new SignUpController(validation, signUpUseCase, addEmailVerificationTokenUseCase);
   const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
 
   return {
     sut,
     validation,
-    useCase,
+    signUpUseCase,
+    addEmailVerificationTokenUseCase,
     encrypter,
     idGenerator,
   };
@@ -48,9 +53,9 @@ const makeSut = (): SutTypes => {
 
 describe('SignUpUseCase Controller ', () => {
   it('Should call SignUpUseCase with correct values', async () => {
-    const { sut, useCase } = makeSut();
+    const { sut, signUpUseCase } = makeSut();
 
-    const useCaseSpy = jest.spyOn(useCase, 'execute');
+    const useCaseSpy = jest.spyOn(signUpUseCase, 'execute');
 
     await sut.handle(makeFakeRequest());
     expect(useCaseSpy).toHaveBeenCalledWith({
@@ -60,17 +65,28 @@ describe('SignUpUseCase Controller ', () => {
     });
   });
 
-  it('Should return 500 if throws', async () => {
-    const { sut, useCase } = makeSut();
+  it('Should return 500 if SignUpUseCase throws', async () => {
+    const { sut, signUpUseCase } = makeSut();
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
+    jest.spyOn(signUpUseCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
 
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(serverError(new ServerError()));
   });
 
-  it('Should return 201 on success', async () => {
-    const { sut, encrypter, idGenerator } = makeSut();
+  it('Should return 201 on SignUpUseCase success', async () => {
+    const {
+      sut, encrypter, idGenerator, addEmailVerificationTokenUseCase,
+    } = makeSut();
+
+    jest.spyOn(addEmailVerificationTokenUseCase, 'execute').mockResolvedValue(success({
+      userId: await idGenerator.generate(),
+      token: 'any_token',
+      createdAt: new Date(),
+      expiresAt: new Date(),
+      isDeleted: false,
+    }));
+
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(created({
       id: await idGenerator.generate(),
@@ -96,14 +112,54 @@ describe('SignUpUseCase Controller ', () => {
   });
 
   it('Should return 403 if user already exists', async () => {
-    const { sut, useCase } = makeSut();
+    const { sut, signUpUseCase } = makeSut();
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
+    jest.spyOn(signUpUseCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new ExistingUserError()),
     )));
 
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(forbidden(new ExistingUserError()));
+  });
+
+  it('Should return 403 if user already exists', async () => {
+    const { sut, signUpUseCase } = makeSut();
+
+    jest.spyOn(signUpUseCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
+      error(new ExistingUserError()),
+    )));
+
+    const response = await sut.handle(makeFakeRequest());
+    expect(response).toEqual(forbidden(new ExistingUserError()));
+  });
+
+  it('Should call EmailValidationTokenUseCase with correct values', async () => {
+    const { sut, addEmailVerificationTokenUseCase, idGenerator } = makeSut();
+
+    const useCaseSpy = jest.spyOn(addEmailVerificationTokenUseCase, 'execute');
+
+    await sut.handle(makeFakeRequest());
+    expect(useCaseSpy).toHaveBeenCalledWith(await idGenerator.generate(), 1);
+  });
+
+  it('Should return 500 if EmailValidationTokenUseCase throws', async () => {
+    const { sut, addEmailVerificationTokenUseCase } = makeSut();
+
+    jest.spyOn(addEmailVerificationTokenUseCase, 'execute').mockImplementationOnce(() => { throw new Error(); });
+
+    const response = await sut.handle(makeFakeRequest());
+    expect(response).toEqual(serverError(new ServerError()));
+  });
+
+  it('Should return 403 if user does not exists in EmailValidationTokenUseCase', async () => {
+    const { sut, addEmailVerificationTokenUseCase } = makeSut();
+
+    jest.spyOn(addEmailVerificationTokenUseCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
+      error(new NonExistingUserError()),
+    )));
+
+    const response = await sut.handle(makeFakeRequest());
+    expect(response).toEqual(forbidden(new NonExistingUserError()));
   });
 
   it('Should call Validation with correct values', async () => {

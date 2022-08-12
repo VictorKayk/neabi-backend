@@ -18,8 +18,8 @@ model User {
   isVerified  Boolean
   isDeleted   Boolean
 
-  userHasRoles           UserHasRoles[]
-  EmailVerificationToken EmailVerificationToken[]
+  userHasRoles      UserHasRoles[]
+  VerificationToken VerificationToken[]
 }
 
 model Role {
@@ -45,7 +45,7 @@ model UserHasRoles {
   @@id([userId, roleId])
 }
 
-model EmailVerificationToken {
+model VerificationToken {
   userId    String
   token     String   @unique
   createdAt DateTime

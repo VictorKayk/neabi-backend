@@ -16,7 +16,7 @@ export class UserRepository implements IUserRepository {
         createdAt: new Date(),
         updatedAt: new Date(),
         isDeleted: false,
-        isVerified: false,
+        isVerified: userData.isVerified ? userData.isVerified : false,
       },
       include: {
         userHasRoles: {

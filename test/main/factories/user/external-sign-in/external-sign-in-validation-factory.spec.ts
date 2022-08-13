@@ -7,7 +7,7 @@ describe('ExternalSignIn validation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {
     makeExternalSignInValidationFactory();
     expect(ValidationComposite).toHaveBeenCalledWith([
-      new RequiredFieldsValidation(['name', 'email']),
+      new RequiredFieldsValidation(['name', 'email', 'email_verified']),
     ]);
   });
 });

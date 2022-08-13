@@ -41,21 +41,21 @@ describe('External Sign In Use Case', () => {
   it('Should call user entity with correct values', async () => {
     const { sut, user } = makeSut();
     const userSpy = jest.spyOn(User, 'create');
-    await sut.execute(user.build());
+    await sut.execute({ name: user.build().name, email: user.build().email, isVerified: true });
     expect(userSpy)
       .toHaveBeenCalledWith({ name: user.build().name, email: user.build().email });
   });
 
   it('Should return an error if name is invalid', async () => {
     const { sut, user } = makeSut();
-    const error = await sut.execute(user.emptyName().build());
+    const error = await sut.execute({ name: '', email: user.build().email, isVerified: true });
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidNameError(''));
   });
 
   it('Should return an error if email is invalid', async () => {
     const { sut, user } = makeSut();
-    const error = await sut.execute(user.emptyEmail().build());
+    const error = await sut.execute({ name: user.build().name, email: '', isVerified: true });
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new InvalidEmailError(''));
   });
@@ -63,14 +63,16 @@ describe('External Sign In Use Case', () => {
   it('Should call findByEmail with correct email', async () => {
     const { sut, user, userRepository } = makeSut();
     const userRepositorySpy = jest.spyOn(userRepository, 'findByEmail');
-    await sut.execute(user.build());
+    await sut.execute({ name: user.build().name, email: user.build().email, isVerified: true });
     expect(userRepositorySpy).toHaveBeenCalledWith(user.build().email);
   });
 
   it('Should throw if findByEmail throws', async () => {
     const { sut, userRepository, user } = makeSut();
     jest.spyOn(userRepository, 'findByEmail').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute(user.build());
+    const promise = sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     await expect(promise).rejects.toThrow();
   });
 
@@ -89,7 +91,9 @@ describe('External Sign In Use Case', () => {
     })));
     const userRepositorySpy = jest.spyOn(userRepository, 'updateByEmail');
 
-    const response = await (await sut.execute(user.build())).value as IUserRepositoryReturnData;
+    const response = await (await sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    )).value as IUserRepositoryReturnData;
     expect(userRepositorySpy).toHaveBeenCalledWith(user.build().email, {
       accessToken: await encrypter.encrypt(response.id),
     });
@@ -108,7 +112,9 @@ describe('External Sign In Use Case', () => {
     })));
     jest.spyOn(userRepository, 'updateByEmail').mockRejectedValue(new Error());
 
-    const promise = sut.execute(user.build());
+    const promise = sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     await expect(promise).rejects.toThrow();
   });
 
@@ -130,7 +136,9 @@ describe('External Sign In Use Case', () => {
       roles: [],
     })));
 
-    const response = await sut.execute(user.build());
+    const response = await sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     const value = response.value as IUserRepositoryReturnData;
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({
@@ -148,7 +156,9 @@ describe('External Sign In Use Case', () => {
   it('Should throw if IdGenerator throws', async () => {
     const { sut, user, idGenerator } = makeSut();
     jest.spyOn(idGenerator, 'generate').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute(user.build());
+    const promise = sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     await expect(promise).rejects.toThrow();
   });
 
@@ -162,14 +172,16 @@ describe('External Sign In Use Case', () => {
 
     const userRepositorySpy = jest.spyOn(userRepository, 'findById');
 
-    await sut.execute(user.build());
+    await sut.execute({ name: user.build().name, email: user.build().email, isVerified: true });
     expect(userRepositorySpy).toHaveBeenCalledWith(await idGenerator.generate());
   });
 
   it('Should throw if findById throws', async () => {
     const { sut, user, userRepository } = makeSut();
     jest.spyOn(userRepository, 'findById').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute(user.build());
+    const promise = sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     await expect(promise).rejects.toThrow();
   });
 
@@ -181,14 +193,16 @@ describe('External Sign In Use Case', () => {
       encrypter,
     } = makeSut();
     const encrypterSpy = jest.spyOn(encrypter, 'encrypt');
-    await sut.execute(user.build());
+    await sut.execute({ name: user.build().name, email: user.build().email, isVerified: true });
     expect(encrypterSpy).toHaveBeenCalledWith(await idGenerator.generate());
   });
 
   it('Should throw if Encrypter throws', async () => {
     const { sut, user, encrypter } = makeSut();
     jest.spyOn(encrypter, 'encrypt').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute(user.build());
+    const promise = sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     await expect(promise).rejects.toThrow();
   });
 
@@ -201,11 +215,12 @@ describe('External Sign In Use Case', () => {
       encrypter,
     } = makeSut();
     const userRepositorySpy = jest.spyOn(userRepository, 'add');
-    await sut.execute(user.build());
+    await sut.execute({ name: user.build().name, email: user.build().email, isVerified: true });
     expect(userRepositorySpy).toHaveBeenCalledWith({
       id: await idGenerator.generate(),
       name: user.build().name,
       email: user.build().email,
+      isVerified: true,
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
     });
   });
@@ -213,7 +228,9 @@ describe('External Sign In Use Case', () => {
   it('Should throw if add throws', async () => {
     const { sut, user, userRepository } = makeSut();
     jest.spyOn(userRepository, 'add').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
-    const promise = sut.execute(user.build());
+    const promise = sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     await expect(promise).rejects.toThrow();
   });
 
@@ -224,7 +241,9 @@ describe('External Sign In Use Case', () => {
       idGenerator,
       encrypter,
     } = makeSut();
-    const response = await sut.execute(user.build());
+    const response = await sut.execute(
+      { name: user.build().name, email: user.build().email, isVerified: true },
+    );
     const value = response.value as IUserRepositoryReturnData;
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({

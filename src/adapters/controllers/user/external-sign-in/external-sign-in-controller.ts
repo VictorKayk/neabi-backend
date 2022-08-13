@@ -1,14 +1,19 @@
+/* eslint-disable camelcase */
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import { ok, serverError, badRequest } from '@/adapters/util/http';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
+import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
 
 export class ExternalSignInController implements IController {
   constructor(
     private readonly validation: IValidation,
     private readonly externalSignIn: ExternalSignInUseCase,
+    private readonly addVerificationToken: AddVerificationTokenUseCase,
+    private readonly sendVerificationToken: SendVerificationTokenUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse<IUserVisibleData>> {
@@ -16,11 +21,32 @@ export class ExternalSignInController implements IController {
       const validationError = this.validation.validate(body);
       if (validationError) return badRequest(validationError);
 
-      const { name, email } = body;
-      const accountOrError = await this.externalSignIn.execute({ name, email });
+      const { name, email, email_verified } = body;
+      const accountOrError = await this.externalSignIn.execute(
+        { name, email, isVerified: email_verified },
+      );
       if (accountOrError.isError()) return badRequest(accountOrError.value);
-
       const account = getUserVisibleData(accountOrError.value);
+
+      if (!account.isVerified) {
+        const expiresInHours = 1;
+        const verificationTokenOrError = await this.addVerificationToken.execute(
+          account.id, expiresInHours,
+        );
+        if (verificationTokenOrError.isError()) {
+          return ok({ ...account, error: verificationTokenOrError.value });
+        }
+
+        const sendVerificationTokenOrError = await this.sendVerificationToken.execute({
+          user: { id: account.id, name: account.name, email: account.email },
+          token: verificationTokenOrError.value.token,
+          expiresInHours,
+        });
+        if (sendVerificationTokenOrError.isError()) {
+          return ok({ ...account, error: sendVerificationTokenOrError.value });
+        }
+      }
+
       return ok(account);
     } catch (error) {
       return serverError(error as Error);

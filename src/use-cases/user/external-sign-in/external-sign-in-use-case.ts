@@ -1,19 +1,11 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError } from '@/entities/value-object/errors';
-import {
-  IUserData,
-  IUserRepository,
-  IEncrypter,
-  IUserRepositoryReturnData,
-} from '@/use-cases/user/interfaces';
+import { IUserRepository, IEncrypter, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { IUniversallyUniqueIdentifierGenerator, IUseCase } from '@/use-cases/interfaces';
 import { Either, error, success } from '@/shared';
 
-type Response = Either<
-  InvalidNameError |
-  InvalidEmailError,
-  IUserRepositoryReturnData
->;
+type Response = Either<InvalidNameError | InvalidEmailError, IUserRepositoryReturnData>;
+type Request = { name: string, email: string, isVerified: boolean };
 
 export class ExternalSignInUseCase implements IUseCase {
   constructor(
@@ -22,7 +14,7 @@ export class ExternalSignInUseCase implements IUseCase {
     private readonly encrypter: IEncrypter,
   ) { }
 
-  async execute({ name, email }: IUserData): Promise<Response> {
+  async execute({ name, email, isVerified }: Request): Promise<Response> {
     const userOrError = User.create({ name, email });
     if (userOrError.isError()) return error(userOrError.value);
 
@@ -31,10 +23,7 @@ export class ExternalSignInUseCase implements IUseCase {
 
     if (userOrNull) {
       const accessToken = await this.encrypter.encrypt(userOrNull.id);
-
-      userData = await this.userRepository.updateByEmail(email, {
-        accessToken,
-      });
+      userData = await this.userRepository.updateByEmail(email, { accessToken });
     } else {
       let id: string;
       do {
@@ -49,6 +38,7 @@ export class ExternalSignInUseCase implements IUseCase {
         name,
         email,
         accessToken,
+        isVerified,
       });
     }
 

@@ -159,15 +159,26 @@ describe('SignUpUseCase Controller ', () => {
     expect(response).toEqual(serverError(new ServerError()));
   });
 
-  it('Should return 403 if user does not exists in VerificationTokenUseCase', async () => {
-    const { sut, addVerificationTokenUseCase } = makeSut();
+  it('Should return 201 and an error message if user does not exists in VerificationTokenUseCase', async () => {
+    const {
+      sut, addVerificationTokenUseCase, idGenerator, encrypter,
+    } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockImplementationOnce(() => new Promise((resolve) => resolve(
       error(new NonExistingUserError()),
     )));
 
     const response = await sut.handle(makeFakeRequest());
-    expect(response).toEqual(forbidden(new NonExistingUserError()));
+    expect(response).toEqual(created({
+      id: await idGenerator.generate(),
+      name: makeFakeRequest().body.name,
+      email: makeFakeRequest().body.email,
+      isVerified: false,
+      accessToken: await encrypter.encrypt(await idGenerator.generate()),
+      createdAt: response.body.createdAt,
+      updatedAt: response.body.updatedAt,
+      error: new NonExistingUserError(),
+    }));
   });
 
   it('Should call sendVerificationToken with correct values', async () => {
@@ -196,9 +207,9 @@ describe('SignUpUseCase Controller ', () => {
     });
   });
 
-  it('Should return 400 if sendVerificationToken return an error', async () => {
+  it('Should return 201 and an error message if sendVerificationToken return an error', async () => {
     const {
-      sut, sendVerificationToken, addVerificationTokenUseCase, idGenerator,
+      sut, sendVerificationToken, addVerificationTokenUseCase, idGenerator, encrypter,
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
@@ -211,7 +222,16 @@ describe('SignUpUseCase Controller ', () => {
     jest.spyOn(sendVerificationToken, 'execute').mockResolvedValue(error(new EmailServiceError()));
 
     const response = await sut.handle(makeFakeRequest());
-    expect(response).toEqual(badRequest(new EmailServiceError()));
+    expect(response).toEqual(created({
+      id: await idGenerator.generate(),
+      name: makeFakeRequest().body.name,
+      email: makeFakeRequest().body.email,
+      isVerified: false,
+      accessToken: await encrypter.encrypt(await idGenerator.generate()),
+      createdAt: response.body.createdAt,
+      updatedAt: response.body.updatedAt,
+      error: new EmailServiceError(),
+    }));
   });
 
   it('Should call Validation with correct values', async () => {

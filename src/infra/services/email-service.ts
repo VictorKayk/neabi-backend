@@ -36,7 +36,7 @@ export class EmailService implements IEmailService {
       text,
       html,
       attachments: attachments || [],
-    }, (err) => { if (err) console.log(err); });
+    });
     return null;
   }
 }

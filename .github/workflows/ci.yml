@@ -32,5 +32,5 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint:fix
-      - run: npm run test:coverage
+      - run: npx jest --passWithNoTests --coverage
       - run: npm run build

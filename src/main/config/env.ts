@@ -5,4 +5,10 @@ export default {
   expiresIn: process.env.JWT_EXPIRES_IN ?? '30d',
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? '',
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+  googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN ?? '',
+  baseUrl: process.env.BASE_URL ?? 'http://localhost:3000/api',
+  emailHost: process.env.EMAIL_HOST ?? '',
+  emailPort: Number(process.env.EMAIL_PORT) ?? 0,
+  emailFrom: process.env.EMAIL_FROM ?? '',
+  emailUser: process.env.EMAIL_USER ?? '',
 };

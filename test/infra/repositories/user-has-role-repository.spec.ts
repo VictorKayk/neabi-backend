@@ -53,6 +53,7 @@ describe('UserHasRoleRepository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     const account = await sut.findUserById('any_userId');

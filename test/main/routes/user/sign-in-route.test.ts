@@ -37,6 +37,7 @@ describe('SignIn Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     jest.spyOn(prisma.user, 'update').mockResolvedValue({
@@ -44,6 +45,7 @@ describe('SignIn Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     await request(app)

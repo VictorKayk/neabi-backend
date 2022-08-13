@@ -1,4 +1,4 @@
-import { IUseCase, IIdGenerator } from '@/use-cases/interfaces';
+import { IUseCase, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { IRoleRepositoryReturnData, IRoleRepository } from '@/use-cases/role/interfaces';
 import { ExistingRoleError } from '@/use-cases/role/errors';
 import { Role } from '@/entities/value-object';
@@ -11,7 +11,7 @@ type Response = Either<InvalidRoleError | ExistingRoleError, IRoleRepositoryRetu
 export class CreateRoleUseCase implements IUseCase {
   constructor(
     private readonly roleRepository: IRoleRepository,
-    private readonly idGenerator: IIdGenerator,
+    private readonly idGenerator: IUniversallyUniqueIdentifierGenerator,
   ) { }
 
   async execute(role: string): Promise<Response> {

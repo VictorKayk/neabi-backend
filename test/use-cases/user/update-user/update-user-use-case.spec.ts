@@ -25,6 +25,7 @@ const makeSut = (): SutTypes => {
     createdAt: new Date(),
     updatedAt: new Date(),
     isDeleted: false,
+    isVerified: false,
     roles: [],
   };
 
@@ -225,6 +226,7 @@ describe('UpdateUserUseCase', () => {
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,
       isDeleted: false,
+      isVerified: false,
       roles: [],
       password: 'new_password_1',
       name: 'new_name',

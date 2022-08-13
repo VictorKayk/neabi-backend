@@ -27,6 +27,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     const account = await sut.add(user.build());
@@ -47,6 +48,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     const account = await sut.findByEmail(user.build().email);
@@ -76,6 +78,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     const account = await sut.findById(user.build().id);
@@ -106,6 +109,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       userHasRoles: [{
         roles: {
           id: 'any_id',
@@ -113,6 +117,7 @@ describe('User Repository Implementation', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           isDeleted: false,
+          isVerified: false,
         },
       }],
     };
@@ -127,6 +132,7 @@ describe('User Repository Implementation', () => {
       email: userRepositoryReturn.email,
       password: userRepositoryReturn.password,
       accessToken: userRepositoryReturn.accessToken,
+      isVerified: userRepositoryReturn.isVerified,
       roles: getUserRoles(userRepositoryReturn.userHasRoles),
     };
     const account = await sut.findById(user.build().id);
@@ -141,6 +147,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     const account = await sut.updateByEmail(user.build().email, user.build());
@@ -161,6 +168,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     const account = await sut.updateById(user.build().email, user.build());
@@ -181,6 +189,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: true,
+      isVerified: false,
     });
 
     const account = await sut.deleteById(user.build().id);
@@ -201,6 +210,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     };
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);
@@ -217,6 +227,7 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     };
     jest.spyOn(prisma.user, 'findMany').mockResolvedValue([userRepositoryReturn, userRepositoryReturn]);

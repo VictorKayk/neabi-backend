@@ -28,16 +28,40 @@ jest.mock('jsonwebtoken', () => ({
   },
 }));
 
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn().mockImplementation(() => ({
+    sendMail: jest.fn(),
+  })),
+}));
+
 describe('SignUp Route', () => {
   it('Should return 201 on sign up route success', async () => {
     const { user } = makeSut();
 
-    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
+    jest.spyOn(prisma.user, 'findFirst')
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({
+        ...user.build(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+        isVerified: false,
+      });
     jest.spyOn(prisma.user, 'create')
       .mockResolvedValue({
         ...user.build(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        isDeleted: false,
+        isVerified: false,
+      });
+    jest.spyOn(prisma.verificationToken, 'create')
+      .mockResolvedValue({
+        userId: user.build().id,
+        token: 'any_token',
+        createdAt: new Date(),
+        expiresAt: new Date(),
         isDeleted: false,
       });
 
@@ -59,6 +83,7 @@ describe('SignUp Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     await request(app)

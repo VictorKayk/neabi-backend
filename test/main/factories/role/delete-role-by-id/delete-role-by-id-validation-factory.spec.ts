@@ -1,7 +1,7 @@
-import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/controllers/util/validations';
+import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/controllers/utils/validations';
 import { makeDeleteRoleByIdValidationFactory } from '@/main/factories/role';
 
-jest.mock('@/adapters/controllers/util/validations/validation-composite');
+jest.mock('@/adapters/controllers/utils/validations/validation-composite');
 
 describe('DeleteRoleById validation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {

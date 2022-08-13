@@ -1,6 +1,6 @@
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { IRoleRepositoryReturnData, IRoleRepository } from '@/use-cases/role/interfaces';
-import { makeIdGenerator, makeRoleRepository } from '@/test/stubs';
+import { makeUniversallyUniqueIdentifierGenerator, makeRoleRepository } from '@/test/stubs';
 import { Role } from '@/entities/value-object';
 import { InvalidRoleError } from '@/entities/value-object/errors';
 import { CreateRoleUseCase } from '@/use-cases/role/create-role';
@@ -9,12 +9,12 @@ import { ExistingRoleError } from '@/use-cases/role/errors';
 type SutTypes = {
   sut: CreateRoleUseCase,
   roleRepository: IRoleRepository,
-  idGenerator: IIdGenerator,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
 };
 
 const makeSut = (): SutTypes => {
   const roleRepository = makeRoleRepository();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const sut = new CreateRoleUseCase(roleRepository, idGenerator);
   return {
     sut,

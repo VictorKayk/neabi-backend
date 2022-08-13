@@ -37,6 +37,7 @@ describe('ReadUser Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     });
 
     await request(app).get('/api/user')
@@ -51,6 +52,7 @@ describe('ReadUser Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     }).mockResolvedValue(null);
 
     await request(app).get('/api/user')
@@ -65,6 +67,7 @@ describe('ReadUser Route', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
     }).mockImplementationOnce(() => { throw new Error(); });
 
     await request(app).get('/api/user')

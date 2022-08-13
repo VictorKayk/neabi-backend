@@ -1,0 +1,39 @@
+import { IEmailService } from '@/use-cases/email-service/interfaces/';
+import { Either, success, error } from '@/shared';
+import { EmailServiceError } from '@/use-cases/email-service/errors';
+import { IUseCase } from '@/use-cases/interfaces';
+
+type Response = Either<EmailServiceError, null>;
+type Request = {
+  user: { id: string, name: string, email: string },
+  token: string,
+  expiresInHours: number,
+}
+
+export class SendVerificationTokenUseCase implements IUseCase {
+  constructor(
+    private readonly baseUrl: string,
+    private readonly emailService: IEmailService,
+  ) { }
+
+  async execute({ user: { id, name, email }, token, expiresInHours }: Request): Promise<Response> {
+    try {
+      const subject = 'Verificação de Email.';
+      const text = `
+      Por favor, clique no link para confirmar seu email: link \n
+      Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.
+    `;
+      const html = `
+      <p>Por favor, clique no link para confirmar seu email: <b><a href='${this.baseUrl}/user/${id}/verify/${token}'>link</a></b></p>
+      <p><b>Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.</b></p>
+    `;
+
+      await this.emailService.send({
+        to: `${name} <${email}>`, subject, text, html,
+      });
+      return success(null);
+    } catch (e) {
+      return error(new EmailServiceError());
+    }
+  }
+}

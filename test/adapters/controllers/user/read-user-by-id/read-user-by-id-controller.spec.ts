@@ -65,6 +65,7 @@ describe('ReadUserById Controller ', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     };
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));

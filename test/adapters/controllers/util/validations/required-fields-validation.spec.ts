@@ -1,4 +1,4 @@
-import { RequiredFieldsValidation } from '@/adapters/controllers/util/validations';
+import { RequiredFieldsValidation } from '@/adapters/controllers/utils/validations';
 import { MissingParamsError } from '@/adapters/controllers/errors';
 
 interface SutTypes {

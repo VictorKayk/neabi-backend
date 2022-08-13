@@ -5,18 +5,18 @@ import {
   IEncrypter,
   IUserRepositoryReturnData,
 } from '@/use-cases/user/interfaces';
-import { IIdGenerator } from '@/use-cases/interfaces';
+import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
   makeUserRepository,
   makeEncrypter,
-  makeIdGenerator,
+  makeUniversallyUniqueIdentifierGenerator,
 } from '@/test/stubs/';
 
 type SutTypes = {
   userRepository: IUserRepository,
-  idGenerator: IIdGenerator,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
   sut: ExternalSignInUseCase,
   user: UserBuilder,
@@ -24,7 +24,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const userRepository = makeUserRepository();
-  const idGenerator = makeIdGenerator();
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
   const sut = new ExternalSignInUseCase(userRepository, idGenerator, encrypter);
   const user = new UserBuilder();
@@ -84,6 +84,7 @@ describe('External Sign In Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
     const userRepositorySpy = jest.spyOn(userRepository, 'updateByEmail');
@@ -102,6 +103,7 @@ describe('External Sign In Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
     jest.spyOn(userRepository, 'updateByEmail').mockRejectedValue(new Error());
@@ -124,6 +126,7 @@ describe('External Sign In Use Case', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
     })));
 
@@ -134,6 +137,7 @@ describe('External Sign In Use Case', () => {
       ...user.build(),
       id: await idGenerator.generate(),
       isDeleted: false,
+      isVerified: false,
       roles: [],
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: value.createdAt,
@@ -228,6 +232,7 @@ describe('External Sign In Use Case', () => {
       name: user.build().name,
       email: user.build().email,
       isDeleted: false,
+      isVerified: false,
       roles: [],
       accessToken: await encrypter.encrypt(await idGenerator.generate()),
       createdAt: value.createdAt,

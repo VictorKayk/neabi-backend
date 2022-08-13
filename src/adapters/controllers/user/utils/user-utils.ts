@@ -7,6 +7,7 @@ export function getUserVisibleData(userData: IUserRepositoryReturnData): IUserVi
     name: userData.name,
     email: userData.email,
     accessToken: userData.accessToken,
+    isVerified: userData.isVerified,
     createdAt: userData.createdAt,
     updatedAt: userData.updatedAt,
   };
@@ -19,6 +20,7 @@ export function getUserCriticalData(userData: IUserRepositoryReturnData): IUserC
     email: userData.email,
     accessToken: userData.accessToken,
     isDeleted: userData.isDeleted,
+    isVerified: userData.isVerified,
     createdAt: userData.createdAt,
     updatedAt: userData.updatedAt,
     roles: userData.roles,

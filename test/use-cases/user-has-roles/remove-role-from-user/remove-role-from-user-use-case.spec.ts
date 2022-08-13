@@ -22,6 +22,7 @@ const makeSut = (): SutTypes => {
     createdAt: new Date(),
     updatedAt: new Date(),
     isDeleted: false,
+    isVerified: false,
     roles: [{
       id: 'any_id',
       role: 'any_role',

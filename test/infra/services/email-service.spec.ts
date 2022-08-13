@@ -11,10 +11,14 @@ const makeSut = (): SutTypes => {
   const host = 'any_host';
   const port = 867;
   const user = 'any_username';
-  const pass = 'any_password';
+  const clientId = 'any_clientId';
+  const clientSecret = 'any_clientSecret';
+  const refreshToken = 'any_refreshToken';
   const from = `${fromName} ${fromEmail}`;
 
-  const sut = new EmailService(host, port, from, { user, pass });
+  const sut = new EmailService(host, port, from, {
+    user, clientId, clientSecret, refreshToken,
+  });
 
   return {
     sut,
@@ -67,9 +71,13 @@ describe('Nodemailer mail service adapter', () => {
       host: 'any_host',
       port: 867,
       auth: {
+        type: 'OAuth2',
         user: 'any_username',
-        pass: 'any_password',
+        clientId: 'any_clientId',
+        clientSecret: 'any_clientSecret',
+        refreshToken: 'any_refreshToken',
       },
+      secure: true,
     });
   });
 });

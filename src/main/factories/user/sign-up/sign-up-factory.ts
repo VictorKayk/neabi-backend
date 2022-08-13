@@ -28,7 +28,12 @@ export function makeSignUpController(): IController {
     env.emailHost,
     env.emailPort,
     env.emailFrom,
-    { user: env.emailUser, pass: env.emailPassword },
+    {
+      user: env.emailUser,
+      clientId: env.googleClientId,
+      clientSecret: env.googleClientSecret,
+      refreshToken: env.googleRefreshToken,
+    },
   );
   const sendVerificationTokenUseCase = new SendVerificationTokenUseCase(env.baseUrl, emailService);
 

@@ -1,7 +1,7 @@
 export interface IEmailOptions {
-  to: string,
+  to: string | string[],
   subject: string,
   text: string,
   html: string,
-  attachments?: Array<any>
+  attachments?: any[]
 }

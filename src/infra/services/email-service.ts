@@ -1,7 +1,7 @@
 import * as nodemailer from 'nodemailer';
 import { IEmailOptions, IEmailService } from '@/use-cases/email-service/interfaces';
 
-type IAuth = { user: string, pass: string };
+type IAuth = { user: string, clientId: string, clientSecret: string, refreshToken: string };
 
 export class EmailService implements IEmailService {
   transporter: nodemailer.Transporter
@@ -15,7 +15,14 @@ export class EmailService implements IEmailService {
     this.transporter = nodemailer.createTransport({
       host: this.host,
       port: this.port,
-      auth: this.auth,
+      auth: {
+        type: 'OAuth2',
+        user: this.auth.user,
+        clientId: this.auth.clientId,
+        clientSecret: this.auth.clientSecret,
+        refreshToken: this.auth.refreshToken,
+      },
+      secure: true,
     });
   }
 
@@ -29,7 +36,7 @@ export class EmailService implements IEmailService {
       text,
       html,
       attachments: attachments || [],
-    });
+    }, (err) => { if (err) console.log(err); });
     return null;
   }
 }

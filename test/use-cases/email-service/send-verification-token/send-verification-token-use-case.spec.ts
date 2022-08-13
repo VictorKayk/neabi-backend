@@ -56,7 +56,7 @@ describe('SendVerificationTokenUseCase', () => {
     const response = await sut.execute({
       user: { id: 'any_userId', name: 'any_name', email: 'any_email@test.com' },
       token: 'any_token',
-      expiresInHours: 1,
+      expiresInHours: 2,
     });
     expect(response.isSuccess()).toBe(true);
     expect(response.value).toBe(null);

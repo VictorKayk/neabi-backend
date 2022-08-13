@@ -35,28 +35,25 @@ export class SignUpController implements IController {
         }
         return badRequest(accountOrError.value);
       }
+      const account = getUserVisibleData(accountOrError.value);
 
       const expiresInHours = 1;
-      const verificationTokenOrError = await this.addVerificationToken
-        .execute(accountOrError.value.id, expiresInHours);
+      const verificationTokenOrError = await this.addVerificationToken.execute(
+        account.id, expiresInHours,
+      );
       if (verificationTokenOrError.isError()) {
-        return forbidden(verificationTokenOrError.value);
+        return created({ ...account, error: verificationTokenOrError.value });
       }
 
       const sendVerificationTokenOrError = await this.sendVerificationToken.execute({
-        user: {
-          id: accountOrError.value.id,
-          name: accountOrError.value.name,
-          email: accountOrError.value.email,
-        },
+        user: { id: account.id, name: account.name, email: account.email },
         token: verificationTokenOrError.value.token,
         expiresInHours,
       });
       if (sendVerificationTokenOrError.isError()) {
-        return badRequest(sendVerificationTokenOrError.value);
+        return created({ ...account, error: sendVerificationTokenOrError.value });
       }
 
-      const account = getUserVisibleData(accountOrError.value);
       return created(account);
     } catch (error) {
       return serverError(error as Error);

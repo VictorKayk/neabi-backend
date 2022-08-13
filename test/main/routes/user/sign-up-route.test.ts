@@ -30,7 +30,7 @@ jest.mock('jsonwebtoken', () => ({
 
 jest.mock('nodemailer', () => ({
   createTransport: jest.fn().mockImplementation(() => ({
-    sendMail: jest.fn(),
+    sendMail: jest.fn().mockResolvedValueOnce(null),
   })),
 }));
 

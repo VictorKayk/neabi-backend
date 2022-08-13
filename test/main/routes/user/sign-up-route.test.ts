@@ -28,6 +28,12 @@ jest.mock('jsonwebtoken', () => ({
   },
 }));
 
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn().mockImplementation(() => ({
+    sendMail: jest.fn(),
+  })),
+}));
+
 describe('SignUp Route', () => {
   it('Should return 201 on sign up route success', async () => {
     const { user } = makeSut();

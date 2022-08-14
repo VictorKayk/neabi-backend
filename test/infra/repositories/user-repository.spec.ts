@@ -27,17 +27,18 @@ describe('User Repository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
-      isVerified: false,
+      isVerified: true,
     });
 
-    const account = await sut.add(user.build());
-    expect(account.id).toBe(user.build().id);
-    expect(account.name).toBe(user.build().name);
-    expect(account.email).toBe(user.build().email);
-    expect(account.password).toBe(user.build().password);
-    expect(account.accessToken).toBe(user.build().accessToken);
-    expect(account.createdAt).toBeTruthy();
-    expect(account.updatedAt).toBeTruthy();
+    const account = await sut.add({ ...user.build(), isVerified: true });
+    expect(account).toEqual({
+      ...user.build(),
+      isDeleted: false,
+      isVerified: true,
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt,
+      roles: [],
+    });
   });
 
   it('Should return an account on findByEmail success', async () => {
@@ -151,13 +152,14 @@ describe('User Repository Implementation', () => {
     });
 
     const account = await sut.updateByEmail(user.build().email, user.build());
-    expect(account.id).toBe(user.build().id);
-    expect(account.name).toBe(user.build().name);
-    expect(account.email).toBe(user.build().email);
-    expect(account.password).toBe(user.build().password);
-    expect(account.accessToken).toBe(user.build().accessToken);
-    expect(account.createdAt).toBeTruthy();
-    expect(account.updatedAt).toBeTruthy();
+    expect(account).toEqual({
+      ...user.build(),
+      isDeleted: false,
+      isVerified: false,
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt,
+      roles: [],
+    });
   });
 
   it('Should return an account on updateById success', async () => {
@@ -172,13 +174,14 @@ describe('User Repository Implementation', () => {
     });
 
     const account = await sut.updateById(user.build().email, user.build());
-    expect(account.id).toBe(user.build().id);
-    expect(account.name).toBe(user.build().name);
-    expect(account.email).toBe(user.build().email);
-    expect(account.password).toBe(user.build().password);
-    expect(account.accessToken).toBe(user.build().accessToken);
-    expect(account.createdAt).toBeTruthy();
-    expect(account.updatedAt).toBeTruthy();
+    expect(account).toEqual({
+      ...user.build(),
+      isDeleted: false,
+      isVerified: false,
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt,
+      roles: [],
+    });
   });
 
   it('Should return an account on deleteById success', async () => {
@@ -193,13 +196,14 @@ describe('User Repository Implementation', () => {
     });
 
     const account = await sut.deleteById(user.build().id);
-    expect(account.id).toBe(user.build().id);
-    expect(account.name).toBe(user.build().name);
-    expect(account.email).toBe(user.build().email);
-    expect(account.password).toBe(user.build().password);
-    expect(account.accessToken).toBe(user.build().accessToken);
-    expect(account.createdAt).toBeTruthy();
-    expect(account.updatedAt).toBeTruthy();
+    expect(account).toEqual({
+      ...user.build(),
+      isDeleted: true,
+      isVerified: false,
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt,
+      roles: [],
+    });
   });
 
   it('Should return all accounts or an empty array on readAllUser success', async () => {

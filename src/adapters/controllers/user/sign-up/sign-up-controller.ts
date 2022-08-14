@@ -10,15 +10,11 @@ import {
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
-import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
-import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 
 export class SignUpController implements IController {
   constructor(
     private readonly validation: IValidation,
     private readonly signUp: SignUpUseCase,
-    private readonly addVerificationToken: AddVerificationTokenUseCase,
-    private readonly sendVerificationToken: SendVerificationTokenUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse<IUserVisibleData>> {
@@ -36,23 +32,6 @@ export class SignUpController implements IController {
         return badRequest(accountOrError.value);
       }
       const account = getUserVisibleData(accountOrError.value);
-
-      const expiresInHours = 1;
-      const verificationTokenOrError = await this.addVerificationToken.execute(
-        account.id, expiresInHours,
-      );
-      if (verificationTokenOrError.isError()) {
-        return created({ ...account, error: verificationTokenOrError.value });
-      }
-
-      const sendVerificationTokenOrError = await this.sendVerificationToken.execute({
-        user: { id: account.id, name: account.name, email: account.email },
-        token: verificationTokenOrError.value.token,
-        expiresInHours,
-      });
-      if (sendVerificationTokenOrError.isError()) {
-        return created({ ...account, error: sendVerificationTokenOrError.value });
-      }
 
       return created(account);
     } catch (error) {

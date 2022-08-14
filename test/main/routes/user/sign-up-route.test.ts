@@ -28,12 +28,6 @@ jest.mock('jsonwebtoken', () => ({
   },
 }));
 
-jest.mock('nodemailer', () => ({
-  createTransport: jest.fn().mockImplementation(() => ({
-    sendMail: jest.fn().mockResolvedValueOnce(null),
-  })),
-}));
-
 describe('SignUp Route', () => {
   it('Should return 201 on sign up route success', async () => {
     const { user } = makeSut();
@@ -55,14 +49,6 @@ describe('SignUp Route', () => {
         updatedAt: new Date(),
         isDeleted: false,
         isVerified: false,
-      });
-    jest.spyOn(prisma.verificationToken, 'create')
-      .mockResolvedValue({
-        userId: user.build().id,
-        token: 'any_token',
-        createdAt: new Date(),
-        expiresAt: new Date(),
-        isDeleted: false,
       });
 
     await request(app)

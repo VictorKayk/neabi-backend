@@ -1,3 +1,4 @@
+import { UserIsAlreadyVerifiedError } from '@/adapters/controllers/verification-token/errors/user-is-already-verified-error';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 import { IEncrypter } from '@/use-cases/user/interfaces';
 import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
@@ -11,6 +12,7 @@ import {
   badRequest,
   forbidden,
   ok,
+  unauthorized,
 } from '@/adapters/util/http';
 import {
   makeFakeRequest,
@@ -116,6 +118,29 @@ describe('SendVerificationTokenToUserController ', () => {
     });
 
     expect(response).toEqual(forbidden(new NonExistingUserError()));
+  });
+
+  it('Should return 401 if user is already verified', async () => {
+    const { sut, readUserUseCase, user } = makeSut();
+
+    const useCaseReturn = {
+      ...user.build(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      isVerified: true,
+      roles: [],
+    };
+    jest.spyOn(readUserUseCase, 'execute').mockResolvedValue(success(useCaseReturn));
+
+    const response = await sut.handle({
+      user: {
+        id: 'invalid_id',
+        accessToken: 'any_accessToken',
+      },
+    });
+
+    expect(response).toEqual(unauthorized(new UserIsAlreadyVerifiedError()));
   });
 
   it('Should call VerificationTokenUseCase with correct values', async () => {

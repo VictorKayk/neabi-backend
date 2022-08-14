@@ -1,21 +1,19 @@
-import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
-import { ExternalSignInController } from '@/adapters/controllers/user/external-sign-in';
+import { SendVerificationTokenToUserController } from '@/adapters/controllers/verification-token/send-verification-token-to-user';
 import { IController } from '@/adapters/controllers/interfaces';
-import { UserRepository, VerificationTokenRepository } from '@/infra/repositories';
 import { UuidAdapter } from '@/infra/universally-unique-identifier';
-import { JwtAdapter } from '@/infra/criptography';
-import { makeExternalSignInValidationFactory } from '@/main/factories/user';
+import { VerificationTokenRepository, UserRepository } from '@/infra/repositories';
+import { makeSendVerificationTokenToUserValidationFactory } from '@/main/factories/verification-token';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { EmailService } from '@/infra/services';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
+import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import env from '@/main/config/env';
 
-export function makeExternalSignInController(): IController {
-  const userRepository = new UserRepository();
-  const jwtAdapter = new JwtAdapter(env.jwtSecret, env.expiresIn);
+export function makeSendVerificationTokenToUserController(): IController {
   const uuidAdapter = new UuidAdapter();
 
-  const externalSignInUseCase = new ExternalSignInUseCase(userRepository, uuidAdapter, jwtAdapter);
+  const userRepository = new UserRepository();
+  const readUserUseCase = new ReadUserUseCase(userRepository);
 
   const verificationTokenRepository = new VerificationTokenRepository();
   const addVerificationTokenUseCase = new AddVerificationTokenUseCase(
@@ -35,11 +33,11 @@ export function makeExternalSignInController(): IController {
   );
   const sendVerificationTokenUseCase = new SendVerificationTokenUseCase(env.baseUrl, emailService);
 
-  const externalSignInController = new ExternalSignInController(
-    makeExternalSignInValidationFactory(),
-    externalSignInUseCase,
+  const sendVerificationTokenToUserController = new SendVerificationTokenToUserController(
+    makeSendVerificationTokenToUserValidationFactory(),
     addVerificationTokenUseCase,
+    readUserUseCase,
     sendVerificationTokenUseCase,
   );
-  return externalSignInController;
+  return sendVerificationTokenToUserController;
 }

@@ -18,10 +18,10 @@ import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { ExternalSignInController } from '@/adapters/controllers/user/external-sign-in';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
-import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
+import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { EmailServiceError } from '@/use-cases/email-service/errors';
+import { EmailServiceError } from '@/use-cases/errors';
 
 type SutTypes = {
   sut: ExternalSignInController,

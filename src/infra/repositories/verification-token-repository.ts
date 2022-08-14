@@ -21,18 +21,16 @@ export class VerificationTokenRepository implements IVerificationTokenRepository
   async findVerificationTokenByUserId(userId: string):
     Promise<IVerificationTokenRepositoryReturnData | null> {
     const emailVerificationTokenOrNull = await prisma.verificationToken.findFirst({
-      where: { userId },
+      where: { userId, isDeleted: false },
     });
     return emailVerificationTokenOrNull;
   }
 
-  async deleteVerificationTokenByUserId(userId: string):
-    Promise<IVerificationTokenRepositoryReturnData> {
-    const emailVerificationToken = await prisma.verificationToken.update({
-      where: { userId },
+  async deleteVerificationTokenByUserId(userId: string): Promise<void> {
+    await prisma.verificationToken.updateMany({
+      where: { userId, isDeleted: false },
       data: { isDeleted: true },
     });
-    return emailVerificationToken;
   }
 
   async add({ userId, token, expiresInHours }: IAddVerificationToken):

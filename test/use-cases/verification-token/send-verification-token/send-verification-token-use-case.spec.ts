@@ -1,7 +1,7 @@
 import { makeEmailService } from '@/test/stubs/email-service-stub';
-import { EmailServiceError } from '@/use-cases/email-service/errors';
-import { IEmailService } from '@/use-cases/email-service/interfaces';
-import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
+import { EmailServiceError } from '@/use-cases/errors';
+import { IEmailService } from '@/use-cases/interfaces';
+import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 
 type SutTypes = {
   sut: SendVerificationTokenUseCase,

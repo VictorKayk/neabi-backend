@@ -1,4 +1,4 @@
-import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token/send-verification-token-use-case';
+import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 import { InvalidEmailError } from '@/entities/value-object/errors';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { IEncrypter } from '@/use-cases/user/interfaces';
@@ -25,7 +25,7 @@ import {
 } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
-import { EmailServiceError } from '@/use-cases/email-service/errors';
+import { EmailServiceError } from '@/use-cases/errors';
 
 type SutTypes = {
   sut: SignUpController,

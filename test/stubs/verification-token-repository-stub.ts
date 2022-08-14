@@ -12,15 +12,8 @@ export const makeVerificationTokenRepository = (): IVerificationTokenRepository 
       return null;
     }
 
-    async deleteVerificationTokenByUserId(userId: string):
-      Promise<IVerificationTokenRepositoryReturnData> {
-      return {
-        userId: 'any_userId',
-        token: 'any_token',
-        createdAt: new Date(),
-        expiresAt: new Date(),
-        isDeleted: false,
-      };
+    async deleteVerificationTokenByUserId(userId: string): Promise<void> {
+      console.log(userId);
     }
 
     async add(emailVerificationTokenData: IVerificationTokenData):

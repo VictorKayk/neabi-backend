@@ -1,7 +1,7 @@
 import { IHttpResponse } from '@/adapters/interfaces';
 import { ServerError } from '@/adapters/errors';
 
-export const ok = (data: any): IHttpResponse<any> => ({
+export const ok = (data?: any): IHttpResponse<any> => ({
   statusCode: 200,
   body: data,
 });

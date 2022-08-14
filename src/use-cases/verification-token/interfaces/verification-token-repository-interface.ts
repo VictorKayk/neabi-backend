@@ -6,8 +6,7 @@ export interface IVerificationTokenRepository {
   findUserById(userId: string): Promise<IUserRepositoryReturnData | null>
   findVerificationTokenByUserId(userId: string):
     Promise<IVerificationTokenRepositoryReturnData | null>
-  deleteVerificationTokenByUserId(userId: string):
-    Promise<IVerificationTokenRepositoryReturnData>
+  deleteVerificationTokenByUserId(userId: string): Promise<void>
   add(emailVerificationTokenData: IAddVerificationToken):
     Promise<IVerificationTokenRepositoryReturnData>
 }

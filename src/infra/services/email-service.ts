@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import { IEmailOptions, IEmailService } from '@/use-cases/email-service/interfaces';
+import { IEmailOptions, IEmailService } from '@/use-cases/interfaces';
 
 type IAuth = { user: string, clientId: string, clientSecret: string, refreshToken: string };
 

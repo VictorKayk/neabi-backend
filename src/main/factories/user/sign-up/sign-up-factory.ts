@@ -7,7 +7,7 @@ import { BcryptAdapter, JwtAdapter } from '@/infra/criptography';
 import { makeSignUpValidationFactory } from '@/main/factories/user';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { EmailService } from '@/infra/services';
-import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
+import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 import env from '@/main/config/env';
 
 export function makeSignUpController(): IController {

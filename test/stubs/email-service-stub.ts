@@ -1,4 +1,4 @@
-import { IEmailOptions, IEmailService } from '@/use-cases/email-service/interfaces';
+import { IEmailOptions, IEmailService } from '@/use-cases/interfaces';
 
 export const makeEmailService = (): IEmailService => {
   class EmailServiceStub implements IEmailService {

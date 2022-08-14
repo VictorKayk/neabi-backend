@@ -11,7 +11,7 @@ import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
-import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
+import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 
 export class SignUpController implements IController {
   constructor(

@@ -1,7 +1,6 @@
-import { IEmailService } from '@/use-cases/email-service/interfaces/';
+import { IUseCase, IEmailService } from '@/use-cases/interfaces';
 import { Either, success, error } from '@/shared';
-import { EmailServiceError } from '@/use-cases/email-service/errors';
-import { IUseCase } from '@/use-cases/interfaces';
+import { EmailServiceError } from '@/use-cases/errors';
 
 type Response = Either<EmailServiceError, null>;
 type Request = {

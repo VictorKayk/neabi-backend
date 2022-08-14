@@ -6,7 +6,7 @@ import { ok, serverError, badRequest } from '@/adapters/util/http';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
-import { SendVerificationTokenUseCase } from '@/use-cases/email-service/send-verification-token';
+import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 
 export class ExternalSignInController implements IController {
   constructor(

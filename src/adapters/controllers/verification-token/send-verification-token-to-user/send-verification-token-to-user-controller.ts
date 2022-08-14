@@ -5,10 +5,12 @@ import {
   serverError,
   badRequest,
   forbidden,
+  unauthorized,
 } from '@/adapters/util/http';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
+import { UserIsAlreadyVerifiedError } from '@/adapters/controllers/verification-token/errors';
 
 export class SendVerificationTokenToUserController implements IController {
   constructor(
@@ -29,6 +31,8 @@ export class SendVerificationTokenToUserController implements IController {
       if (accountOrError.isError()) {
         return forbidden(accountOrError.value);
       }
+
+      if (accountOrError.value.isVerified) return unauthorized(new UserIsAlreadyVerifiedError());
 
       const expiresInHours = 1;
       const verificationTokenOrError = await this.addVerificationToken.execute(

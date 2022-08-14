@@ -55,7 +55,7 @@ describe('SendVerificationTokenToUser Route', () => {
   it('Should return 200 on send verification token to user route success', async () => {
     const { user } = makeSut();
 
-    await request(app).get('/api/user/verification-token')
+    await request(app).get('/api/user/verification/token')
       .set('x-access-token', user.build().accessToken).expect(200);
   });
 
@@ -70,7 +70,7 @@ describe('SendVerificationTokenToUser Route', () => {
       isVerified: false,
     }).mockResolvedValueOnce(null);
 
-    await request(app).get('/api/user/verification-token')
+    await request(app).get('/api/user/verification/token')
       .set('x-access-token', user.build().accessToken).expect(403);
   });
 
@@ -85,7 +85,7 @@ describe('SendVerificationTokenToUser Route', () => {
       isVerified: false,
     }).mockImplementationOnce(() => { throw new Error(); });
 
-    await request(app).get('/api/user/verification-token')
+    await request(app).get('/api/user/verification/token')
       .set('x-access-token', user.build().accessToken).expect(500);
   });
 });

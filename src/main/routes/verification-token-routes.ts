@@ -4,5 +4,5 @@ import { makeSendVerificationTokenToUserController } from '@/main/factories/veri
 import { authentication } from '@/main/middlewares/authentication';
 
 export function sendVerificationTokenToUser(router: Router) {
-  router.get('/user/verification-token', authentication, routerAdapter(makeSendVerificationTokenToUserController()));
+  router.get('/user/verification/token', authentication, routerAdapter(makeSendVerificationTokenToUserController()));
 }

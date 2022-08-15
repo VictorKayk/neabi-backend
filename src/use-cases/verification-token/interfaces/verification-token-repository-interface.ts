@@ -1,5 +1,5 @@
 import { IAddVerificationToken } from '@/use-cases/verification-token/add-verification-token/interfaces/add-verification-token-interface';
-import { IVerificationTokenRepositoryReturnData } from '@/use-cases/verification-token/interfaces';
+import { IVerificationTokenRepositoryReturnData, IVerificationTokenData } from '@/use-cases/verification-token/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 export interface IVerificationTokenRepository {
@@ -9,4 +9,8 @@ export interface IVerificationTokenRepository {
   deleteVerificationTokenByUserId(userId: string): Promise<void>
   add(emailVerificationTokenData: IAddVerificationToken):
     Promise<IVerificationTokenRepositoryReturnData>
+  findVerificationToken(verificationTokenData: IVerificationTokenData):
+    Promise<IVerificationTokenRepositoryReturnData | null>
+  updateUserVerification(userId: string, isVerified: boolean):
+    Promise<IUserRepositoryReturnData>
 }

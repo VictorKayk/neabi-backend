@@ -1,4 +1,3 @@
-import { UserIsAlreadyVerifiedError } from '@/adapters/controllers/verification-token/errors/user-is-already-verified-error';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 import { IEncrypter } from '@/use-cases/user/interfaces';
 import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
@@ -28,6 +27,7 @@ import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-
 import { EmailServiceError } from '@/use-cases/errors';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { UserBuilder } from '@/../test/builders';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
 
 type SutTypes = {
   sut: SendVerificationTokenToUserController,

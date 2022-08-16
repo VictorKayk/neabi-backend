@@ -124,6 +124,13 @@ describe('VerifyTokenUseCase', () => {
     expect(error.value).toEqual(new ExpiredTokenError());
   });
 
+  it('Should call deleteVerificationTokenByUserId with correct value', async () => {
+    const { sut, verificationTokenRepository } = makeSut();
+    const verificationTokenRepositorySpy = jest.spyOn(verificationTokenRepository, 'deleteVerificationTokenByUserId');
+    await sut.execute({ userId: 'any_userId', token: 'any_token' });
+    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith('any_userId');
+  });
+
   it('Should call updateUserVerification with correct value', async () => {
     const { sut, verificationTokenRepository } = makeSut();
 

@@ -10,7 +10,7 @@ import {
   serverError,
   badRequest,
   forbidden,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { makeCreateRoleUseCase, makeUniversallyUniqueIdentifierGenerator, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { CreateRoleController } from '@/adapters/controllers/role/create-role';

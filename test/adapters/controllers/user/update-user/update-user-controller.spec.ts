@@ -7,7 +7,7 @@ import {
   serverError,
   badRequest,
   forbidden,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { makeUpdateUserUseCase, makeFakeRequestAuthenticated } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UpdateUserController } from '@/adapters/controllers/user/update-user';

@@ -2,7 +2,7 @@ import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { makeUserRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
-import { serverError, unauthorized } from '@/adapters/util/http';
+import { serverError, unauthorized } from '@/adapters/utils/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { ReadUserController } from '@/adapters/controllers/user/read-user';

@@ -4,7 +4,7 @@ import { IEncrypter } from '@/use-cases/user/interfaces';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
 import { MissingParamsError } from '@/adapters/controllers/errors';
-import { serverError, badRequest } from '@/adapters/util/http';
+import { serverError, badRequest } from '@/adapters/utils/http';
 import {
   makeExternalSignInUseCase,
   makeFakeRequest,

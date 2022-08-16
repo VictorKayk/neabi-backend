@@ -1,7 +1,7 @@
 import { ReadRoleByIdUseCase } from '@/use-cases/role/read-role-by-id';
 import { NonExistingRoleError } from '@/use-cases/role/errors';
 import { ServerError } from '@/adapters/errors';
-import { badRequest, serverError, unauthorized } from '@/adapters/util/http';
+import { badRequest, serverError, unauthorized } from '@/adapters/utils/http';
 import { makeFakeRequestAuthenticated, makeReadRoleByIdUseCase, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { ReadRoleByIdController } from '@/adapters/controllers/role/read-role-by-id';

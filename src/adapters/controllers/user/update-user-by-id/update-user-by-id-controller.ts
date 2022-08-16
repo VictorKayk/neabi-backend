@@ -6,7 +6,7 @@ import {
   serverError,
   badRequest,
   forbidden,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 import { getUserCriticalData } from '@/adapters/controllers/user/utils';
 import { IUserCriticalData } from '@/adapters/controllers/user/interfaces';

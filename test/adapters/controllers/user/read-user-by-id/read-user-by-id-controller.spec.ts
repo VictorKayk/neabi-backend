@@ -2,7 +2,7 @@ import { getUserCriticalData } from '@/adapters/controllers/user/utils';
 import { makeFakeRequestAuthenticated, makeUserRepository, makeValidation } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { ServerError } from '@/adapters/errors';
-import { badRequest, serverError, unauthorized } from '@/adapters/util/http';
+import { badRequest, serverError, unauthorized } from '@/adapters/utils/http';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { ReadUserByIdController } from '@/adapters/controllers/user/read-user-by-id';

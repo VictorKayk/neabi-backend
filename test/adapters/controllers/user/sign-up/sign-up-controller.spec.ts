@@ -12,7 +12,7 @@ import {
   serverError,
   badRequest,
   forbidden,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import {
   makeSignUpUseCase,
   makeFakeRequest,

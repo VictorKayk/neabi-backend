@@ -9,7 +9,7 @@ import {
   forbidden,
   ok,
   unauthorized,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import {
   makeValidation,
   makeVerificationTokenRepository,

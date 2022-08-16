@@ -8,7 +8,7 @@ import {
   badRequest,
   forbidden,
   unauthorized,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { VerifyTokenUseCase } from '@/use-cases/verification-token/verify-token';
 import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
 

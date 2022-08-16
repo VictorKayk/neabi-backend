@@ -6,7 +6,7 @@ import {
   unauthorized,
   ok,
   badRequest,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 
 export class ReadRoleByIdController implements IController {
   constructor(

@@ -6,7 +6,7 @@ import {
   serverError,
   badRequest,
   unauthorized,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { SignInUseCase } from '@/use-cases/user/sign-in';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';

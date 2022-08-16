@@ -6,7 +6,7 @@ import {
   badRequest,
   forbidden,
   unauthorized,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';

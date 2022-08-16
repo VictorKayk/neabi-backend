@@ -23,7 +23,7 @@ export class SendVerificationTokenUseCase implements IUseCase {
       Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.
     `;
       const html = `
-      <p>Por favor, clique no link para confirmar seu email: <b><a href='${this.baseUrl}/user/${id}/verify/${token}'>link</a></b></p>
+      <p>Por favor, clique no link para confirmar seu email: <b><a href='${this.baseUrl}/user/${id}/verification/token/${token}'>link</a></b></p>
       <p><b>Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.</b></p>
     `;
 

@@ -1,7 +1,7 @@
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
 import { IController } from '@/adapters/controllers/interfaces';
-import { ok, serverError, unauthorized } from '@/adapters/util/http';
+import { ok, serverError, unauthorized } from '@/adapters/utils/http';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 

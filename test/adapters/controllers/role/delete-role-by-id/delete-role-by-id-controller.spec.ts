@@ -1,7 +1,7 @@
 import { DeleteRoleByIdUseCase } from '@/use-cases/role/delete-role-by-id';
 import { NonExistingRoleError } from '@/use-cases/role/errors';
 import { ServerError } from '@/adapters/errors';
-import { badRequest, serverError, unauthorized } from '@/adapters/util/http';
+import { badRequest, serverError, unauthorized } from '@/adapters/utils/http';
 import { makeDeleteRoleByIdUseCase, makeFakeRequestAuthenticated, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { DeleteRoleByIdController } from '@/adapters/controllers/role/delete-role-by-id';

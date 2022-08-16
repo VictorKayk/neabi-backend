@@ -6,7 +6,7 @@ import {
   serverError,
   badRequest,
   forbidden,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 
 export class ReadAllRolesFromUserController implements IController {
   constructor(

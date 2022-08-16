@@ -1,7 +1,7 @@
 import { UpdateRoleByIdUseCase } from '@/use-cases/role/update-role-by-id';
 import { NonExistingRoleError } from '@/use-cases/role/errors';
 import { ServerError } from '@/adapters/errors';
-import { badRequest, serverError, unauthorized } from '@/adapters/util/http';
+import { badRequest, serverError, unauthorized } from '@/adapters/utils/http';
 import { makeUpdateRoleByIdUseCase, makeFakeRequestAuthenticated, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { InvalidRoleError } from '@/entities/value-object/errors';

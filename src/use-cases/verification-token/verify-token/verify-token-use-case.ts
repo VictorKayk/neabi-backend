@@ -27,6 +27,8 @@ export class VerifyTokenUseCase implements IUseCase {
       return error(new ExpiredTokenError());
     }
 
+    await this.verificationTokenRepository.deleteVerificationTokenByUserId(userId);
+
     const user = await this.verificationTokenRepository
       .updateUserVerification(userId, true);
     return success(user);

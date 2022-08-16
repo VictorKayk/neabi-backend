@@ -5,7 +5,7 @@ import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
 import { MissingParamsError } from '@/adapters/controllers/errors';
-import { serverError, badRequest, unauthorized } from '@/adapters/util/http';
+import { serverError, badRequest, unauthorized } from '@/adapters/utils/http';
 import {
   makeSignInUseCase,
   makeFakeRequest,

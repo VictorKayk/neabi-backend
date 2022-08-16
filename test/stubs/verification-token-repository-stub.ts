@@ -1,3 +1,4 @@
+import { UserBuilder } from '@/test/builders/user-builder';
 import { IVerificationTokenData, IVerificationTokenRepositoryReturnData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 
@@ -23,6 +24,26 @@ export const makeVerificationTokenRepository = (): IVerificationTokenRepository 
         createdAt: new Date(),
         expiresAt: new Date(),
         isDeleted: false,
+      };
+    }
+
+    async findVerificationToken(
+      verificationTokenData: IVerificationTokenData,
+    ): Promise<IVerificationTokenRepositoryReturnData | null> {
+      return null;
+    }
+
+    async updateUserVerification(userId: string, isVerified: boolean):
+      Promise<IUserRepositoryReturnData> {
+      const user = new UserBuilder();
+      return {
+        ...user.build(),
+        id: userId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isVerified,
+        isDeleted: false,
+        roles: [],
       };
     }
   }

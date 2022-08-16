@@ -6,7 +6,7 @@ import {
   unauthorized,
   ok,
   badRequest,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { ExistingRoleError } from '@/use-cases/role/errors';
 
 export class UpdateRoleByIdController implements IController {

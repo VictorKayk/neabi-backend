@@ -2,7 +2,7 @@ import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IDecrypter } from '@/use-cases/user/interfaces';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { ServerError } from '@/adapters/errors';
-import { serverError, unauthorized } from '@/adapters/util/http';
+import { serverError, unauthorized } from '@/adapters/utils/http';
 import { makeAuthenticationUseCase, makeDecrypter } from '@/test/stubs';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';

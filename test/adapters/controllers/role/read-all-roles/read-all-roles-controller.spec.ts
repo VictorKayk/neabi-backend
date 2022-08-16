@@ -1,6 +1,6 @@
 import { ReadAllRolesUseCase } from '@/use-cases/role/read-all-roles';
 import { ServerError } from '@/adapters/errors';
-import { serverError } from '@/adapters/util/http';
+import { serverError } from '@/adapters/utils/http';
 import { makeReadAllRolesUseCase } from '@/test/stubs';
 import { success } from '@/shared';
 import { ReadAllRolesController } from '@/adapters/controllers/role/read-all-roles';

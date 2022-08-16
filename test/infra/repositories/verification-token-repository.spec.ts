@@ -48,6 +48,7 @@ describe('VerificationTokenRepository Implementation', () => {
     const account = await sut.findUserById('any_userId');
     expect(account).toBe(null);
   });
+
   it('Should return an account on findVerificationTokenByUserId success', async () => {
     const { sut } = makeSut();
 
@@ -110,5 +111,56 @@ describe('VerificationTokenRepository Implementation', () => {
       expiresAt: verificationToken.expiresAt,
       isDeleted: false,
     });
+  });
+
+  it('Should return an account on findVerificationToken success', async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue({
+      userId: 'any_userId',
+      token: 'any_token',
+      createdAt: new Date(),
+      expiresAt: new Date(),
+      isDeleted: false,
+    });
+
+    const account = await sut.findVerificationToken({ userId: 'any_userId', token: 'any_token' });
+    expect(account?.userId).toBe('any_userId');
+    expect(account?.token).toBe('any_token');
+    expect(account?.isDeleted).toBe(false);
+    expect(account?.createdAt).toBeTruthy();
+    expect(account?.expiresAt).toBeTruthy();
+  });
+
+  it('Should return null on findVerificationToken fails', async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue(null);
+
+    const account = await sut.findVerificationToken({ userId: 'any_userId', token: 'any_token' });
+    expect(account).toBe(null);
+  });
+
+  it('Should return an account on updateUserVerification success', async () => {
+    const { sut, user } = makeSut();
+
+    jest.spyOn(prisma.user, 'update').mockResolvedValue({
+      ...user.build(),
+      id: 'any_userId',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      isVerified: true,
+    });
+
+    const account = await sut.updateUserVerification('any_userId', true);
+    expect(account?.id).toBe('any_userId');
+    expect(account?.name).toBe(user.build().name);
+    expect(account?.email).toBe(user.build().email);
+    expect(account?.password).toBe(user.build().password);
+    expect(account?.accessToken).toBe(user.build().accessToken);
+    expect(account?.isVerified).toBe(true);
+    expect(account?.createdAt).toBeTruthy();
+    expect(account?.updatedAt).toBeTruthy();
   });
 });

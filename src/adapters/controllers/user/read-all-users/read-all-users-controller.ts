@@ -1,7 +1,7 @@
 import { ReadAllUsersUseCase } from '@/use-cases/user/read-all-users';
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
 import { IController } from '@/adapters/controllers/interfaces';
-import { ok, serverError } from '@/adapters/util/http';
+import { ok, serverError } from '@/adapters/utils/http';
 import { getUserCriticalData } from '@/adapters/controllers/user/utils';
 import { IUserCriticalData } from '@/adapters/controllers/user/interfaces';
 

@@ -7,7 +7,7 @@ import {
   serverError,
   badRequest,
   forbidden,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { makeReadAllRolesFromUserUseCase, makeFakeRequestAuthenticated, makeValidation } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { NonExistingUserError } from '@/use-cases/user/errors';

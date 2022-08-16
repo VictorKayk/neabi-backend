@@ -2,7 +2,7 @@
 import { ExternalSignInUseCase } from '@/use-cases/user/external-sign-in';
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
-import { ok, serverError, badRequest } from '@/adapters/util/http';
+import { ok, serverError, badRequest } from '@/adapters/utils/http';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
 

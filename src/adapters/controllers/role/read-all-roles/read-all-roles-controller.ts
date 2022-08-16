@@ -1,7 +1,7 @@
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
 import { ReadAllRolesUseCase } from '@/use-cases/role/read-all-roles';
 import { IController } from '@/adapters/controllers/interfaces';
-import { serverError, ok } from '@/adapters/util/http';
+import { serverError, ok } from '@/adapters/utils/http';
 
 export class ReadAllRolesController implements IController {
   constructor(

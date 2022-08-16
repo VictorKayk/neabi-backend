@@ -3,7 +3,7 @@ import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces'
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   badRequest, ok, serverError, unauthorized,
-} from '@/adapters/util/http';
+} from '@/adapters/utils/http';
 import { getUserCriticalData } from '@/adapters/controllers/user/utils';
 import { IUserCriticalData } from '@/adapters/controllers/user/interfaces';
 

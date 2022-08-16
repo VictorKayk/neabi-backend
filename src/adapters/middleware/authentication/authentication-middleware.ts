@@ -2,7 +2,7 @@ import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IAuthenticationResponse } from '@/use-cases/authentication/interfaces';
 import { IHttpResponse } from '@/adapters/interfaces';
 import { IMiddleware } from '@/adapters/middleware/interfaces';
-import { ok, serverError, unauthorized } from '@/adapters/util/http';
+import { ok, serverError, unauthorized } from '@/adapters/utils/http';
 
 interface IAuthenticationRequest {
   accessToken: string

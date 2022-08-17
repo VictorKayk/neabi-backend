@@ -1,18 +1,25 @@
 import { Either, success, error } from '@/shared';
-import { IUseCase } from '@/use-cases/interfaces';
+import { IHashCompare, IUseCase } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
-import { UserIsAlreadyVerifiedError, NonExistingTokenError, ExpiredTokenError } from '@/use-cases/verification-token/errors';
+import {
+  UserIsAlreadyVerifiedError, NonExistingTokenError, ExpiredTokenError, InvalidTokenError,
+} from '@/use-cases/verification-token/errors';
 import { IVerificationTokenData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 
 type Response = Either<
-  NonExistingUserError | UserIsAlreadyVerifiedError | NonExistingTokenError | ExpiredTokenError,
+  InvalidTokenError |
+  NonExistingUserError |
+  UserIsAlreadyVerifiedError |
+  NonExistingTokenError |
+  ExpiredTokenError,
   IUserRepositoryReturnData
 >;
 
 export class VerifyTokenUseCase implements IUseCase {
   constructor(
     private readonly verificationTokenRepository: IVerificationTokenRepository,
+    private readonly hashCompare: IHashCompare,
   ) { }
 
   async execute({ userId, token }: IVerificationTokenData): Promise<Response> {
@@ -21,13 +28,16 @@ export class VerifyTokenUseCase implements IUseCase {
     if (userOrNull.isVerified) return error(new UserIsAlreadyVerifiedError());
 
     const verificationTokenOrNull = await this.verificationTokenRepository
-      .findVerificationToken({ userId, token });
+      .findVerificationTokenByUserId(userId);
     if (!verificationTokenOrNull) return error(new NonExistingTokenError());
     if (verificationTokenOrNull.expiresAt < new Date(Date.now())) {
       return error(new ExpiredTokenError());
     }
 
     await this.verificationTokenRepository.deleteVerificationTokenByUserId(userId);
+
+    const compareToken = await this.hashCompare.compare(verificationTokenOrNull.token, token);
+    if (!compareToken) return error(new InvalidTokenError());
 
     const user = await this.verificationTokenRepository
       .updateUserVerification(userId, true);

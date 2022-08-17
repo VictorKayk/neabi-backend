@@ -190,14 +190,19 @@ describe('AddVerificationTokenUseCase', () => {
     });
 
     const response = await sut.execute('any_userId');
-    const value = response.value as IVerificationTokenRepositoryReturnData;
+    const value = response.value as {
+      verificationToken: IVerificationTokenRepositoryReturnData, token: string
+    };
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({
-      userId: 'any_userId',
-      token: await hasher.hash(await tokenGenerator.generate()),
-      createdAt: value.createdAt,
-      expiresAt: value.expiresAt,
-      isDeleted: false,
+      verificationToken: {
+        userId: 'any_userId',
+        token: await hasher.hash(await tokenGenerator.generate()),
+        createdAt: value.verificationToken.createdAt,
+        expiresAt: value.verificationToken.expiresAt,
+        isDeleted: false,
+      },
+      token: await tokenGenerator.generate(),
     });
   });
 });

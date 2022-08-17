@@ -197,11 +197,14 @@ describe('SendVerificationTokenToUserController ', () => {
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
-      userId: await idGenerator.generate(),
+      verificationToken: {
+        userId: await idGenerator.generate(),
+        token: 'any_hashToken',
+        createdAt: new Date(),
+        expiresAt: new Date(),
+        isDeleted: false,
+      },
       token: 'any_token',
-      createdAt: new Date(),
-      expiresAt: new Date(),
-      isDeleted: false,
     }));
     const useCaseSpy = jest.spyOn(sendVerificationToken, 'execute');
 
@@ -228,11 +231,14 @@ describe('SendVerificationTokenToUserController ', () => {
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
-      userId: await idGenerator.generate(),
+      verificationToken: {
+        userId: await idGenerator.generate(),
+        token: 'any_hashToken',
+        createdAt: new Date(),
+        expiresAt: new Date(),
+        isDeleted: false,
+      },
       token: 'any_token',
-      createdAt: new Date(),
-      expiresAt: new Date(),
-      isDeleted: false,
     }));
     jest.spyOn(sendVerificationToken, 'execute').mockResolvedValue(error(new EmailServiceError()));
 
@@ -251,11 +257,14 @@ describe('SendVerificationTokenToUserController ', () => {
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
-      userId: await idGenerator.generate(),
+      verificationToken: {
+        userId: await idGenerator.generate(),
+        token: 'any_hashToken',
+        createdAt: new Date(),
+        expiresAt: new Date(),
+        isDeleted: false,
+      },
       token: 'any_token',
-      createdAt: new Date(),
-      expiresAt: new Date(),
-      isDeleted: false,
     }));
     jest.spyOn(sendVerificationToken, 'execute').mockResolvedValue(success(null));
 

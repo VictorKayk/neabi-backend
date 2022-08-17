@@ -3,7 +3,9 @@ import { IUseCase, IUniversallyUniqueIdentifierGenerator, IHasher } from '@/use-
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IVerificationTokenRepositoryReturnData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 
-type Response = Either<NonExistingUserError, IVerificationTokenRepositoryReturnData>;
+type Response = Either<
+  NonExistingUserError, { verificationToken: IVerificationTokenRepositoryReturnData, token: string }
+>;
 
 export class AddVerificationTokenUseCase implements IUseCase {
   constructor(
@@ -21,12 +23,12 @@ export class AddVerificationTokenUseCase implements IUseCase {
     if (userAlreadyHaveAnVerificationToken) {
       await this.verificationTokenRepository.deleteVerificationTokenByUserId(userId);
     }
-
     const token = await this.tokenGenerator.generate();
     const hashedToken = await this.hasher.hash(token);
 
     const verificationToken = await this.verificationTokenRepository
       .add({ token: hashedToken, userId, expiresInHours });
-    return success(verificationToken);
+
+    return success({ verificationToken, token });
   }
 }

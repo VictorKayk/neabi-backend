@@ -1,13 +1,8 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
-import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
-import {
-  IUserRepository,
-  IHasher,
-  IEncrypter,
-  IUserRepositoryReturnData,
-} from '@/use-cases/user/interfaces';
+import { IHasher, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
+import { IUserRepository, IEncrypter, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { ExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {

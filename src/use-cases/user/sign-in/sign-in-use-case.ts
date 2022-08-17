@@ -1,12 +1,7 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
-import {
-  IHashCompare,
-  IUserRepository,
-  IEncrypter,
-  IUserRepositoryReturnData,
-} from '@/use-cases/user/interfaces';
-import { IUseCase } from '@/use-cases/interfaces';
+import { IUserRepository, IEncrypter, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IHashCompare, IUseCase } from '@/use-cases/interfaces';
 import { IUserSignIn } from '@/use-cases/user/sign-in/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
 import { Either, error, success } from '@/shared';

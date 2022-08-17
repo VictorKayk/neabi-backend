@@ -47,14 +47,6 @@ export class VerificationTokenRepository implements IVerificationTokenRepository
     return emailVerificationToken;
   }
 
-  async findVerificationToken({ userId, token }: IVerificationTokenData):
-    Promise<IVerificationTokenRepositoryReturnData | null> {
-    const verificationTokenOrNull = await prisma.verificationToken.findFirst({
-      where: { userId, token, isDeleted: false },
-    });
-    return verificationTokenOrNull;
-  }
-
   async updateUserVerification(userId: string, isVerified: boolean):
     Promise<IUserRepositoryReturnData> {
     const user = await prisma.user.update({

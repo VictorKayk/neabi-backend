@@ -1,4 +1,4 @@
-import { makeVerificationTokenRepository, makeUniversallyUniqueIdentifierGenerator } from '@/test/stubs';
+import { makeVerificationTokenRepository, makeUniversallyUniqueIdentifierGenerator, makeHasher } from '@/test/stubs';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { makeEmailService } from '@/test/stubs/email-service-stub';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
@@ -6,8 +6,9 @@ import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/sen
 export const makeAddVerificationTokenUseCase = (): AddVerificationTokenUseCase => {
   const VerificationTokenRepositoryStub = makeVerificationTokenRepository();
   const tokenGeneratorStub = makeUniversallyUniqueIdentifierGenerator();
+  const hasher = makeHasher();
   const AddVerificationTokenUseCaseStub = new AddVerificationTokenUseCase(
-    VerificationTokenRepositoryStub, tokenGeneratorStub,
+    VerificationTokenRepositoryStub, tokenGeneratorStub, hasher,
   );
   return AddVerificationTokenUseCaseStub;
 };

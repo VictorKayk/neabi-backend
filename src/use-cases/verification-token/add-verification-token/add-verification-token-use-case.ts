@@ -1,5 +1,5 @@
 import { Either, success, error } from '@/shared';
-import { IUseCase, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
+import { IUseCase, IUniversallyUniqueIdentifierGenerator, IHasher } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IVerificationTokenRepositoryReturnData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 
@@ -9,6 +9,7 @@ export class AddVerificationTokenUseCase implements IUseCase {
   constructor(
     private readonly verificationTokenRepository: IVerificationTokenRepository,
     private readonly tokenGenerator: IUniversallyUniqueIdentifierGenerator,
+    private readonly hasher: IHasher,
   ) { }
 
   async execute(userId: string, expiresInHours = 1): Promise<Response> {
@@ -22,9 +23,10 @@ export class AddVerificationTokenUseCase implements IUseCase {
     }
 
     const token = await this.tokenGenerator.generate();
+    const hashedToken = await this.hasher.hash(token);
 
     const verificationToken = await this.verificationTokenRepository
-      .add({ token, userId, expiresInHours });
+      .add({ token: hashedToken, userId, expiresInHours });
     return success(verificationToken);
   }
 }

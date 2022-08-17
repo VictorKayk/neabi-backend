@@ -7,6 +7,7 @@ import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-
 import { EmailService } from '@/infra/services';
 import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
+import { BcryptAdapter } from '@/infra/criptography';
 import env from '@/main/config/env';
 
 export function makeSendVerificationTokenToUserController(): IController {
@@ -15,9 +16,12 @@ export function makeSendVerificationTokenToUserController(): IController {
   const userRepository = new UserRepository();
   const readUserUseCase = new ReadUserUseCase(userRepository);
 
+  const salt = env.bcryptSalt;
+  const bcryptAdapter = new BcryptAdapter(salt);
+
   const verificationTokenRepository = new VerificationTokenRepository();
   const addVerificationTokenUseCase = new AddVerificationTokenUseCase(
-    verificationTokenRepository, uuidAdapter,
+    verificationTokenRepository, uuidAdapter, bcryptAdapter,
   );
 
   const emailService = new EmailService(

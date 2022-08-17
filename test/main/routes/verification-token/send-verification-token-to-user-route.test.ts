@@ -37,6 +37,9 @@ jest.mock('bcrypt', () => ({
   async compare(hash: string, value: string): Promise<boolean> {
     return new Promise((resolve) => resolve(true));
   },
+  async hash(): Promise<string> {
+    return new Promise((resolve) => resolve('hashed_password'));
+  },
 }));
 
 jest.mock('jsonwebtoken', () => ({

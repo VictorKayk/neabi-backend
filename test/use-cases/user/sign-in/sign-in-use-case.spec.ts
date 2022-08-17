@@ -1,12 +1,7 @@
 import { User } from '@/entities/user';
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
 import { SignInUseCase } from '@/use-cases/user/sign-in';
-import {
-  IUserRepository,
-  IHashCompare,
-  IEncrypter,
-  IUserRepositoryReturnData,
-} from '@/use-cases/user/interfaces';
+import { IUserRepository, IEncrypter, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import {
@@ -14,6 +9,7 @@ import {
   makeEncrypter,
   makeHashCompare,
 } from '@/test/stubs';
+import { IHashCompare } from '@/use-cases/interfaces';
 
 type SutTypes = {
   userRepository: IUserRepository,

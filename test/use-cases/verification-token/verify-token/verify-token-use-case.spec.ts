@@ -1,20 +1,25 @@
-import { UserIsAlreadyVerifiedError, NonExistingTokenError, ExpiredTokenError } from '@/use-cases/verification-token/errors';
-import { makeVerificationTokenRepository } from '@/test/stubs';
+import {
+  UserIsAlreadyVerifiedError, NonExistingTokenError, ExpiredTokenError, InvalidTokenError,
+} from '@/use-cases/verification-token/errors';
+import { makeHashCompare, makeVerificationTokenRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 import { VerifyTokenUseCase } from '@/use-cases/verification-token/verify-token';
 import { UserBuilder } from '@/test/builders';
+import { IHashCompare } from '@/use-cases/interfaces';
 
 type SutTypes = {
   sut: VerifyTokenUseCase,
+  hashCompare: IHashCompare,
   verificationTokenRepository: IVerificationTokenRepository,
   user: UserBuilder
 };
 
 const makeSut = (): SutTypes => {
   const verificationTokenRepository = makeVerificationTokenRepository();
-  const sut = new VerifyTokenUseCase(verificationTokenRepository);
+  const hashCompare = makeHashCompare();
+  const sut = new VerifyTokenUseCase(verificationTokenRepository, hashCompare);
   const user = new UserBuilder();
 
   jest.spyOn(verificationTokenRepository, 'findUserById').mockResolvedValue({
@@ -28,9 +33,9 @@ const makeSut = (): SutTypes => {
     isVerified: false,
     roles: [],
   });
-  jest.spyOn(verificationTokenRepository, 'findVerificationToken').mockResolvedValue({
+  jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue({
     userId: 'any_userId',
-    token: 'any_token',
+    token: 'any_hashToken',
     createdAt: new Date(),
     expiresAt: new Date(Date.now() + 36000000),
     isDeleted: false,
@@ -38,6 +43,7 @@ const makeSut = (): SutTypes => {
 
   return {
     sut,
+    hashCompare,
     verificationTokenRepository,
     user,
   };
@@ -89,22 +95,22 @@ describe('VerifyTokenUseCase', () => {
   it('Should call findVerificationToken with correct value', async () => {
     const { sut, verificationTokenRepository } = makeSut();
 
-    const verificationTokenRepositorySpy = jest.spyOn(verificationTokenRepository, 'findVerificationToken');
+    const verificationTokenRepositorySpy = jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId');
 
     await sut.execute({ userId: 'any_userId', token: 'any_token' });
-    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith({ userId: 'any_userId', token: 'any_token' });
+    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith('any_userId');
   });
 
   it('Should throw if findVerificationToken throws', async () => {
     const { sut, verificationTokenRepository } = makeSut();
-    jest.spyOn(verificationTokenRepository, 'findVerificationToken').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
     const promise = sut.execute({ userId: 'any_userId', token: 'any_token' });
     await expect(promise).rejects.toThrow();
   });
 
   it('Should return an error if verification token does not exists', async () => {
     const { sut, verificationTokenRepository } = makeSut();
-    jest.spyOn(verificationTokenRepository, 'findVerificationToken').mockResolvedValue(null);
+    jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue(null);
     const error = await sut.execute({ userId: 'any_userId', token: 'any_token' });
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new NonExistingTokenError());
@@ -112,9 +118,9 @@ describe('VerifyTokenUseCase', () => {
 
   it('Should return an error if verification token is already expired', async () => {
     const { sut, verificationTokenRepository } = makeSut();
-    jest.spyOn(verificationTokenRepository, 'findVerificationToken').mockResolvedValue({
+    jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue({
       userId: 'any_userId',
-      token: 'any_token',
+      token: 'any_hashToken',
       createdAt: new Date(),
       expiresAt: new Date('2020-12-31'),
       isDeleted: false,
@@ -122,6 +128,28 @@ describe('VerifyTokenUseCase', () => {
     const error = await sut.execute({ userId: 'any_userId', token: 'any_token' });
     expect(error.isError()).toBe(true);
     expect(error.value).toEqual(new ExpiredTokenError());
+  });
+
+  it('Should call HashCompare with correct token', async () => {
+    const { sut, user, hashCompare } = makeSut();
+    const hashCompareSpy = jest.spyOn(hashCompare, 'compare');
+    await sut.execute({ userId: 'any_userId', token: 'any_token' });
+    expect(hashCompareSpy).toHaveBeenCalledWith('any_hashToken', 'any_token');
+  });
+
+  it('Should throw if HashCompare throws', async () => {
+    const { sut, hashCompare } = makeSut();
+    jest.spyOn(hashCompare, 'compare').mockRejectedValue(new Error());
+    const promise = sut.execute({ userId: 'any_userId', token: 'any_token' });
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('Should return an error if HashCompare fails', async () => {
+    const { sut, hashCompare } = makeSut();
+    jest.spyOn(hashCompare, 'compare').mockReturnValueOnce(new Promise((resolve) => resolve(false)));
+    const error = await sut.execute({ userId: 'any_userId', token: 'any_token' });
+    expect(error.value)
+      .toEqual(new InvalidTokenError());
   });
 
   it('Should call deleteVerificationTokenByUserId with correct value', async () => {

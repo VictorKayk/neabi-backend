@@ -27,12 +27,6 @@ export const makeVerificationTokenRepository = (): IVerificationTokenRepository 
       };
     }
 
-    async findVerificationToken(
-      verificationTokenData: IVerificationTokenData,
-    ): Promise<IVerificationTokenRepositoryReturnData | null> {
-      return null;
-    }
-
     async updateUserVerification(userId: string, isVerified: boolean):
       Promise<IUserRepositoryReturnData> {
       const user = new UserBuilder();

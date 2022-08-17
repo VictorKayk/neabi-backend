@@ -36,7 +36,6 @@ const mailOptions: IEmailOptions = {
   subject,
   text: emailBody,
   html: emailBodyHtml,
-  attachments: [],
 };
 
 jest.mock('nodemailer');
@@ -57,7 +56,7 @@ describe('Nodemailer mail service adapter', () => {
 
     sendMailMock.mockReturnValueOnce('ok');
 
-    const response = await sut.send(mailOptions);
+    const response = await sut.send({ ...mailOptions, attachments: [] });
     expect(response).toBe(null);
   });
 

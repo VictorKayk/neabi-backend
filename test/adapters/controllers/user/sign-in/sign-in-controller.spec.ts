@@ -1,6 +1,6 @@
 import { InvalidEmailError } from '@/entities/value-object/errors';
 import { SignInUseCase } from '@/use-cases/user/sign-in';
-import { IHashCompare, IEncrypter } from '@/use-cases/user/interfaces';
+import { IEncrypter } from '@/use-cases/user/interfaces';
 import { InvalidEmailOrPasswordError } from '@/use-cases/user/errors';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
@@ -16,6 +16,7 @@ import {
 import { UserBuilder } from '@/test/builders/user-builder';
 import { error, success } from '@/shared';
 import { SignInController } from '@/adapters/controllers/user/sign-in';
+import { IHashCompare } from '@/use-cases/interfaces';
 
 type SutTypes = {
   sut: SignInController,

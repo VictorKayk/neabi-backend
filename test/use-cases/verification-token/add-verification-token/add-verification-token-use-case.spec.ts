@@ -1,7 +1,7 @@
 import { makeUniversallyUniqueIdentifierGenerator } from '@/test/stubs/universally-unique-identifier-generator-stub';
-import { makeVerificationTokenRepository } from '@/test/stubs';
+import { makeHasher, makeVerificationTokenRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
+import { IHasher, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { IVerificationTokenRepositoryReturnData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 
@@ -9,13 +9,15 @@ type SutTypes = {
   sut: AddVerificationTokenUseCase,
   verificationTokenRepository: IVerificationTokenRepository,
   tokenGenerator: IUniversallyUniqueIdentifierGenerator,
+  hasher: IHasher,
 };
 
 const makeSut = (): SutTypes => {
   const tokenGenerator = makeUniversallyUniqueIdentifierGenerator();
   const verificationTokenRepository = makeVerificationTokenRepository();
+  const hasher = makeHasher();
   const sut = new AddVerificationTokenUseCase(
-    verificationTokenRepository, tokenGenerator,
+    verificationTokenRepository, tokenGenerator, hasher,
   );
 
   jest.spyOn(verificationTokenRepository, 'findUserById').mockResolvedValue({
@@ -34,6 +36,7 @@ const makeSut = (): SutTypes => {
     sut,
     verificationTokenRepository,
     tokenGenerator,
+    hasher,
   };
 };
 
@@ -128,18 +131,38 @@ describe('AddVerificationTokenUseCase', () => {
     await expect(promise).rejects.toThrow();
   });
 
+  it('Should call Hasher with correct token', async () => {
+    const {
+      sut, hasher, verificationTokenRepository, tokenGenerator,
+    } = makeSut();
+
+    jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue(null);
+    const hasherSpy = jest.spyOn(hasher, 'hash');
+
+    await sut.execute('any_userId');
+    expect(hasherSpy).toHaveBeenCalledWith(await tokenGenerator.generate());
+  });
+
+  it('Should throw if Hasher throws', async () => {
+    const { sut, hasher } = makeSut();
+    jest.spyOn(hasher, 'hash').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+    const promise = sut.execute('any_userId');
+    await expect(promise).rejects.toThrow();
+  });
+
   it('Should call add with correct values', async () => {
     const {
       sut,
       verificationTokenRepository,
       tokenGenerator,
+      hasher,
     } = makeSut();
 
     jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue(null);
     const verificationTokenRepositorySpy = jest.spyOn(verificationTokenRepository, 'add');
 
     await sut.execute('any_userId', 2);
-    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith({ userId: 'any_userId', token: await tokenGenerator.generate(), expiresInHours: 2 });
+    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith({ userId: 'any_userId', token: await hasher.hash(await tokenGenerator.generate()), expiresInHours: 2 });
   });
 
   it('Should throw add if throws', async () => {
@@ -153,26 +176,33 @@ describe('AddVerificationTokenUseCase', () => {
   });
 
   it('Should return an Email validation token on success', async () => {
-    const { sut, verificationTokenRepository, tokenGenerator } = makeSut();
+    const {
+      sut, verificationTokenRepository, tokenGenerator, hasher,
+    } = makeSut();
 
     jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue(null);
     jest.spyOn(verificationTokenRepository, 'add').mockResolvedValue({
       userId: 'any_userId',
-      token: await tokenGenerator.generate(),
+      token: await hasher.hash(await tokenGenerator.generate()),
       createdAt: new Date(),
       expiresAt: new Date(),
       isDeleted: false,
     });
 
     const response = await sut.execute('any_userId');
-    const value = response.value as IVerificationTokenRepositoryReturnData;
+    const value = response.value as {
+      verificationToken: IVerificationTokenRepositoryReturnData, token: string
+    };
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({
-      userId: 'any_userId',
+      verificationToken: {
+        userId: 'any_userId',
+        token: await hasher.hash(await tokenGenerator.generate()),
+        createdAt: value.verificationToken.createdAt,
+        expiresAt: value.verificationToken.expiresAt,
+        isDeleted: false,
+      },
       token: await tokenGenerator.generate(),
-      createdAt: value.createdAt,
-      expiresAt: value.expiresAt,
-      isDeleted: false,
     });
   });
 });

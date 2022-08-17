@@ -1,10 +1,11 @@
 import { User } from '@/entities/user';
 import { InvalidNameError, InvalidEmailError, InvalidPasswordError } from '@/entities/value-object/errors';
-import { IUserRepository, IUserRepositoryReturnData, IHasher } from '@/use-cases/user/interfaces';
+import { IUserRepository, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository, makeHasher } from '@/test/stubs';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
+import { IHasher } from '@/use-cases/interfaces';
 
 type SutTypes = {
   userRepository: IUserRepository,

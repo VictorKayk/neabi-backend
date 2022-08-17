@@ -113,34 +113,6 @@ describe('VerificationTokenRepository Implementation', () => {
     });
   });
 
-  it('Should return an account on findVerificationToken success', async () => {
-    const { sut } = makeSut();
-
-    jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue({
-      userId: 'any_userId',
-      token: 'any_token',
-      createdAt: new Date(),
-      expiresAt: new Date(),
-      isDeleted: false,
-    });
-
-    const account = await sut.findVerificationToken({ userId: 'any_userId', token: 'any_token' });
-    expect(account?.userId).toBe('any_userId');
-    expect(account?.token).toBe('any_token');
-    expect(account?.isDeleted).toBe(false);
-    expect(account?.createdAt).toBeTruthy();
-    expect(account?.expiresAt).toBeTruthy();
-  });
-
-  it('Should return null on findVerificationToken fails', async () => {
-    const { sut } = makeSut();
-
-    jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue(null);
-
-    const account = await sut.findVerificationToken({ userId: 'any_userId', token: 'any_token' });
-    expect(account).toBe(null);
-  });
-
   it('Should return an account on updateUserVerification success', async () => {
     const { sut, user } = makeSut();
 

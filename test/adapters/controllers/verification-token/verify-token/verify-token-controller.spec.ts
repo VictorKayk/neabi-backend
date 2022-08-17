@@ -11,6 +11,7 @@ import {
   unauthorized,
 } from '@/adapters/utils/http';
 import {
+  makeHashCompare,
   makeValidation,
   makeVerificationTokenRepository,
 } from '@/test/stubs';
@@ -29,7 +30,8 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const repository = makeVerificationTokenRepository();
-  const verifyTokenUseCase = new VerifyTokenUseCase(repository);
+  const hashCompare = makeHashCompare();
+  const verifyTokenUseCase = new VerifyTokenUseCase(repository, hashCompare);
   const sut = new VerifyTokenController(validation, verifyTokenUseCase);
 
   const user = new UserBuilder();

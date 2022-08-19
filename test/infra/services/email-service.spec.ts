@@ -1,5 +1,5 @@
 import { EmailService } from '@/infra/services/email-service';
-import { IEmailOptions } from '@/use-cases/interfaces';
+import { IEmailOptions } from '@/use-cases/services/email-service/interfaces';
 
 type SutTypes = {
   sut: EmailService,

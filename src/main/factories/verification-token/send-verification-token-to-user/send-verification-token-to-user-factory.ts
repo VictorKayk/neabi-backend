@@ -5,7 +5,7 @@ import { VerificationTokenRepository, UserRepository } from '@/infra/repositorie
 import { makeSendVerificationTokenToUserValidationFactory } from '@/main/factories/verification-token';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { EmailService } from '@/infra/services';
-import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
+import { SendEmailService } from '@/use-cases/services/email-service/send-email';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { BcryptAdapter } from '@/infra/criptography';
 import env from '@/main/config/env';
@@ -35,13 +35,14 @@ export function makeSendVerificationTokenToUserController(): IController {
       refreshToken: env.googleRefreshToken,
     },
   );
-  const sendVerificationTokenUseCase = new SendVerificationTokenUseCase(env.baseUrl, emailService);
+  const sendEmailService = new SendEmailService(emailService);
 
   const sendVerificationTokenToUserController = new SendVerificationTokenToUserController(
     makeSendVerificationTokenToUserValidationFactory(),
     addVerificationTokenUseCase,
     readUserUseCase,
-    sendVerificationTokenUseCase,
+    sendEmailService,
+    env.baseUrl,
   );
   return sendVerificationTokenToUserController;
 }

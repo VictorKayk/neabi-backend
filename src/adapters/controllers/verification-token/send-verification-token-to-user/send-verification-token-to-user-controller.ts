@@ -9,7 +9,7 @@ import {
 } from '@/adapters/utils/http';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
-import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
+import { SendEmailService } from '@/use-cases/services/email-service/send-email';
 import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
 
 export class SendVerificationTokenToUserController implements IController {
@@ -17,7 +17,8 @@ export class SendVerificationTokenToUserController implements IController {
     private readonly validation: IValidation,
     private readonly addVerificationToken: AddVerificationTokenUseCase,
     private readonly readUserUseCase: ReadUserUseCase,
-    private readonly sendVerificationToken: SendVerificationTokenUseCase,
+    private readonly sendEmailService: SendEmailService,
+    private readonly url: string,
   ) { }
 
   async handle({ user }: IHttpRequestAuthenticated): Promise<IHttpResponse<null>> {
@@ -42,10 +43,21 @@ export class SendVerificationTokenToUserController implements IController {
         return forbidden(verificationTokenOrError.value);
       }
 
-      const sendVerificationTokenOrError = await this.sendVerificationToken.execute({
-        user: { id, name: accountOrError.value.name, email: accountOrError.value.email },
-        token: verificationTokenOrError.value.token,
-        expiresInHours,
+      const subject = 'Verificação de Email.';
+      const text = `
+        Por favor, clique no link para confirmar seu email: link \n
+        Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.
+      `;
+      const html = `
+        <p>Por favor, clique no link para confirmar seu email: <b><a href='${this.url}/user/${id}/verification/token/${verificationTokenOrError.value.token}'>link</a></b></p>
+        <p><b>Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.</b></p>
+      `;
+
+      const sendVerificationTokenOrError = await this.sendEmailService.execute({
+        user: { name: accountOrError.value.name, email: accountOrError.value.email },
+        subject,
+        text,
+        html,
       });
       if (sendVerificationTokenOrError.isError()) {
         return badRequest(sendVerificationTokenOrError.value);

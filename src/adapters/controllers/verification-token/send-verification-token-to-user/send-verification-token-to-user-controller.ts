@@ -44,10 +44,6 @@ export class SendVerificationTokenToUserController implements IController {
       }
 
       const subject = 'Verificação de Email.';
-      const text = `
-        Por favor, clique no link para confirmar seu email: link \n
-        Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.
-      `;
       const html = `
         <p>Por favor, clique no link para confirmar seu email: <b><a href='${this.url}/user/${id}/verification/token/${verificationTokenOrError.value.token}'>link</a></b></p>
         <p><b>Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.</b></p>
@@ -56,7 +52,7 @@ export class SendVerificationTokenToUserController implements IController {
       const sendVerificationTokenOrError = await this.sendEmailService.execute({
         user: { name: accountOrError.value.name, email: accountOrError.value.email },
         subject,
-        text,
+        text: '',
         html,
       });
       if (sendVerificationTokenOrError.isError()) {

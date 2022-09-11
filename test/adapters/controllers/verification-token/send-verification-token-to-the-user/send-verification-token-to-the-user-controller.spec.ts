@@ -1,4 +1,4 @@
-import { SendVerificationTokenUseCase } from '@/use-cases/verification-token/send-verification-token';
+import { SendEmailService } from '@/use-cases/services/email-service/send-email';
 import { IEncrypter } from '@/use-cases/user/interfaces';
 import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
@@ -19,14 +19,14 @@ import {
   makeUniversallyUniqueIdentifierGenerator,
   makeValidation,
   makeAddVerificationTokenUseCase,
-  makeSendVerificationTokenUseCase,
+  makeSendEmailService,
   makeUserRepository,
 } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
-import { EmailServiceError } from '@/use-cases/errors';
+import { EmailServiceError } from '@/use-cases/services/email-service/errors';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
-import { UserBuilder } from '@/../test/builders';
+import { UserBuilder } from '@/test/builders';
 import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
 
 type SutTypes = {
@@ -34,7 +34,7 @@ type SutTypes = {
   validation: IValidation,
   readUserUseCase: ReadUserUseCase,
   addVerificationTokenUseCase: AddVerificationTokenUseCase,
-  sendVerificationToken: SendVerificationTokenUseCase,
+  sendEmailService: SendEmailService,
   user: UserBuilder,
   idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
@@ -45,10 +45,10 @@ const makeSut = (): SutTypes => {
   const repository = makeUserRepository();
   const readUserUseCase = new ReadUserUseCase(repository);
   const addVerificationTokenUseCase = makeAddVerificationTokenUseCase();
-  const sendVerificationToken = makeSendVerificationTokenUseCase();
+  const sendEmailService = makeSendEmailService();
 
   const sut = new SendVerificationTokenToUserController(
-    validation, addVerificationTokenUseCase, readUserUseCase, sendVerificationToken,
+    validation, addVerificationTokenUseCase, readUserUseCase, sendEmailService, 'http://test.url',
   );
 
   const user = new UserBuilder();
@@ -70,7 +70,7 @@ const makeSut = (): SutTypes => {
     validation,
     readUserUseCase,
     addVerificationTokenUseCase,
-    sendVerificationToken,
+    sendEmailService,
     user,
     idGenerator,
     encrypter,
@@ -191,9 +191,9 @@ describe('SendVerificationTokenToUserController ', () => {
     expect(response).toEqual(forbidden(new NonExistingUserError()));
   });
 
-  it('Should call sendVerificationToken with correct values', async () => {
+  it('Should call sendEmailService', async () => {
     const {
-      sut, sendVerificationToken, idGenerator, addVerificationTokenUseCase, user,
+      sut, sendEmailService, idGenerator, addVerificationTokenUseCase, user,
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
@@ -206,7 +206,7 @@ describe('SendVerificationTokenToUserController ', () => {
       },
       token: 'any_token',
     }));
-    const useCaseSpy = jest.spyOn(sendVerificationToken, 'execute');
+    const useCaseSpy = jest.spyOn(sendEmailService, 'execute');
 
     await sut.handle({
       user: {
@@ -214,20 +214,12 @@ describe('SendVerificationTokenToUserController ', () => {
         accessToken: 'any_accessToken',
       },
     });
-    expect(useCaseSpy).toHaveBeenCalledWith({
-      user: {
-        id: await idGenerator.generate(),
-        name: makeFakeRequest().body.name,
-        email: makeFakeRequest().body.email,
-      },
-      token: 'any_token',
-      expiresInHours: 1,
-    });
+    expect(useCaseSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('Should return 400 if sendVerificationToken return an error', async () => {
+  it('Should return 400 if sendEmailService return an error', async () => {
     const {
-      sut, sendVerificationToken, addVerificationTokenUseCase, idGenerator, user,
+      sut, sendEmailService, addVerificationTokenUseCase, idGenerator, user,
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
@@ -240,7 +232,7 @@ describe('SendVerificationTokenToUserController ', () => {
       },
       token: 'any_token',
     }));
-    jest.spyOn(sendVerificationToken, 'execute').mockResolvedValue(error(new EmailServiceError()));
+    jest.spyOn(sendEmailService, 'execute').mockResolvedValue(error(new EmailServiceError()));
 
     const response = await sut.handle({
       user: {
@@ -253,7 +245,7 @@ describe('SendVerificationTokenToUserController ', () => {
 
   it('Should return 200 on success', async () => {
     const {
-      sut, user, addVerificationTokenUseCase, idGenerator, sendVerificationToken,
+      sut, user, addVerificationTokenUseCase, idGenerator, sendEmailService,
     } = makeSut();
 
     jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
@@ -266,7 +258,7 @@ describe('SendVerificationTokenToUserController ', () => {
       },
       token: 'any_token',
     }));
-    jest.spyOn(sendVerificationToken, 'execute').mockResolvedValue(success(null));
+    jest.spyOn(sendEmailService, 'execute').mockResolvedValue(success(null));
 
     const response = await sut.handle({
       user: {

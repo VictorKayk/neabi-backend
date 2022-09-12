@@ -173,7 +173,7 @@ describe('UserHasRoleRepository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
-      roles: {
+      Roles: {
         id: 'any_id',
         role: 'any_role',
         createdAt: new Date(),
@@ -184,7 +184,7 @@ describe('UserHasRoleRepository Implementation', () => {
     jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
 
     const response = await sut.readAllRolesFromUser('any_userId', {});
-    expect(response).toEqual([userHasRoles.roles, userHasRoles.roles, userHasRoles.roles]);
+    expect(response).toEqual([userHasRoles.Roles, userHasRoles.Roles, userHasRoles.Roles]);
   });
 
   it('Should return all roles with correct name on readAllRolesFromUser success', async () => {
@@ -196,7 +196,7 @@ describe('UserHasRoleRepository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
-      roles: {
+      Roles: {
         id: 'any_id',
         role: 'any_role',
         createdAt: new Date(),
@@ -207,7 +207,7 @@ describe('UserHasRoleRepository Implementation', () => {
     jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
 
     const response = await sut.readAllRolesFromUser('any_userId', { role: 'any' });
-    expect(response).toEqual([userHasRoles.roles, userHasRoles.roles, userHasRoles.roles]);
+    expect(response).toEqual([userHasRoles.Roles, userHasRoles.Roles, userHasRoles.Roles]);
   });
 
   it('Should return all roles on the first page', async () => {
@@ -219,7 +219,7 @@ describe('UserHasRoleRepository Implementation', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isDeleted: false,
-      roles: {
+      Roles: {
         id: 'any_id',
         role: 'any_role',
         createdAt: new Date(),
@@ -230,6 +230,6 @@ describe('UserHasRoleRepository Implementation', () => {
     jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
 
     const response = await sut.readAllRolesFromUser('any_userId', { page: 1 });
-    expect(response).toEqual([userHasRoles.roles, userHasRoles.roles, userHasRoles.roles]);
+    expect(response).toEqual([userHasRoles.Roles, userHasRoles.Roles, userHasRoles.Roles]);
   });
 });

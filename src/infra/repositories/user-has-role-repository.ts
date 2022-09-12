@@ -14,13 +14,13 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
     const userOrNull = await prisma.user.findFirst({
       where: { id: userId, isDeleted: false },
       include: {
-        userHasRoles: {
-          where: { roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    return userOrNull ? { ...userOrNull, roles: getUserRoles(userOrNull.userHasRoles) } : null;
+    return userOrNull ? { ...userOrNull, roles: getUserRoles(userOrNull.UserHasRoles) } : null;
   }
 
   async findRoleById(roleId: string): Promise<IRoleRepositoryReturnData | null> {
@@ -76,12 +76,12 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
       where: {
         userId,
         isDeleted: false,
-        roles: {
+        Roles: {
           id: { contains: id, mode: 'insensitive' },
           role: { contains: role, mode: 'insensitive' },
         },
       },
-      select: { roles: true },
+      select: { Roles: true },
       take: 100,
       skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },

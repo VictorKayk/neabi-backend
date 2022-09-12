@@ -1,5 +1,7 @@
 import { UserBuilder } from '@/test/builders/user-builder';
-import { IVerificationTokenData, IVerificationTokenRepositoryReturnData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
+import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
+import { IAddVerificationToken } from '@/use-cases/verification-token/add-verification-token/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 export const makeVerificationTokenRepository = (): IVerificationTokenRepository => {
@@ -9,7 +11,7 @@ export const makeVerificationTokenRepository = (): IVerificationTokenRepository 
     }
 
     async findVerificationTokenByUserId(userId: string):
-      Promise<IVerificationTokenRepositoryReturnData | null> {
+      Promise<ITokenRepositoryReturnData | null> {
       return null;
     }
 
@@ -17,8 +19,8 @@ export const makeVerificationTokenRepository = (): IVerificationTokenRepository 
       console.log(userId);
     }
 
-    async add(emailVerificationTokenData: IVerificationTokenData):
-      Promise<IVerificationTokenRepositoryReturnData> {
+    async add(emailVerificationTokenData: IAddVerificationToken):
+      Promise<ITokenRepositoryReturnData> {
       return {
         ...emailVerificationTokenData,
         createdAt: new Date(),

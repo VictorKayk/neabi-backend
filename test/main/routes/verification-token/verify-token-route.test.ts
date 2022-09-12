@@ -17,13 +17,18 @@ const makeSut = (): SutTypes => {
     isDeleted: false,
     isVerified: false,
   });
-  jest.spyOn(prisma.verificationToken, 'findFirst')
+  jest.spyOn(prisma.token, 'findFirst')
     .mockResolvedValue({
       userId: user.build().id,
       token: 'any_token',
       createdAt: new Date(),
-      expiresAt: new Date(Date.now() + 360000000),
+      expiresAt: new Date(Date.now() + 1000000000000),
       isDeleted: false,
+    });
+  jest.spyOn(prisma.verificationToken, 'findFirst')
+    .mockResolvedValue({
+      id: 'any_id',
+      token: 'any_token',
     });
   jest.spyOn(prisma.user, 'update').mockResolvedValue({
     ...user.build(),
@@ -102,13 +107,18 @@ describe('SendVerificationTokenToUser Route', () => {
   it('Should return 403 if token do not exist in send verify token route', async () => {
     const { user } = makeSut();
 
-    jest.spyOn(prisma.verificationToken, 'findFirst')
+    jest.spyOn(prisma.token, 'findFirst')
       .mockResolvedValue({
         userId: user.build().id,
         token: 'any_token',
         createdAt: new Date(),
         expiresAt: new Date('2020-12-31'),
         isDeleted: false,
+      });
+    jest.spyOn(prisma.verificationToken, 'findFirst')
+      .mockResolvedValue({
+        id: 'any_id',
+        token: 'any_token',
       });
 
     await request(app).get('/api/user/any_userId/verification/token/any_token')

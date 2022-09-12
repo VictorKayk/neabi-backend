@@ -1,5 +1,6 @@
 import { getUserRoles } from '@/infra/repositories/utils';
-import { IVerificationTokenRepositoryReturnData, IVerificationTokenRepository, IVerificationTokenData } from '@/use-cases/verification-token/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
+import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
 import { IAddVerificationToken } from '@/use-cases/verification-token/add-verification-token/interfaces';
@@ -9,33 +10,37 @@ export class VerificationTokenRepository implements IVerificationTokenRepository
     const userOrNull = await prisma.user.findFirst({
       where: { id: userId, isDeleted: false },
       include: {
-        userHasRoles: {
-          where: { roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    return userOrNull ? { ...userOrNull, roles: getUserRoles(userOrNull.userHasRoles) } : null;
+    return userOrNull ? { ...userOrNull, roles: getUserRoles(userOrNull.UserHasRoles) } : null;
   }
 
   async findVerificationTokenByUserId(userId: string):
-    Promise<IVerificationTokenRepositoryReturnData | null> {
-    const emailVerificationTokenOrNull = await prisma.verificationToken.findFirst({
+    Promise<ITokenRepositoryReturnData | null> {
+    const tokenOrNull = await prisma.token.findFirst({
       where: { userId, isDeleted: false },
     });
-    return emailVerificationTokenOrNull;
+    const verificationTokenOrNull = await prisma.verificationToken.findFirst({
+      where: { Token: { userId, isDeleted: false } },
+    });
+    return verificationTokenOrNull ? tokenOrNull : null;
   }
 
   async deleteVerificationTokenByUserId(userId: string): Promise<void> {
-    await prisma.verificationToken.updateMany({
+    await prisma.token.updateMany({
       where: { userId, isDeleted: false },
       data: { isDeleted: true },
     });
   }
 
-  async add({ userId, token, expiresInHours }: IAddVerificationToken):
-    Promise<IVerificationTokenRepositoryReturnData> {
-    const emailVerificationToken = await prisma.verificationToken.create({
+  async add({
+    verificationTokenId, userId, token, expiresInHours,
+  }: IAddVerificationToken): Promise<ITokenRepositoryReturnData> {
+    const newToken = await prisma.token.create({
       data: {
         userId,
         token,
@@ -44,7 +49,15 @@ export class VerificationTokenRepository implements IVerificationTokenRepository
         isDeleted: false,
       },
     });
-    return emailVerificationToken;
+
+    await prisma.verificationToken.create({
+      data: {
+        id: verificationTokenId,
+        token,
+      },
+    });
+
+    return newToken;
   }
 
   async updateUserVerification(userId: string, isVerified: boolean):
@@ -53,13 +66,13 @@ export class VerificationTokenRepository implements IVerificationTokenRepository
       where: { id: userId },
       data: { isVerified, updatedAt: new Date() },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    const { userHasRoles, ...userWithoutUserHasRoles } = user;
-    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
   }
 }

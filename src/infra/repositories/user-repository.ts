@@ -19,29 +19,29 @@ export class UserRepository implements IUserRepository {
         isVerified: userData.isVerified || false,
       },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    const { userHasRoles, ...userWithoutUserHasRoles } = user;
-    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
   }
 
   async findByEmail(email: string): Promise<IUserRepositoryReturnData | null> {
     const user = await prisma.user.findFirst({
       where: { email, isDeleted: false },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
     if (user) {
-      const { userHasRoles, ...userWithoutUserHasRoles } = user;
-      return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+      const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+      return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
     }
     return null;
   }
@@ -50,15 +50,15 @@ export class UserRepository implements IUserRepository {
     const user = await prisma.user.findFirst({
       where: { id, isDeleted: false },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
     if (user) {
-      const { userHasRoles, ...userWithoutUserHasRoles } = user;
-      return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+      const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+      return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
     }
     return null;
   }
@@ -69,14 +69,14 @@ export class UserRepository implements IUserRepository {
       where: { email },
       data: { ...userData, updatedAt: new Date() },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    const { userHasRoles, ...userWithoutUserHasRoles } = user;
-    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
   }
 
   async updateById(id: string, userData: IUserEditableData):
@@ -85,14 +85,14 @@ export class UserRepository implements IUserRepository {
       where: { id },
       data: { ...userData, updatedAt: new Date() },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    const { userHasRoles, ...userWithoutUserHasRoles } = user;
-    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
   }
 
   async deleteById(id: string): Promise<IUserRepositoryReturnData> {
@@ -100,14 +100,14 @@ export class UserRepository implements IUserRepository {
       where: { id },
       data: { isDeleted: true, updatedAt: new Date() },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
-    const { userHasRoles, ...userWithoutUserHasRoles } = user;
-    return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+    const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+    return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
   }
 
   async readAllUsers({
@@ -118,9 +118,9 @@ export class UserRepository implements IUserRepository {
         id: { contains: id, mode: 'insensitive' },
         name: { contains: name, mode: 'insensitive' },
         email: { contains: email, mode: 'insensitive' },
-        userHasRoles: {
+        UserHasRoles: {
           some: {
-            roles: {
+            Roles: {
               role: { contains: role, mode: 'insensitive' },
               isDeleted: false,
             },
@@ -131,15 +131,15 @@ export class UserRepository implements IUserRepository {
       skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
       include: {
-        userHasRoles: {
-          where: { isDeleted: false, roles: { isDeleted: false } },
-          select: { roles: true },
+        UserHasRoles: {
+          where: { isDeleted: false, Roles: { isDeleted: false } },
+          select: { Roles: true },
         },
       },
     });
     return users.map((user) => {
-      const { userHasRoles, ...userWithoutUserHasRoles } = user;
-      return { ...userWithoutUserHasRoles, roles: getUserRoles(userHasRoles) };
+      const { UserHasRoles, ...userWithoutUserHasRoles } = user;
+      return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
     });
   }
 }

@@ -1,11 +1,11 @@
 import { Either, success, error } from '@/shared';
-import { IHashCompare, IUseCase } from '@/use-cases/interfaces';
+import { IHashCompare, IUseCase, ITokenData } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import {
   UserIsAlreadyVerifiedError, NonExistingTokenError, ExpiredTokenError, InvalidTokenError,
 } from '@/use-cases/verification-token/errors';
-import { IVerificationTokenData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 
 type Response = Either<
   InvalidTokenError |
@@ -22,7 +22,7 @@ export class VerifyTokenUseCase implements IUseCase {
     private readonly hashCompare: IHashCompare,
   ) { }
 
-  async execute({ userId, token }: IVerificationTokenData): Promise<Response> {
+  async execute({ userId, token }: ITokenData): Promise<Response> {
     const userOrNull = await this.verificationTokenRepository.findUserById(userId);
     if (!userOrNull) return error(new NonExistingUserError());
     if (userOrNull.isVerified) return error(new UserIsAlreadyVerifiedError());

@@ -1,5 +1,5 @@
-import { IVerificationTokenData } from '@/use-cases/verification-token/interfaces';
+import { IAddToken } from '@/use-cases/interfaces';
 
-export interface IAddVerificationToken extends IVerificationTokenData {
-  expiresInHours: number,
+export interface IAddVerificationToken extends IAddToken {
+  verificationTokenId: string;
 }

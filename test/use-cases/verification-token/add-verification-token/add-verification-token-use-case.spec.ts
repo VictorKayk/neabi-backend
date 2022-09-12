@@ -1,23 +1,25 @@
 import { makeUniversallyUniqueIdentifierGenerator } from '@/test/stubs/universally-unique-identifier-generator-stub';
 import { makeHasher, makeVerificationTokenRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { IHasher, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
-import { IVerificationTokenRepositoryReturnData, IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
+import { IHasher, IUniversallyUniqueIdentifierGenerator, ITokenRepositoryReturnData } from '@/use-cases/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
 
 type SutTypes = {
   sut: AddVerificationTokenUseCase,
   verificationTokenRepository: IVerificationTokenRepository,
+  idGenerator: IUniversallyUniqueIdentifierGenerator,
   tokenGenerator: IUniversallyUniqueIdentifierGenerator,
   hasher: IHasher,
 };
 
 const makeSut = (): SutTypes => {
+  const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const tokenGenerator = makeUniversallyUniqueIdentifierGenerator();
   const verificationTokenRepository = makeVerificationTokenRepository();
   const hasher = makeHasher();
   const sut = new AddVerificationTokenUseCase(
-    verificationTokenRepository, tokenGenerator, hasher,
+    verificationTokenRepository, idGenerator, tokenGenerator, hasher,
   );
 
   jest.spyOn(verificationTokenRepository, 'findUserById').mockResolvedValue({
@@ -35,6 +37,7 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     verificationTokenRepository,
+    idGenerator,
     tokenGenerator,
     hasher,
   };
@@ -111,6 +114,26 @@ describe('AddVerificationTokenUseCase', () => {
     await expect(promise).rejects.toThrow();
   });
 
+  it('Should call idGenerator if user does not have a verificationToken', async () => {
+    const { sut, verificationTokenRepository, idGenerator } = makeSut();
+
+    jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue(null);
+    const tokenGeneratorSpy = jest.spyOn(idGenerator, 'generate');
+
+    await sut.execute('any_userId');
+    expect(tokenGeneratorSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should throw if idGenerator throws', async () => {
+    const { sut, verificationTokenRepository, idGenerator } = makeSut();
+
+    jest.spyOn(verificationTokenRepository, 'findVerificationTokenByUserId').mockResolvedValue(null);
+    jest.spyOn(idGenerator, 'generate').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));
+
+    const promise = sut.execute('any_userId');
+    await expect(promise).rejects.toThrow();
+  });
+
   it('Should call tokenGenerator if user does not have a verificationToken', async () => {
     const { sut, verificationTokenRepository, tokenGenerator } = makeSut();
 
@@ -162,7 +185,9 @@ describe('AddVerificationTokenUseCase', () => {
     const verificationTokenRepositorySpy = jest.spyOn(verificationTokenRepository, 'add');
 
     await sut.execute('any_userId', 2);
-    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith({ userId: 'any_userId', token: await hasher.hash(await tokenGenerator.generate()), expiresInHours: 2 });
+    expect(verificationTokenRepositorySpy).toHaveBeenCalledWith({
+      verificationTokenId: 'any_uuid', userId: 'any_userId', token: await hasher.hash(await tokenGenerator.generate()), expiresInHours: 2,
+    });
   });
 
   it('Should throw add if throws', async () => {
@@ -191,7 +216,7 @@ describe('AddVerificationTokenUseCase', () => {
 
     const response = await sut.execute('any_userId');
     const value = response.value as {
-      verificationToken: IVerificationTokenRepositoryReturnData, token: string
+      verificationToken: ITokenRepositoryReturnData, token: string
     };
     expect(response.isSuccess()).toBe(true);
     expect(value).toEqual({

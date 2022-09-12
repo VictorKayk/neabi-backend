@@ -18,8 +18,8 @@ model User {
   isVerified  Boolean
   isDeleted   Boolean
 
-  userHasRoles      UserHasRoles[]
-  VerificationToken VerificationToken[]
+  UserHasRoles UserHasRoles[]
+  Token        Token[]
 }
 
 model Role {
@@ -29,7 +29,7 @@ model Role {
   updatedAt DateTime
   isDeleted Boolean
 
-  userHasRoles UserHasRoles[]
+  UserHasRoles UserHasRoles[]
 }
 
 model UserHasRoles {
@@ -39,18 +39,26 @@ model UserHasRoles {
   updatedAt DateTime
   isDeleted Boolean
 
-  user  User @relation(fields: [userId], references: [id])
-  roles Role @relation(fields: [roleId], references: [id])
+  User  User @relation(fields: [userId], references: [id])
+  Roles Role @relation(fields: [roleId], references: [id])
 
   @@id([userId, roleId])
 }
 
-model VerificationToken {
+model Token {
   userId    String
   token     String   @unique
   createdAt DateTime
   expiresAt DateTime
   isDeleted Boolean
 
-  user User @relation(fields: [userId], references: [id])
+  User              User                @relation(fields: [userId], references: [id])
+  VerificationToken VerificationToken[]
+}
+
+model VerificationToken {
+  id    String @id
+  token String @unique
+
+  Token Token @relation(fields: [token], references: [token])
 }

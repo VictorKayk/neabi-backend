@@ -21,7 +21,7 @@ export function makeSendVerificationTokenToUserController(): IController {
 
   const verificationTokenRepository = new VerificationTokenRepository();
   const addVerificationTokenUseCase = new AddVerificationTokenUseCase(
-    verificationTokenRepository, uuidAdapter, bcryptAdapter,
+    verificationTokenRepository, uuidAdapter, uuidAdapter, bcryptAdapter,
   );
 
   const emailService = new EmailService(

@@ -111,8 +111,8 @@ describe('User Repository Implementation', () => {
       updatedAt: new Date(),
       isDeleted: false,
       isVerified: false,
-      userHasRoles: [{
-        roles: {
+      UserHasRoles: [{
+        Roles: {
           id: 'any_id',
           role: 'any_role',
           createdAt: new Date(),
@@ -134,7 +134,7 @@ describe('User Repository Implementation', () => {
       password: userRepositoryReturn.password,
       accessToken: userRepositoryReturn.accessToken,
       isVerified: userRepositoryReturn.isVerified,
-      roles: getUserRoles(userRepositoryReturn.userHasRoles),
+      roles: getUserRoles(userRepositoryReturn.UserHasRoles),
     };
     const account = await sut.findById(user.build().id);
     expect(account).toEqual(correctUserRepositoryReturn);

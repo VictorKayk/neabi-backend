@@ -50,18 +50,23 @@ describe('VerificationTokenRepository Implementation', () => {
   });
 
   it('Should return an account on findVerificationTokenByUserId success', async () => {
-    const { sut } = makeSut();
+    const { sut, user } = makeSut();
 
+    jest.spyOn(prisma.token, 'findFirst')
+      .mockResolvedValue({
+        userId: user.build().id,
+        token: 'any_token',
+        createdAt: new Date(),
+        expiresAt: new Date(),
+        isDeleted: false,
+      });
     jest.spyOn(prisma.verificationToken, 'findFirst').mockResolvedValue({
-      userId: 'any_userId',
+      id: 'any_id',
       token: 'any_token',
-      createdAt: new Date(),
-      expiresAt: new Date(),
-      isDeleted: false,
     });
 
     const account = await sut.findVerificationTokenByUserId('any_userId');
-    expect(account?.userId).toBe('any_userId');
+    expect(account?.userId).toBe('any_uuid');
     expect(account?.token).toBe('any_token');
     expect(account?.isDeleted).toBe(false);
     expect(account?.createdAt).toBeTruthy();
@@ -81,11 +86,8 @@ describe('VerificationTokenRepository Implementation', () => {
     const { sut } = makeSut();
 
     jest.spyOn(prisma.verificationToken, 'update').mockResolvedValue({
-      userId: 'any_userId',
+      id: 'any_id',
       token: 'any_token',
-      createdAt: new Date(),
-      expiresAt: new Date(),
-      isDeleted: true,
     });
 
     const verificationToken = sut.deleteVerificationTokenByUserId('any_userId');
@@ -95,15 +97,22 @@ describe('VerificationTokenRepository Implementation', () => {
   it('Should return an VerificationToken on add success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.verificationToken, 'create').mockResolvedValue({
+    jest.spyOn(prisma.token, 'create').mockResolvedValue({
       userId: 'any_userId',
       token: 'any_token',
+      isDeleted: false,
       createdAt: new Date(),
       expiresAt: new Date(),
-      isDeleted: false,
     });
 
-    const verificationToken = await sut.add({ userId: 'any_userId', token: 'any_token', expiresInHours: 1 });
+    jest.spyOn(prisma.verificationToken, 'create').mockResolvedValue({
+      id: 'any_id',
+      token: 'any_token',
+    });
+
+    const verificationToken = await sut.add({
+      verificationTokenId: 'any_id', userId: 'any_userId', token: 'any_token', expiresInHours: 1,
+    });
     expect(verificationToken).toEqual({
       userId: 'any_userId',
       token: 'any_token',

@@ -1,0 +1,1 @@
+export * from '@/main/factories/user/reset-user-password/send-reset-user-passoword-token';

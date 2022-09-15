@@ -15,7 +15,7 @@ type Response = Either<
   IUserRepositoryReturnData
 >;
 
-export class VerifyTokenUseCase implements IUseCase {
+export class VerifyResetUserPasswordTokenUseCase implements IUseCase {
   constructor(
     private readonly resetUserPasswordTokenRepository: IResetUserPasswordTokenRepository,
     private readonly hashCompare: IHashCompare,

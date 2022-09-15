@@ -1,4 +1,4 @@
-import { VerifyTokenUseCase } from '@/use-cases/user/reset-user-password/verify-reset-user-password-token';
+import { VerifyResetUserPasswordTokenUseCase } from '@/use-cases/user/reset-user-password/verify-reset-user-password-token';
 import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
@@ -17,14 +17,14 @@ import {
 } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UserBuilder } from '@/../test/builders';
-import { VerifyTokenController } from '@/adapters/controllers/user/reset-user-password/verify-reset-user-password-token';
+import { VerifyResetUserPasswordTokenController } from '@/adapters/controllers/user/reset-user-password/verify-reset-user-password-token';
 import { ExpiredTokenError, NonExistingTokenError } from '@/use-cases/errors';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 
 type SutTypes = {
-  sut: VerifyTokenController,
+  sut: VerifyResetUserPasswordTokenController,
   validation: IValidation,
-  verifyTokenUseCase: VerifyTokenUseCase,
+  verifyTokenUseCase: VerifyResetUserPasswordTokenUseCase,
   updateUserUseCase: UpdateUserUseCase,
   user: UserBuilder,
 };
@@ -33,9 +33,11 @@ const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const repository = makeResetUserPasswordTokenRepository();
   const hashCompare = makeHashCompare();
-  const verifyTokenUseCase = new VerifyTokenUseCase(repository, hashCompare);
+  const verifyTokenUseCase = new VerifyResetUserPasswordTokenUseCase(repository, hashCompare);
   const updateUserUseCase = makeUpdateUserUseCase();
-  const sut = new VerifyTokenController(validation, verifyTokenUseCase, updateUserUseCase);
+  const sut = new VerifyResetUserPasswordTokenController(
+    validation, verifyTokenUseCase, updateUserUseCase,
+  );
 
   const user = new UserBuilder();
 
@@ -48,7 +50,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('VerifyTokenController ', () => {
+describe('VerifyResetUserPasswordTokenController ', () => {
   it('Should call verifyTokenUseCase with correct values', async () => {
     const { sut, verifyTokenUseCase, user } = makeSut();
     const useCaseSpy = jest.spyOn(verifyTokenUseCase, 'execute');

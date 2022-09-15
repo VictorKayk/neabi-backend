@@ -2,13 +2,13 @@ import { makeHashCompare, makeResetUserPasswordTokenRepository } from '@/test/st
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import { IResetUserPasswordTokenRepository } from '@/use-cases/user/reset-user-password/interfaces';
-import { VerifyTokenUseCase } from '@/use-cases/user/reset-user-password/verify-reset-user-password-token';
+import { VerifyResetUserPasswordTokenUseCase } from '@/use-cases/user/reset-user-password/verify-reset-user-password-token';
 import { UserBuilder } from '@/test/builders';
 import { IHashCompare } from '@/use-cases/interfaces';
 import { ExpiredTokenError, InvalidTokenError, NonExistingTokenError } from '@/use-cases/errors';
 
 type SutTypes = {
-  sut: VerifyTokenUseCase,
+  sut: VerifyResetUserPasswordTokenUseCase,
   hashCompare: IHashCompare,
   resetUserPasswordTokenRepository: IResetUserPasswordTokenRepository,
   user: UserBuilder
@@ -17,7 +17,9 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const resetUserPasswordTokenRepository = makeResetUserPasswordTokenRepository();
   const hashCompare = makeHashCompare();
-  const sut = new VerifyTokenUseCase(resetUserPasswordTokenRepository, hashCompare);
+  const sut = new VerifyResetUserPasswordTokenUseCase(
+    resetUserPasswordTokenRepository, hashCompare,
+  );
   const user = new UserBuilder();
 
   jest.spyOn(resetUserPasswordTokenRepository, 'findUserById').mockResolvedValue({
@@ -47,7 +49,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('VerifyTokenUseCase', () => {
+describe('VerifyResetUserPasswordTokenUseCase', () => {
   it('Should call findUserById with correct value', async () => {
     const { sut, resetUserPasswordTokenRepository } = makeSut();
     const resetUserPasswordTokenRepositorySpy = jest.spyOn(resetUserPasswordTokenRepository, 'findUserById');

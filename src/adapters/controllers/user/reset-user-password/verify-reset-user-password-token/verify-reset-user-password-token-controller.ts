@@ -8,14 +8,14 @@ import {
   badRequest,
   forbidden,
 } from '@/adapters/utils/http';
-import { VerifyTokenUseCase } from '@/use-cases/user/reset-user-password/verify-reset-user-password-token';
+import { VerifyResetUserPasswordTokenUseCase } from '@/use-cases/user/reset-user-password/verify-reset-user-password-token';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
 import { ExistingUserError, NonExistingUserError } from '@/use-cases/user/errors';
 
-export class VerifyTokenController implements IController {
+export class VerifyResetUserPasswordTokenController implements IController {
   constructor(
     private readonly validation: IValidation,
-    private readonly verifyToken: VerifyTokenUseCase,
+    private readonly verifyToken: VerifyResetUserPasswordTokenUseCase,
     private readonly updateUser: UpdateUserUseCase,
   ) { }
 

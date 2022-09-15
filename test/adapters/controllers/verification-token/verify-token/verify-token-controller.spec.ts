@@ -17,8 +17,9 @@ import {
 } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UserBuilder } from '@/../test/builders';
-import { ExpiredTokenError, NonExistingTokenError, UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
 import { VerifyTokenController } from '@/adapters/controllers/verification-token/verify-token';
+import { ExpiredTokenError, NonExistingTokenError } from '@/use-cases/errors';
 
 type SutTypes = {
   sut: VerifyTokenController,

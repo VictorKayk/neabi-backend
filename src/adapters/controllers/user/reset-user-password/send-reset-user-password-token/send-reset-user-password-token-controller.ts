@@ -41,7 +41,7 @@ export class SendResetUserPasswordTokenToUserController implements IController {
 
       const subject = 'Esqueceu sua senha?';
       const html = `
-        <p>Por favor, clique no link para alterar sua senha: <b><a href='${this.url}/user/${id}/reset-user-password/token/${resetUserPasswordTokenOrError.value.token}'>link</a></b></p>
+        <p>Por favor, clique no link para alterar sua senha: <b><a href='${this.url}/user/${id}/reset-password/token/${resetUserPasswordTokenOrError.value.token}'>link</a></b></p>
         <p><b>Esse link irá expirar em ${expiresInHours} ${expiresInHours <= 1 ? 'hora' : 'horas'}.</b></p>
       `;
 

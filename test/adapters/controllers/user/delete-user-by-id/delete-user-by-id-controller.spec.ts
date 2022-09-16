@@ -40,7 +40,7 @@ describe('DeleteUser Controller ', () => {
 
     await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: user.build().id },
+      params: { userId: user.build().id },
     });
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
   });
@@ -54,7 +54,7 @@ describe('DeleteUser Controller ', () => {
 
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: user.build().id },
+      params: { userId: user.build().id },
     });
     expect(response).toEqual(serverError(new ServerError()));
   });
@@ -73,7 +73,7 @@ describe('DeleteUser Controller ', () => {
     jest.spyOn(useCase, 'execute').mockResolvedValue(success(useCaseReturn));
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: user.build().id },
+      params: { userId: user.build().id },
     });
 
     expect(response.statusCode).toBe(200);
@@ -87,7 +87,7 @@ describe('DeleteUser Controller ', () => {
 
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: 'any_id' },
+      params: { userId: 'any_id' },
     });
     expect(response).toEqual(unauthorized(new NonExistingUserError()));
   });
@@ -95,14 +95,14 @@ describe('DeleteUser Controller ', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validation } = makeSut();
     const validationSpy = jest.spyOn(validation, 'validate');
-    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
-    expect(validationSpy).toHaveBeenCalledWith({ id: 'any_id' });
+    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_id' } });
+    expect(validationSpy).toHaveBeenCalledWith({ userId: 'any_id' });
   });
 
   it('Should return 400 if Validation returns an error', async () => {
     const { sut, validation } = makeSut();
     jest.spyOn(validation, 'validate').mockReturnValueOnce(new MissingParamsError('any_field'));
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_id' } });
     expect(response).toEqual(badRequest(new MissingParamsError('any_field')));
   });
 });

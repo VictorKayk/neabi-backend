@@ -7,7 +7,7 @@ describe('DeleteUserById validation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {
     makeDeleteUserByIdValidationFactory();
     expect(ValidationComposite).toHaveBeenCalledWith([
-      new RequiredFieldsValidation(['id']),
+      new RequiredFieldsValidation(['userId']),
     ]);
   });
 });

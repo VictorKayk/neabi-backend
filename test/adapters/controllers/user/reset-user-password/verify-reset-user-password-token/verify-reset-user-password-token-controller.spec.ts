@@ -20,6 +20,7 @@ import { UserBuilder } from '@/../test/builders';
 import { VerifyResetUserPasswordTokenController } from '@/adapters/controllers/user/reset-user-password/verify-reset-user-password-token';
 import { ExpiredTokenError, NonExistingTokenError } from '@/use-cases/errors';
 import { UpdateUserUseCase } from '@/use-cases/user/update-user';
+import { InvalidPasswordError } from '@/entities/value-object/errors';
 
 type SutTypes = {
   sut: VerifyResetUserPasswordTokenController,
@@ -191,6 +192,25 @@ describe('VerifyResetUserPasswordTokenController ', () => {
 
     const response = await sut.handle({ params: { userId: user.build().id, token: 'any_token' }, body: { password: 'new_password1' } });
     expect(response).toEqual(forbidden(new ExistingUserError()));
+  });
+
+  it('Should return 400 if call UpdateUserUseCase with incorrect values', async () => {
+    const { sut, user, verifyTokenUseCase } = makeSut();
+
+    jest.spyOn(verifyTokenUseCase, 'execute').mockResolvedValue(success({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email',
+      accessToken: 'any_token',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+      isVerified: false,
+      roles: [],
+    }));
+
+    const response = await sut.handle({ params: { userId: user.build().id, token: 'any_token' }, body: { password: '' } });
+    expect(response).toEqual(badRequest(new InvalidPasswordError('')));
   });
 
   it('Should return 200 on success', async () => {

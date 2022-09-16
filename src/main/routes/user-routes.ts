@@ -24,11 +24,11 @@ export function user(router: Router) {
   router.get('/user/google/auth', googleLoginAuthCb, routerAdapter(makeExternalSignInController()));
   router.get('/user', authentication, routerAdapter(makeReadUserController()));
   router.get('/user/all', authentication, routerAdapter(makeAllReadUsersController()));
-  router.get('/user/:id', authentication, routerAdapter(makeReadUserByIdController()));
+  router.get('/user/:userId', authentication, routerAdapter(makeReadUserByIdController()));
   router.patch('/user', authentication, routerAdapter(makeUpdateUserController()));
-  router.patch('/user/:id', authentication, routerAdapter(makeUpdateUserByIdController()));
+  router.patch('/user/:userId', authentication, routerAdapter(makeUpdateUserByIdController()));
   router.delete('/user', authentication, routerAdapter(makeDeleteUserController()));
-  router.delete('/user/:id', authentication, routerAdapter(makeDeleteUserByIdController()));
+  router.delete('/user/:userId', authentication, routerAdapter(makeDeleteUserByIdController()));
   router.get('/user/reset-password/token', authentication, routerAdapter(makeSendResetUserPasswordTokenToUserController()));
   router.post('/user/:userId/reset-password/token/:token', authentication, routerAdapter(makeVerifyResetUserPasswordTokenController()));
 }

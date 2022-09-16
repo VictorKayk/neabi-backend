@@ -23,11 +23,11 @@ export class UpdateUserByIdController implements IController {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
 
-      const { id } = params;
+      const { userId } = params;
       const { name, email, password } = body;
 
       const accountOrError = await this.updateUser.execute({
-        id, userData: { name, email, password },
+        id: userId, userData: { name, email, password },
       });
 
       if (accountOrError.isError()) {

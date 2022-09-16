@@ -54,9 +54,17 @@ model Token {
 
   User              User                @relation(fields: [userId], references: [id])
   VerificationToken VerificationToken[]
+  ResetUserPasswordToken ResetUserPasswordToken[]
 }
 
 model VerificationToken {
+  id    String @id
+  token String @unique
+
+  Token Token @relation(fields: [token], references: [token])
+}
+
+model ResetUserPasswordToken {
   id    String @id
   token String @unique
 

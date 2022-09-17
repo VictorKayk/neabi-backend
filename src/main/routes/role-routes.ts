@@ -8,11 +8,12 @@ import {
   makeDeleteRoleByIdController,
 } from '@/main/factories/role';
 import { authentication } from '@/main/middlewares/authentication';
+import { authorization } from '@/main/middlewares/authorization';
 
 export function role(router: Router) {
-  router.post('/role', authentication, routerAdapter(makeCreateRoleController()));
-  router.get('/role/all', authentication, routerAdapter(makeReadAllRolesController()));
-  router.get('/role/:id', authentication, routerAdapter(makeReadRoleByIdController()));
-  router.patch('/role/:id', authentication, routerAdapter(makeUpdateRoleByIdController()));
-  router.delete('/role/:id', authentication, routerAdapter(makeDeleteRoleByIdController()));
+  router.post('/role', authentication, authorization(['moderator', 'admin']), routerAdapter(makeCreateRoleController()));
+  router.get('/role/all', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadAllRolesController()));
+  router.get('/role/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadRoleByIdController()));
+  router.patch('/role/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeUpdateRoleByIdController()));
+  router.delete('/role/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeleteRoleByIdController()));
 }

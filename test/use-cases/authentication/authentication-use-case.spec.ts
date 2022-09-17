@@ -1,6 +1,5 @@
 import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { IUserRepository, IDecrypter } from '@/use-cases/user/interfaces';
-import { IAuthenticationResponse } from '@/use-cases/authentication/interfaces';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { UserBuilder } from '@/test/builders/user-builder';
 import { makeUserRepository, makeDecrypter } from '@/test/stubs';
@@ -77,7 +76,7 @@ describe('Authentication Use Case', () => {
   it('Should return accessToken and id on success', async () => {
     const { sut, user } = makeSut();
     const response = await sut.execute(user.build().accessToken);
-    const value = response.value as IAuthenticationResponse;
+    const { value } = response as any;
     expect(value.id).toBe(user.build().id);
     expect(value.accessToken).toBe(user.build().accessToken);
   });

@@ -25,11 +25,11 @@ export function user(router: Router) {
   router.get('/user/google/auth', googleLoginAuthCb, routerAdapter(makeExternalSignInController()));
   router.get('/user', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeReadUserController()));
   router.get('/user/all', authentication, authorization(['moderator', 'admin']), routerAdapter(makeAllReadUsersController()));
-  router.get('/user/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadUserByIdController()));
+  router.get('/user/:userId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadUserByIdController()));
   router.patch('/user', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeUpdateUserController()));
-  router.patch('/user/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeUpdateUserByIdController()));
+  router.patch('/user/:userId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeUpdateUserByIdController()));
   router.delete('/user', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeDeleteUserController()));
-  router.delete('/user/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeleteUserByIdController()));
-  router.get('/user/reset-password/token', authentication, routerAdapter(makeSendResetUserPasswordTokenToUserController()));
-  router.post('/user/:userId/reset-password/token/:token', authentication, routerAdapter(makeVerifyResetUserPasswordTokenController()));
+  router.delete('/user/:userId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeleteUserByIdController()));
+  router.get('/user/reset-password/token', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeSendResetUserPasswordTokenToUserController()));
+  router.post('/user/:userId/reset-password/token/:token', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeVerifyResetUserPasswordTokenController()));
 }

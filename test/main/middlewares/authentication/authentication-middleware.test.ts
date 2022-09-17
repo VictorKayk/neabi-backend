@@ -35,7 +35,7 @@ describe('Authentication middleware', () => {
     await request(app).get('/api/user').set('x-access-token', 'invalid_token').expect(401);
   });
 
-  it('Should return 500 if sign up route throws', async () => {
+  it('Should return 500 if authentication middleware throws', async () => {
     const { user } = makeSut();
 
     jest.spyOn(prisma.user, 'findFirst').mockImplementation(() => { throw new Error(); });

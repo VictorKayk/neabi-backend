@@ -19,8 +19,9 @@ export class AuthorizationUseCase implements IUseCase {
     const userRolesOrNull = await this.userHasRoleRepository.readAllRolesFromUser(userId, {});
     if (userRolesOrNull.length < 1) return error(new UnauthorizedError());
 
+    const allowedRolesInLowerCase = allowedRoles.map((role) => role.toLocaleLowerCase());
     const userHasSomeAllowedRole = userRolesOrNull
-      .some((userRole) => allowedRoles.includes(userRole.role));
+      .some((userRole) => allowedRolesInLowerCase.includes(userRole.role.toLocaleLowerCase()));
     if (!userHasSomeAllowedRole) return error(new UnauthorizedError());
 
     return success(null);

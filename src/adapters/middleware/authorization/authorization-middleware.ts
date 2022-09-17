@@ -5,17 +5,18 @@ import { ok, serverError, unauthorized } from '@/adapters/utils/http';
 
 interface AuthorizationRequest {
   userId: string,
-  allowedRoles: Array<string>,
 }
 
 export class AuthorizationMiddleware implements IMiddleware<AuthorizationRequest> {
   constructor(
     private readonly authorization: AuthorizationUseCase,
+    private readonly allowedRoles: Array<string>,
   ) { }
 
-  async handle({ userId, allowedRoles }: AuthorizationRequest): Promise<IHttpResponse> {
+  async handle({ userId }: AuthorizationRequest): Promise<IHttpResponse> {
     try {
-      const authorizationOrError = await this.authorization.execute({ userId, allowedRoles });
+      const authorizationOrError = await this.authorization
+        .execute({ userId, allowedRoles: this.allowedRoles });
       if (authorizationOrError.isError()) return unauthorized(authorizationOrError.value);
 
       const authorizationData = authorizationOrError.value;

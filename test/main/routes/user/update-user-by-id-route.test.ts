@@ -9,6 +9,23 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const user = new UserBuilder();
+
+  const userHasRoles = {
+    userId: 'any_userId',
+    roleId: 'any_roleId',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+    Roles: {
+      id: 'any_id',
+      role: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    },
+  };
+  jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles]);
+
   return {
     user,
   };

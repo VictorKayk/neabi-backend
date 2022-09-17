@@ -229,7 +229,7 @@ describe('UserHasRoleRepository Implementation', () => {
     };
     jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles, userHasRoles, userHasRoles]);
 
-    const response = await sut.readAllRolesFromUser('any_userId', { page: 1 });
+    const response = await sut.readAllRolesFromUser('any_userId', { });
     expect(response).toEqual([userHasRoles.Roles, userHasRoles.Roles, userHasRoles.Roles]);
   });
 });

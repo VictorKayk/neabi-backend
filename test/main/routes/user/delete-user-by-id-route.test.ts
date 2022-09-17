@@ -9,6 +9,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const user = new UserBuilder();
+
   return {
     user,
   };
@@ -27,6 +28,23 @@ jest.mock('jsonwebtoken', () => ({
     return { id: 'any_userId' };
   },
 }));
+
+// Authorization
+const userHasRoles = {
+  userId: 'any_userId',
+  roleId: 'any_roleId',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isDeleted: false,
+  Roles: {
+    id: 'any_id',
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  },
+};
+jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles]);
 
 describe('DeleteUserById Route', () => {
   it('Should return 200 on delete user by id route success', async () => {

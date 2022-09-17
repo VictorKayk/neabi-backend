@@ -70,7 +70,7 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
     return userHasRoleData;
   }
 
-  async readAllRolesFromUser(userId: string, { id, role, page }: IRoleDataQuery):
+  async readAllRolesFromUser(userId: string, { id, role }: IRoleDataQuery):
     Promise<[] | IRoleRepositoryReturnData[]> {
     const rolesData = await prisma.userHasRoles.findMany({
       where: {
@@ -83,7 +83,6 @@ export class UserHasRoleRepository implements IUserHasRoleRepository {
       },
       select: { Roles: true },
       take: 100,
-      skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
     });
     return getUserRoles(rolesData);

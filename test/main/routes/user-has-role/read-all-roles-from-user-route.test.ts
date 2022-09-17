@@ -33,17 +33,25 @@ jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
   isDeleted: false,
 });
 
+// Authorization
+const userHasRoles = {
+  userId: 'any_userId',
+  roleId: 'any_roleId',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isDeleted: false,
+  Roles: {
+    id: 'any_id',
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  },
+};
+jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles]);
+
 describe('ReadAllRolesFromUserRoute', () => {
   it('Should return 200 on read all roles from user route success', async () => {
-    jest.spyOn(prisma.userHasRoles, 'findMany')
-      .mockResolvedValue([{
-        userId: 'any_userId',
-        roleId: 'any_roleId',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isDeleted: false,
-      }]);
-
     await request(app)
       .get('/api/user/any_userId/role/all')
       .set('x-access-token', 'any_encrypted_string')

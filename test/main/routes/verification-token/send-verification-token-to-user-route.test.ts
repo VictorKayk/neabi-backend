@@ -59,6 +59,23 @@ jest.mock('nodemailer', () => ({
   })),
 }));
 
+// Authorization
+const userHasRoles = {
+  userId: 'any_userId',
+  roleId: 'any_roleId',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isDeleted: false,
+  Roles: {
+    id: 'any_id',
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  },
+};
+jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles]);
+
 describe('SendVerificationTokenToUser Route', () => {
   it('Should return 200 on send verification token to user route success', async () => {
     const { user } = makeSut();

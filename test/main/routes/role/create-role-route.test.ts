@@ -12,6 +12,23 @@ jest.mock('bcrypt', () => ({
   },
 }));
 
+// Authorization
+const userHasRoles = {
+  userId: 'any_userId',
+  roleId: 'any_roleId',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isDeleted: false,
+  Roles: {
+    id: 'any_id',
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  },
+};
+jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles]);
+
 jest.mock('jsonwebtoken', () => ({
   verify() {
     return { id: 'any_id' };

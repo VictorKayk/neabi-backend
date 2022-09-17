@@ -33,6 +33,23 @@ jest.spyOn(prisma.role, 'findFirst').mockResolvedValue({
   isDeleted: false,
 });
 
+// Authorization
+const userHasRoles = {
+  userId: 'any_userId',
+  roleId: 'any_roleId',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isDeleted: false,
+  Roles: {
+    id: 'any_id',
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  },
+};
+jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([userHasRoles]);
+
 describe('AddRoleToUserRoute', () => {
   it('Should return 201 on add role to user route success', async () => {
     jest.spyOn(prisma.userHasRoles, 'findFirst').mockResolvedValue(null);

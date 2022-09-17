@@ -34,12 +34,6 @@ export const makeExternalSignInUseCase = (): ExternalSignInUseCase => {
   return new ExternalSignInUseCase(userRepository, idGenerator, encrypter);
 };
 
-export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
-  const userRepository = makeUserRepository();
-  const decrypter = makeDecrypter();
-  return new AuthenticationUseCase(userRepository, decrypter);
-};
-
 export const makeUpdateUserUseCase = (): UpdateUserUseCase => {
   const userRepository = makeUserRepository();
   const hasher = makeHasher();

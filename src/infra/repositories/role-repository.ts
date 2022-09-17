@@ -30,7 +30,7 @@ export class RoleRepository implements IRoleRepository {
     return roleReturnData;
   }
 
-  async readAllRoles({ id, role, page }: IRoleDataQuery):
+  async readAllRoles({ id, role }: IRoleDataQuery):
     Promise<IRoleRepositoryReturnData[] | []> {
     const roles = await prisma.role.findMany({
       where: {
@@ -38,7 +38,6 @@ export class RoleRepository implements IRoleRepository {
         role: { contains: role, mode: 'insensitive' },
       },
       take: 100,
-      skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
     });
     return roles;

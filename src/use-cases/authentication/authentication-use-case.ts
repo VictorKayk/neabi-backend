@@ -1,10 +1,14 @@
 import { IUserRepository, IDecrypter } from '@/use-cases/user/interfaces';
 import { IUseCase } from '@/use-cases/interfaces';
-import { IAuthenticationResponse } from '@/use-cases/authentication/interfaces';
 import { UnauthorizedError } from '@/use-cases/errors';
 import { Either, error, success } from '@/shared';
 
-type Response = Either<UnauthorizedError, IAuthenticationResponse>;
+interface AuthenticationResponse {
+  accessToken: string,
+  id: string,
+}
+
+type Response = Either<UnauthorizedError, AuthenticationResponse>;
 
 export class AuthenticationUseCase implements IUseCase {
   constructor(

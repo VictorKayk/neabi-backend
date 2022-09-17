@@ -9,6 +9,15 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const user = new UserBuilder();
+
+  jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({
+    ...user.build(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+    isVerified: false,
+  });
+
   return {
     user,
   };
@@ -28,17 +37,17 @@ jest.mock('jsonwebtoken', () => ({
   },
 }));
 
-describe('Authentication middleware', () => {
-  it('Should return 401 if accessToken is invalid', async () => {
-    jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
-
-    await request(app).get('/api/user').set('x-access-token', 'invalid_token').expect(401);
-  });
-
-  it('Should return 500 if authentication middleware throws', async () => {
+describe('Authorization middleware', () => {
+  it('Should return 401 if user does not have the role to access the route', async () => {
     const { user } = makeSut();
 
-    jest.spyOn(prisma.user, 'findFirst').mockImplementation(() => { throw new Error(); });
+    await request(app).get('/api/user').set('x-access-token', user.build().accessToken).expect(401);
+  });
+
+  it('Should return 500 if authorization middleware throws', async () => {
+    const { user } = makeSut();
+
+    jest.spyOn(prisma.userHasRoles, 'findMany').mockImplementation(() => { throw new Error(); });
 
     await request(app).get('/api/user')
       .set('x-access-token', user.build().accessToken).expect(500);

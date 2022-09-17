@@ -20,8 +20,8 @@ describe('ReadAllRolesUseCase', () => {
   it('Should call readAllRoles with correct values', async () => {
     const { sut, roleRepository } = makeSut();
     const roleRepositorySpy = jest.spyOn(roleRepository, 'readAllRoles');
-    await sut.execute({ page: 1 });
-    expect(roleRepositorySpy).toHaveBeenCalledWith({ page: 1 });
+    await sut.execute({ });
+    expect(roleRepositorySpy).toHaveBeenCalledWith({ });
   });
 
   it('Should return roles data on success', async () => {

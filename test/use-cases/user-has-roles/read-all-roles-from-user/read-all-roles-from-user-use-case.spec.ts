@@ -65,8 +65,8 @@ describe('ReadAllRolesFromUserUseCase', () => {
   it('Should call readAllRolesFromUser with correct value', async () => {
     const { sut, userHasRoleRepository } = makeSut();
     const userHasRoleRepositorySpy = jest.spyOn(userHasRoleRepository, 'readAllRolesFromUser');
-    await sut.execute({ userId: 'any_userId', roleDataQuery: { page: 1 } });
-    expect(userHasRoleRepositorySpy).toHaveBeenCalledWith('any_userId', { page: 1 });
+    await sut.execute({ userId: 'any_userId', roleDataQuery: { } });
+    expect(userHasRoleRepositorySpy).toHaveBeenCalledWith('any_userId', { });
   });
 
   it('Should return all user roles', async () => {

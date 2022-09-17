@@ -130,7 +130,7 @@ describe('Role Repository Implementation', () => {
     };
     jest.spyOn(prisma.role, 'findMany').mockResolvedValue([role, role, role]);
 
-    const response = await sut.readAllRoles({ page: 1 });
+    const response = await sut.readAllRoles({ });
     expect(response).toEqual([role, role, role]);
   });
 

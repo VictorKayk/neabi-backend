@@ -7,7 +7,7 @@ describe('UpdateUserById validation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {
     makeUpdateUserByIdValidationFactory();
     expect(ValidationComposite).toHaveBeenCalledWith([
-      new RequiredFieldsValidation(['id']),
+      new RequiredFieldsValidation(['userId']),
     ]);
   });
 });

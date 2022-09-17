@@ -25,7 +25,7 @@ jest.mock('bcrypt', () => ({
 
 jest.mock('jsonwebtoken', () => ({
   verify() {
-    return { id: 'any_id' };
+    return { id: 'any_userId' };
   },
 }));
 
@@ -66,7 +66,7 @@ describe('DeleteUserById Route', () => {
       isVerified: false,
     });
 
-    await request(app).delete('/api/user/any_id')
+    await request(app).delete('/api/user/any_userId')
       .set('x-access-token', user.build().accessToken).expect(200);
   });
 
@@ -83,7 +83,7 @@ describe('DeleteUserById Route', () => {
       })
       .mockResolvedValueOnce(null);
 
-    await request(app).delete('/api/user/any_id')
+    await request(app).delete('/api/user/any_userId')
       .set('x-access-token', user.build().accessToken).expect(401);
   });
 
@@ -98,7 +98,7 @@ describe('DeleteUserById Route', () => {
       isVerified: false,
     }).mockImplementationOnce(() => { throw new Error(); });
 
-    await request(app).delete('/api/user/any_id')
+    await request(app).delete('/api/user/any_userId')
       .set('x-access-token', user.build().accessToken).expect(500);
   });
 });

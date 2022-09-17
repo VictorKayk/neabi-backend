@@ -1,10 +1,9 @@
 import { Either, success, error } from '@/shared';
+import { ExpiredTokenError, InvalidTokenError, NonExistingTokenError } from '@/use-cases/errors';
 import { IHashCompare, IUseCase, ITokenData } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
-import {
-  UserIsAlreadyVerifiedError, NonExistingTokenError, ExpiredTokenError, InvalidTokenError,
-} from '@/use-cases/verification-token/errors';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
 import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
 
 type Response = Either<
@@ -34,10 +33,10 @@ export class VerifyTokenUseCase implements IUseCase {
       return error(new ExpiredTokenError());
     }
 
-    await this.verificationTokenRepository.deleteVerificationTokenByUserId(userId);
-
     const compareToken = await this.hashCompare.compare(verificationTokenOrNull.token, token);
     if (!compareToken) return error(new InvalidTokenError());
+
+    await this.verificationTokenRepository.deleteVerificationTokenByUserId(userId);
 
     const user = await this.verificationTokenRepository
       .updateUserVerification(userId, true);

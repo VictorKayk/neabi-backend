@@ -18,9 +18,9 @@ export class DeleteUserByIdController implements IController {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
 
-      const { id } = params;
+      const { userId } = params;
 
-      const accountOrError = await this.deleteUserUseCase.execute(id);
+      const accountOrError = await this.deleteUserUseCase.execute(userId);
       if (accountOrError.isError()) {
         return unauthorized(accountOrError.value);
       }

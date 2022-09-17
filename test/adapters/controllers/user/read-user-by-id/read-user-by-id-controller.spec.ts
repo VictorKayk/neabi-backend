@@ -40,7 +40,7 @@ describe('ReadUserById Controller ', () => {
 
     await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: user.build().id },
+      params: { userId: user.build().id },
     });
     expect(useCaseSpy).toHaveBeenCalledWith(user.build().id);
   });
@@ -52,7 +52,7 @@ describe('ReadUserById Controller ', () => {
 
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: user.build().id },
+      params: { userId: user.build().id },
     });
     expect(response).toEqual(serverError(new ServerError()));
   });
@@ -72,7 +72,7 @@ describe('ReadUserById Controller ', () => {
 
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: user.build().id },
+      params: { userId: user.build().id },
     });
 
     expect(response.statusCode).toBe(200);
@@ -85,7 +85,7 @@ describe('ReadUserById Controller ', () => {
     jest.spyOn(useCase, 'execute').mockResolvedValue(error(new NonExistingUserError()));
     const response = await sut.handle({
       ...makeFakeRequestAuthenticated(),
-      params: { id: 'invalid_id' },
+      params: { userId: 'invalid_id' },
     });
 
     expect(response).toEqual(unauthorized(new NonExistingUserError()));
@@ -94,14 +94,14 @@ describe('ReadUserById Controller ', () => {
   it('Should call Validation with correct values', async () => {
     const { sut, validation } = makeSut();
     const validationSpy = jest.spyOn(validation, 'validate');
-    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
-    expect(validationSpy).toHaveBeenCalledWith({ id: 'any_id' });
+    await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_id' } });
+    expect(validationSpy).toHaveBeenCalledWith({ userId: 'any_id' });
   });
 
   it('Should return 400 if Validation returns an error', async () => {
     const { sut, validation } = makeSut();
     jest.spyOn(validation, 'validate').mockReturnValueOnce(new MissingParamsError('any_field'));
-    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { id: 'any_id' } });
+    const response = await sut.handle({ ...makeFakeRequestAuthenticated(), params: { userId: 'any_id' } });
     expect(response).toEqual(badRequest(new MissingParamsError('any_field')));
   });
 });

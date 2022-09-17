@@ -12,4 +12,6 @@ export * from '@/test/stubs/validation-stub';
 export * from '@/test/stubs/verification-token-repository-stub';
 export * from '@/test/stubs/verification-token-use-cases-stub';
 export * from '@/test/stubs/email-service-stub';
+export * from '@/test/stubs/reset-user-password-token-repository-stub';
+export * from '@/test/stubs/reset-user-password-token-use-cases-stub';
 export * from '@/test/stubs/middleware-stub';

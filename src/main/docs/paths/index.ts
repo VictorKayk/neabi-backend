@@ -7,3 +7,4 @@ export * from '@/main/docs/paths/read-all-users-path';
 export * from '@/main/docs/paths/send-reset-user-password-token-path';
 export * from '@/main/docs/paths/verify-reset-user-password-token-path';
 export * from '@/main/docs/paths/create-role-path';
+export * from '@/main/docs/paths/read-all-roles-path';

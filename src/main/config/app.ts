@@ -1,10 +1,12 @@
-import express from 'express';
+import express, { Express } from 'express';
 import middlewares from '@/main/config/middlewares';
 import routes from '@/main/config/routes';
+import setupSwagger from '@/main/config/swagger';
 
-const app = express();
-
-middlewares(app);
-routes(app);
-
-export default app;
+export default async function setupApp(): Promise<Express> {
+  const app = express();
+  setupSwagger(app);
+  middlewares(app);
+  routes(app);
+  return app;
+}

@@ -3,7 +3,7 @@ export const allUsersPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Users'],
+    tags: ['User'],
     summary: 'API para ler os dados da conta de todos os usuário',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [

@@ -3,7 +3,7 @@ export const userByIdPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Users'],
+    tags: ['User'],
     summary: 'API para ler os dados da conta de um usuário pelo id',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{
@@ -44,7 +44,7 @@ export const userByIdPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Users'],
+    tags: ['User'],
     summary: 'API para editar os dados da conta de um usuário',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{
@@ -95,7 +95,7 @@ export const userByIdPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Users'],
+    tags: ['User'],
     summary: 'API para apagar a conta de um usuário',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{

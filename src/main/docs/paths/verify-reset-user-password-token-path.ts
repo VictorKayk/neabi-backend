@@ -3,7 +3,7 @@ export const verifyResetUserPasswordTokenPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Users'],
+    tags: ['User'],
     summary: 'API para verificar o token necessario para resetar a senha de um usuario',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [

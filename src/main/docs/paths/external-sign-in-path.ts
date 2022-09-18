@@ -1,6 +1,6 @@
 export const externalSignInPath = {
   get: {
-    tags: ['Users'],
+    tags: ['User'],
     summary: 'API para entrar conta de um usuário pelo email do google',
     description: 'Essa rota pode ser executada por **qualquer usuário**',
     responses: {

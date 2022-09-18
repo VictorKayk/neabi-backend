@@ -15,7 +15,7 @@ export default {
   }],
   tags: [
     {
-      name: 'Users',
+      name: 'User',
       description: 'APIs relacionadas aos usuarios',
     },
     {

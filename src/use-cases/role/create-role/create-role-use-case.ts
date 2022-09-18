@@ -15,10 +15,11 @@ export class CreateRoleUseCase implements IUseCase {
   ) { }
 
   async execute(role: string): Promise<Response> {
-    const roleOrError = Role.create(role);
+    const newRole = role.toLocaleLowerCase();
+    const roleOrError = Role.create(newRole);
     if (roleOrError.isError()) return error(roleOrError.value);
 
-    let roleOrNull = await this.roleRepository.findByRole(role);
+    let roleOrNull = await this.roleRepository.findByRole(newRole);
     if (roleOrNull) {
       if (!roleOrNull.isDeleted) return error(new ExistingRoleError());
 
@@ -32,7 +33,7 @@ export class CreateRoleUseCase implements IUseCase {
       roleOrNull = await this.roleRepository.findById(id);
     } while (roleOrNull);
 
-    const roleData = await this.roleRepository.add({ id, role });
+    const roleData = await this.roleRepository.add({ id, role: newRole });
 
     return success(roleData);
   }

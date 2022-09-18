@@ -28,6 +28,15 @@ jest.mock('jsonwebtoken', () => ({
   },
 }));
 
+jest.spyOn(prisma.userHasRoles, 'create')
+  .mockResolvedValue({
+    userId: 'any_userId',
+    roleId: 'any_roleId',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  });
+
 describe('SignUp Route', () => {
   it('Should return 201 on sign up route success', async () => {
     const { user } = makeSut();

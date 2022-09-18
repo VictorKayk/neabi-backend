@@ -60,6 +60,7 @@
     "husky": "^8.0.1",
     "jest": "^28.1.2",
     "lint-staged": "^13.0.3",
+    "nodemailer-mock": "^1.5.12",
     "prettier": "^2.4.1",
     "prisma": "^4.2.1",
     "rimraf": "^3.0.2",

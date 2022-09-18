@@ -19,8 +19,14 @@ import {
   makeEncrypter,
   makeUniversallyUniqueIdentifierGenerator,
   makeValidation,
+  makeCreateRoleUseCase,
+  makeAddRoleToUserUseCase,
+  makeReadRoleByRoleNameUseCase,
 } from '@/test/stubs';
-import { error } from '@/shared';
+import { error, success } from '@/shared';
+import { CreateRoleUseCase } from '@/use-cases/role/create-role';
+import { AddRoleToUserUseCase } from '@/use-cases/user-has-role/add-role-to-user';
+import { ReadRoleByRoleNameUseCase } from '@/use-cases/role/read-role-by-role-name';
 
 type SutTypes = {
   sut: SignUpController,
@@ -28,14 +34,30 @@ type SutTypes = {
   signUpUseCase: SignUpUseCase,
   idGenerator: IUniversallyUniqueIdentifierGenerator,
   encrypter: IEncrypter,
+  createRole: CreateRoleUseCase,
+  addRoleToUser: AddRoleToUserUseCase,
+  readRoleByRoleName: ReadRoleByRoleNameUseCase,
 };
 
 const makeSut = (): SutTypes => {
   const validation = makeValidation();
   const signUpUseCase = makeSignUpUseCase();
-  const sut = new SignUpController(validation, signUpUseCase);
+  const createRole = makeCreateRoleUseCase();
+  const addRoleToUser = makeAddRoleToUserUseCase();
+  const readRoleByRoleName = makeReadRoleByRoleNameUseCase();
+  const sut = new SignUpController(
+    validation, signUpUseCase, createRole, addRoleToUser, readRoleByRoleName,
+  );
   const idGenerator = makeUniversallyUniqueIdentifierGenerator();
   const encrypter = makeEncrypter();
+
+  jest.spyOn(createRole, 'execute').mockResolvedValue(success({
+    id: 'any_roleId',
+    role: 'any_role',
+    isDeleted: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }));
 
   return {
     sut,
@@ -43,6 +65,9 @@ const makeSut = (): SutTypes => {
     signUpUseCase,
     encrypter,
     idGenerator,
+    createRole,
+    addRoleToUser,
+    readRoleByRoleName,
   };
 };
 
@@ -116,6 +141,53 @@ describe('SignUpUseCase Controller ', () => {
 
     const response = await sut.handle(makeFakeRequest());
     expect(response).toEqual(forbidden(new ExistingUserError()));
+  });
+
+  it('Should call CreateRoleUseCase with correct values', async () => {
+    const { sut, createRole } = makeSut();
+
+    const useCaseSpy = jest.spyOn(createRole, 'execute');
+
+    await sut.handle(makeFakeRequest());
+    expect(useCaseSpy).toHaveBeenCalledWith('user');
+  });
+
+  it('Should call AddRoleToUserUseCase with correct values if role does not exists', async () => {
+    const { sut, addRoleToUser, idGenerator } = makeSut();
+
+    const useCaseSpy = jest.spyOn(addRoleToUser, 'execute');
+
+    await sut.handle(makeFakeRequest());
+    expect(useCaseSpy).toHaveBeenCalledWith({ userId: await idGenerator.generate(), roleId: 'any_roleId' });
+  });
+
+  it('Should call ReadRoleByRoleNameUseCase with correct values if role already exists', async () => {
+    const { sut, readRoleByRoleName, createRole } = makeSut();
+
+    jest.spyOn(createRole, 'execute').mockResolvedValue(error(new ExistingUserError()));
+    const useCaseSpy = jest.spyOn(readRoleByRoleName, 'execute');
+
+    await sut.handle(makeFakeRequest());
+    expect(useCaseSpy).toHaveBeenCalledWith('user');
+  });
+
+  it('Should call AddRoleToUserUseCase with correct values if role already exists', async () => {
+    const {
+      sut, addRoleToUser, idGenerator, createRole, readRoleByRoleName,
+    } = makeSut();
+
+    jest.spyOn(createRole, 'execute').mockResolvedValue(error(new ExistingUserError()));
+    jest.spyOn(readRoleByRoleName, 'execute').mockResolvedValue(success({
+      id: 'any_roleId',
+      role: 'any_role',
+      isDeleted: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+    const useCaseSpy = jest.spyOn(addRoleToUser, 'execute');
+
+    await sut.handle(makeFakeRequest());
+    expect(useCaseSpy).toHaveBeenCalledWith({ userId: await idGenerator.generate(), roleId: 'any_roleId' });
   });
 
   it('Should call Validation with correct values', async () => {

@@ -9,6 +9,7 @@ import {
   verifyResetUserPasswordTokenPath,
   createRolePath,
   readAllRolesPath,
+  roleByIdPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -22,7 +23,7 @@ export default {
   '/user/{userId}/reset-password/token/{token}': verifyResetUserPasswordTokenPath,
   '/role': createRolePath,
   '/role/all': readAllRolesPath,
-  // '/role/{roleId}': ,
+  '/role/{roleId}': roleByIdPath,
   // '/user/{userId}/role/all': ,
   // '/user/{userId}/role/{roleId}': ,
   // '/user/verification/token': ,

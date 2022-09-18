@@ -10,11 +10,17 @@ import {
 import { SignUpUseCase } from '@/use-cases/user/sign-up';
 import { getUserVisibleData } from '@/adapters/controllers/user/utils';
 import { IUserVisibleData } from '@/adapters/controllers/user/interfaces';
+import { CreateRoleUseCase } from '@/use-cases/role/create-role';
+import { AddRoleToUserUseCase } from '@/use-cases/user-has-role/add-role-to-user';
+import { ReadRoleByRoleNameUseCase } from '@/use-cases/role/read-role-by-role-name';
 
 export class SignUpController implements IController {
   constructor(
     private readonly validation: IValidation,
     private readonly signUp: SignUpUseCase,
+    private readonly createRole: CreateRoleUseCase,
+    private readonly addRoleToUser: AddRoleToUserUseCase,
+    private readonly readRoleByRoleName: ReadRoleByRoleNameUseCase,
   ) { }
 
   async handle({ body }: IHttpRequest): Promise<IHttpResponse<IUserVisibleData>> {
@@ -31,7 +37,23 @@ export class SignUpController implements IController {
         }
         return badRequest(accountOrError.value);
       }
+
       const account = getUserVisibleData(accountOrError.value);
+
+      // Default user role
+      const createUserRoleOrError = await this.createRole.execute('user');
+      if (createUserRoleOrError.isSuccess()) {
+        await this.addRoleToUser.execute({
+          userId: account.id, roleId: createUserRoleOrError.value.id,
+        });
+      } else {
+        const userRoleOrError = await this.readRoleByRoleName.execute('user');
+        if (userRoleOrError.isSuccess()) {
+          await this.addRoleToUser.execute({
+            userId: account.id, roleId: userRoleOrError.value.id,
+          });
+        }
+      }
 
       return created(account);
     } catch (error) {

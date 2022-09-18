@@ -1,7 +1,10 @@
 import request from 'supertest';
-import app from '@/main/config/app';
 import prisma from '@/main/config/prisma';
 import { UserBuilder } from '@/test/builders/user-builder';
+import setupApp from '@/main/config/app';
+import { Express } from 'express';
+
+let app: Express;
 
 type SutTypes = {
   user: UserBuilder,
@@ -29,6 +32,10 @@ jest.mock('jsonwebtoken', () => ({
 }));
 
 describe('Authentication middleware', () => {
+  beforeAll(async () => {
+    app = await setupApp();
+  });
+
   it('Should return 401 if accessToken is invalid', async () => {
     jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(null);
 

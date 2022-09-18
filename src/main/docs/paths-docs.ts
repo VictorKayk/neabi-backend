@@ -7,6 +7,7 @@ import {
   allUsersPath,
   sendResetUserPasswordTokenPath,
   verifyResetUserPasswordTokenPath,
+  createRolePath,
 } from '@/main/docs/paths';
 
 export default {
@@ -18,7 +19,7 @@ export default {
   '/user/all': allUsersPath,
   '/user/reset-password/token': sendResetUserPasswordTokenPath,
   '/user/{userId}/reset-password/token/{token}': verifyResetUserPasswordTokenPath,
-  // '/role': ,
+  '/role': createRolePath,
   // '/role/all': ,
   // '/role/{roleId}': ,
   // '/user/{userId}/role/all': ,

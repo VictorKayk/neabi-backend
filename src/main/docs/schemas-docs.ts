@@ -5,6 +5,8 @@ import {
   userSchema,
   userUpdadeParamsSchema,
   verifyResetUserPasswordTokenParamsSchema,
+  roleSchema,
+  createRoleParamsSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -14,4 +16,6 @@ export default {
   error: errorSchema,
   userUpdadeParams: userUpdadeParamsSchema,
   verifyResetUserPasswordTokenParams: verifyResetUserPasswordTokenParamsSchema,
+  role: roleSchema,
+  createRoleParams: createRoleParamsSchema,
 };

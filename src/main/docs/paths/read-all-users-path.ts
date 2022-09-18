@@ -1,4 +1,4 @@
-export const allUsersPath = {
+export const readAllUsersPath = {
   get: {
     security: [{
       apiKeyAuth: [],

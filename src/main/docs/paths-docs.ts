@@ -10,6 +10,7 @@ import {
   createRolePath,
   readAllRolesPath,
   roleByIdPath,
+  readAllRolesFromUserPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -24,7 +25,7 @@ export default {
   '/role': createRolePath,
   '/role/all': readAllRolesPath,
   '/role/{roleId}': roleByIdPath,
-  // '/user/{userId}/role/all': ,
+  '/user/{userId}/role/all': readAllRolesFromUserPath,
   // '/user/{userId}/role/{roleId}': ,
   // '/user/verification/token': ,
   // '/user/{userId}/verification/token/{token}': ,

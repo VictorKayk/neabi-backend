@@ -17,5 +17,5 @@ export const roleSchema = {
       type: 'string',
     },
   },
-  required: ['id', 'role', 'email', 'accessToken', 'isDeleted', 'createdAt', 'updatedAt'],
+  required: ['id', 'role', 'email', 'isDeleted', 'createdAt', 'updatedAt'],
 };

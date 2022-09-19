@@ -30,7 +30,10 @@ export const readAllRolesPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/role',
+              type: 'array',
+              items: {
+                $ref: '#/schemas/roles',
+              },
             },
           },
         },

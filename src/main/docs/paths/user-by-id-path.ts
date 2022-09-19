@@ -21,7 +21,7 @@ export const userByIdPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/user',
+              $ref: '#/schemas/userCritialData',
             },
           },
         },
@@ -61,7 +61,7 @@ export const userByIdPath = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/userUpdadeParams',
+            $ref: '#/schemas/userCritialDataUpdadeParams',
           },
         },
       },
@@ -72,7 +72,7 @@ export const userByIdPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/user',
+              $ref: '#/schemas/userCritialData',
             },
           },
         },
@@ -113,7 +113,7 @@ export const userByIdPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/user',
+              $ref: '#/schemas/userCritialData',
             },
           },
         },

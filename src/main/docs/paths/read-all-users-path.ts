@@ -54,7 +54,10 @@ export const readAllUsersPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/user',
+              type: 'array',
+              items: {
+                $ref: '#/schemas/userCritialData',
+              },
             },
           },
         },

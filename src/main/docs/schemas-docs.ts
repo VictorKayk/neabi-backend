@@ -8,6 +8,7 @@ import {
   roleSchema,
   createRoleParamsSchema,
   userHasRoleSchema,
+  userCritialDataSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -20,4 +21,5 @@ export default {
   role: roleSchema,
   createRoleParams: createRoleParamsSchema,
   userHasRole: userHasRoleSchema,
+  userCritialData: userCritialDataSchema,
 };

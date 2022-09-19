@@ -22,7 +22,10 @@ export const readAllRolesFromUserPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/role',
+              type: 'array',
+              items: {
+                $ref: '#/schemas/roles',
+              },
             },
           },
         },

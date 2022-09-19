@@ -12,6 +12,7 @@ import {
   roleByIdPath,
   readAllRolesFromUserPath,
   userHasRoleByIdPath,
+  sendVerificationTokenPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -28,6 +29,6 @@ export default {
   '/role/{roleId}': roleByIdPath,
   '/user/{userId}/role/all': readAllRolesFromUserPath,
   '/user/{userId}/role/{roleId}': userHasRoleByIdPath,
-  // '/user/verification/token': ,
+  '/user/verification/token': sendVerificationTokenPath,
   // '/user/{userId}/verification/token/{token}': ,
 };

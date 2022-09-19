@@ -7,3 +7,4 @@ export * from '@/main/docs/schemas/user-update-params-schema';
 export * from '@/main/docs/schemas/verify-reset-user-password-token-params-schema';
 export * from '@/main/docs/schemas/role-schema';
 export * from '@/main/docs/schemas/create-role-params-schema';
+export * from '@/main/docs/schemas/user-has-role-schema';

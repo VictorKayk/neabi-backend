@@ -11,6 +11,7 @@ import {
   readAllRolesPath,
   roleByIdPath,
   readAllRolesFromUserPath,
+  userHasRoleByIdPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -26,7 +27,7 @@ export default {
   '/role/all': readAllRolesPath,
   '/role/{roleId}': roleByIdPath,
   '/user/{userId}/role/all': readAllRolesFromUserPath,
-  // '/user/{userId}/role/{roleId}': ,
+  '/user/{userId}/role/{roleId}': userHasRoleByIdPath,
   // '/user/verification/token': ,
   // '/user/{userId}/verification/token/{token}': ,
 };

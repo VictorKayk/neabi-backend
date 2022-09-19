@@ -7,6 +7,7 @@ import {
   verifyResetUserPasswordTokenParamsSchema,
   roleSchema,
   createRoleParamsSchema,
+  userHasRoleSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -18,4 +19,5 @@ export default {
   verifyResetUserPasswordTokenParams: verifyResetUserPasswordTokenParamsSchema,
   role: roleSchema,
   createRoleParams: createRoleParamsSchema,
+  userHasRole: userHasRoleSchema,
 };

@@ -10,11 +10,11 @@ export const sendVerificationTokenPath = {
       200: {
         description: 'Sucesso',
       },
-      401: {
-        $ref: '#/components/unauthorized',
-      },
       400: {
         $ref: '#/components/badRequest',
+      },
+      401: {
+        $ref: '#/components/unauthorized',
       },
       403: {
         $ref: '#/components/forbidden',

@@ -59,6 +59,9 @@ export const readAllUsersPath = {
           },
         },
       },
+      401: {
+        $ref: '#/components/unauthorized',
+      },
       404: {
         $ref: '#/components/notFound',
       },

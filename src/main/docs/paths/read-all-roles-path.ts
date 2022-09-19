@@ -4,7 +4,7 @@ export const readAllRolesPath = {
       apiKeyAuth: [],
     }],
     tags: ['Role'],
-    summary: 'API para ler todas as função',
+    summary: 'API para ler todas as funções',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [
       {

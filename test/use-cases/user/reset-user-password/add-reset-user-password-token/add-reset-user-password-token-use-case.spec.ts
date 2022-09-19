@@ -33,6 +33,7 @@ const makeSut = (): SutTypes => {
     isVerified: false,
     roles: [],
   });
+  jest.spyOn(resetUserPasswordTokenRepository, 'deleteResetUserPasswordTokenByUserId').mockResolvedValue();
 
   return {
     sut,

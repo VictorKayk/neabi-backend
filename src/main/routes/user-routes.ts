@@ -14,6 +14,8 @@ import {
   makeUpdateUserController,
   makeSendResetUserPasswordTokenToUserController,
   makeVerifyResetUserPasswordTokenController,
+  makeSendVerificationTokenToUserController,
+  makeVerifyTokenController,
 } from '@/main/factories/user';
 import { authentication, googleLoginAuth, googleLoginAuthCb } from '@/main/middlewares/authentication';
 import { authorization } from '@/main/middlewares/authorization';
@@ -32,4 +34,6 @@ export function user(router: Router) {
   router.delete('/user/:userId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeleteUserByIdController()));
   router.get('/user/reset-password/token', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeSendResetUserPasswordTokenToUserController()));
   router.post('/user/:userId/reset-password/token/:token', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeVerifyResetUserPasswordTokenController()));
+  router.get('/user/verification/token', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeSendVerificationTokenToUserController()));
+  router.get('/user/:userId/verification/token/:token', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeVerifyTokenController()));
 }

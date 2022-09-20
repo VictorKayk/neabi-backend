@@ -1,8 +1,6 @@
 import { AuthenticationUseCase } from '@/use-cases/authentication';
 import { AuthorizationUseCase } from '@/use-cases/authorization';
-import { makeDecrypter } from './encrypter-decrypter-stub';
-import { makeUserHasRoleRepository } from './user-has-role-repository-stub';
-import { makeUserRepository } from './user-repository-stub';
+import { makeDecrypter, makeUserHasRoleRepository, makeUserRepository } from '@/test/stubs';
 
 export const makeAuthenticationUseCase = (): AuthenticationUseCase => {
   const userRepository = makeUserRepository();

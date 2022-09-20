@@ -1,9 +1,10 @@
 import { makeUniversallyUniqueIdentifierGenerator } from '@/test/stubs/universally-unique-identifier-generator-stub';
 import { makeHasher, makeResetUserPasswordTokenRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { IHasher, IUniversallyUniqueIdentifierGenerator, ITokenRepositoryReturnData } from '@/use-cases/interfaces';
+import { IHasher, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { IResetUserPasswordTokenRepository } from '@/use-cases/user/reset-user-password/interfaces';
 import { AddResetUserPasswordTokenUseCase } from '@/use-cases/user/reset-user-password/add-reset-user-password-token';
+import { ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 type SutTypes = {
   sut: AddResetUserPasswordTokenUseCase,

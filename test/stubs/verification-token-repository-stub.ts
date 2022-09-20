@@ -16,7 +16,7 @@ export const makeVerificationTokenRepository = (): IVerificationTokenRepository 
     }
 
     async deleteVerificationTokenByUserId(userId: string): Promise<void> {
-      console.log(userId);
+      console.log();
     }
 
     async add(emailVerificationTokenData: IAddVerificationToken):

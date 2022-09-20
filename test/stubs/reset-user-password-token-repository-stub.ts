@@ -16,7 +16,7 @@ export const makeResetUserPasswordTokenRepository = (): IResetUserPasswordTokenR
     }
 
     async deleteResetUserPasswordTokenByUserId(userId: string): Promise<void> {
-      console.log(userId);
+      console.log();
     }
 
     async add(resetUserPasswordTokenData: IAddResetUserPasswordToken):

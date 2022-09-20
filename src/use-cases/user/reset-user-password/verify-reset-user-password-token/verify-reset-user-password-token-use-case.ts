@@ -1,7 +1,7 @@
 import { Either, success, error } from '@/shared';
-import { IHashCompare, IUseCase, ITokenData } from '@/use-cases/interfaces';
+import { IHashCompare, IUseCase } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { ITokenData, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
 import {
   NonExistingTokenError, ExpiredTokenError, InvalidTokenError,
 } from '@/use-cases/errors';

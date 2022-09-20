@@ -1,6 +1,5 @@
 import { IAddResetUserPasswordToken } from '@/use-cases/user/reset-user-password/add-reset-user-password-token/interfaces';
-import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IUserRepositoryReturnData, ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 export interface IResetUserPasswordTokenRepository {
   findUserById(userId: string): Promise<IUserRepositoryReturnData | null>

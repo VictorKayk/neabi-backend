@@ -1,6 +1,4 @@
 import request from 'supertest';
-import nodemailer from 'nodemailer';
-import nodemailerMock from 'nodemailer-mock';
 import app from '@/main/config/app';
 import prisma from '@/main/config/prisma';
 import { UserBuilder } from '@/test/builders/user-builder';
@@ -55,7 +53,11 @@ jest.mock('jsonwebtoken', () => ({
   },
 }));
 
-nodemailerMock.getMockFor(nodemailer);
+jest.mock('nodemailer', () => ({
+  createTransport: jest.fn().mockImplementation(() => ({
+    sendMail: jest.fn().mockResolvedValueOnce(null),
+  })),
+}));
 
 // Authorization
 const userHasRoles = {

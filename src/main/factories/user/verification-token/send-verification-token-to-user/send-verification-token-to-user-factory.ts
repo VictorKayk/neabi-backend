@@ -1,9 +1,9 @@
-import { SendVerificationTokenToUserController } from '@/adapters/controllers/verification-token/send-verification-token-to-user';
+import { SendVerificationTokenToUserController } from '@/adapters/controllers/user/verification-token/send-verification-token-to-user';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UuidAdapter } from '@/infra/universally-unique-identifier';
 import { VerificationTokenRepository, UserRepository } from '@/infra/repositories';
-import { makeSendVerificationTokenToUserValidationFactory } from '@/main/factories/verification-token';
-import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { makeSendVerificationTokenToUserValidationFactory } from '@/main/factories/user/verification-token';
+import { AddVerificationTokenUseCase } from '@/use-cases/user/verification-token/add-verification-token';
 import { EmailService } from '@/infra/services';
 import { SendEmailService } from '@/use-cases/services/email-service/send-email';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';

@@ -1,8 +1,8 @@
-import { VerifyTokenController } from '@/adapters/controllers/verification-token/verify-token';
+import { VerifyTokenController } from '@/adapters/controllers/user/verification-token/verify-token';
 import { IController } from '@/adapters/controllers/interfaces';
 import { VerificationTokenRepository } from '@/infra/repositories';
-import { makeVerifyTokenValidationFactory } from '@/main/factories/verification-token';
-import { VerifyTokenUseCase } from '@/use-cases/verification-token/verify-token';
+import { makeVerifyTokenValidationFactory } from '@/main/factories/user/verification-token';
+import { VerifyTokenUseCase } from '@/use-cases/user/verification-token/verify-token';
 import { BcryptAdapter } from '@/infra/criptography';
 import env from '@/main/config/env';
 

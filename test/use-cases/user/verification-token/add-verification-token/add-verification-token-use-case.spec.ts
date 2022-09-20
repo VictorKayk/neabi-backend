@@ -1,9 +1,10 @@
 import { makeUniversallyUniqueIdentifierGenerator } from '@/test/stubs/universally-unique-identifier-generator-stub';
 import { makeHasher, makeVerificationTokenRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { IHasher, IUniversallyUniqueIdentifierGenerator, ITokenRepositoryReturnData } from '@/use-cases/interfaces';
-import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
-import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { IHasher, IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/user/verification-token/interfaces';
+import { AddVerificationTokenUseCase } from '@/use-cases/user/verification-token/add-verification-token';
+import { ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 type SutTypes = {
   sut: AddVerificationTokenUseCase,

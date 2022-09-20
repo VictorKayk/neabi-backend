@@ -1,9 +1,9 @@
-import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/user/verification-token/errors';
 import { makeHashCompare, makeVerificationTokenRepository } from '@/test/stubs';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
-import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
-import { VerifyTokenUseCase } from '@/use-cases/verification-token/verify-token';
+import { IVerificationTokenRepository } from '@/use-cases/user/verification-token/interfaces';
+import { VerifyTokenUseCase } from '@/use-cases/user/verification-token/verify-token';
 import { UserBuilder } from '@/test/builders';
 import { IHashCompare } from '@/use-cases/interfaces';
 import { ExpiredTokenError, InvalidTokenError, NonExistingTokenError } from '@/use-cases/errors';

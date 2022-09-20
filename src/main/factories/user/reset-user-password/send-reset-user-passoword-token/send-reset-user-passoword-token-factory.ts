@@ -1,4 +1,3 @@
-
 import { SendResetUserPasswordTokenToUserController } from '@/adapters/controllers/user/reset-user-password/send-reset-user-password-token';
 import { IController } from '@/adapters/controllers/interfaces';
 import { UuidAdapter } from '@/infra/universally-unique-identifier';

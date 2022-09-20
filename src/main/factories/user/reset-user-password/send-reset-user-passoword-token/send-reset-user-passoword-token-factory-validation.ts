@@ -2,4 +2,3 @@ import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/contro
 
 export const makeSendResetUserPasswordTokenToUserValidationFactory = ():
   ValidationComposite => new ValidationComposite([new RequiredFieldsValidation(['id'])]);
-

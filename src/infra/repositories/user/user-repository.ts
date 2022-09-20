@@ -137,7 +137,7 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
-    return users.map((user) => {
+    return users.map((user: any) => {
       const { UserHasRoles, ...userWithoutUserHasRoles } = user;
       return { ...userWithoutUserHasRoles, roles: getUserRoles(UserHasRoles) };
     });

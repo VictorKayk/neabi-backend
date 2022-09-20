@@ -3,7 +3,7 @@ export const verifyVerificationTokenPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['User', 'Verification token'],
+    tags: ['User'],
     summary: 'API para verificar o token necessario para verificar um usuario',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [

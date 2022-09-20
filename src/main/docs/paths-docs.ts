@@ -25,11 +25,11 @@ export default {
   '/user/all': readAllUsersPath,
   '/user/reset-password/token': sendResetUserPasswordTokenPath,
   '/user/{userId}/reset-password/token/{token}': verifyResetUserPasswordTokenPath,
+  '/user/verification/token': sendVerificationTokenPath,
+  '/user/{userId}/verification/token/{token}': verifyVerificationTokenPath,
   '/role': createRolePath,
   '/role/all': readAllRolesPath,
   '/role/{roleId}': roleByIdPath,
   '/user/{userId}/role/all': readAllRolesFromUserPath,
   '/user/{userId}/role/{roleId}': userHasRoleByIdPath,
-  '/user/verification/token': sendVerificationTokenPath,
-  '/user/{userId}/verification/token/{token}': verifyVerificationTokenPath,
 };

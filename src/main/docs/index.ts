@@ -26,10 +26,6 @@ export default {
       name: 'UserHasRole',
       description: 'APIs relacionadas aos usuarios tendo funções',
     },
-    {
-      name: 'Verification token',
-      description: 'APIs relacionadas ao token de verificação',
-    },
   ],
   paths,
   schemas,

@@ -1,4 +1,4 @@
-import { VerifyTokenUseCase } from '@/use-cases/verification-token/verify-token';
+import { VerifyTokenUseCase } from '@/use-cases/user/verification-token/verify-token';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
@@ -17,8 +17,8 @@ import {
 } from '@/test/stubs';
 import { error, success } from '@/shared';
 import { UserBuilder } from '@/../test/builders';
-import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
-import { VerifyTokenController } from '@/adapters/controllers/verification-token/verify-token';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/user/verification-token/errors';
+import { VerifyTokenController } from '@/adapters/controllers/user/verification-token/verify-token';
 import { ExpiredTokenError, NonExistingTokenError } from '@/use-cases/errors';
 
 type SutTypes = {

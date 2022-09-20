@@ -2,7 +2,7 @@ import { SendEmailService } from '@/use-cases/services/email-service/send-email'
 import { IEncrypter } from '@/use-cases/user/interfaces';
 import { IUniversallyUniqueIdentifierGenerator } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { SendVerificationTokenToUserController } from '@/adapters/controllers/verification-token/send-verification-token-to-user';
+import { SendVerificationTokenToUserController } from '@/adapters/controllers/user/verification-token/send-verification-token-to-user';
 import { IValidation } from '@/adapters/controllers/interfaces';
 import { ServerError } from '@/adapters/errors';
 import { MissingParamsError } from '@/adapters/controllers/errors';
@@ -14,7 +14,6 @@ import {
   unauthorized,
 } from '@/adapters/utils/http';
 import {
-  makeFakeRequest,
   makeEncrypter,
   makeUniversallyUniqueIdentifierGenerator,
   makeValidation,
@@ -23,11 +22,11 @@ import {
   makeUserRepository,
 } from '@/test/stubs';
 import { error, success } from '@/shared';
-import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { AddVerificationTokenUseCase } from '@/use-cases/user/verification-token/add-verification-token';
 import { EmailServiceError } from '@/use-cases/services/email-service/errors';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { UserBuilder } from '@/test/builders';
-import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/user/verification-token/errors';
 
 type SutTypes = {
   sut: SendVerificationTokenToUserController,

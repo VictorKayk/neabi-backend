@@ -7,3 +7,6 @@ export * from '@/use-cases/user/interfaces/encrypter-interface';
 export * from '@/use-cases/user/interfaces/decrypter-interface';
 export * from '@/use-cases/user/interfaces/payload-interface';
 export * from '@/use-cases/user/interfaces/user-data-query-interface';
+export * from '@/use-cases/user/interfaces/token-repository-return-data-interface';
+export * from '@/use-cases/user/interfaces/token-data-interface';
+export * from '@/use-cases/user/interfaces/add-token-interface';

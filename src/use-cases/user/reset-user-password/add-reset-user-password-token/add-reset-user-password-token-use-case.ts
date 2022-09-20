@@ -1,9 +1,10 @@
 import { Either, success, error } from '@/shared';
 import {
-  IUseCase, IUniversallyUniqueIdentifierGenerator, IHasher, ITokenRepositoryReturnData,
+  IUseCase, IUniversallyUniqueIdentifierGenerator, IHasher,
 } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
 import { IResetUserPasswordTokenRepository } from '@/use-cases/user/reset-user-password/interfaces';
+import { ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 type Response = Either<
   NonExistingUserError, { resetUserPasswordToken: ITokenRepositoryReturnData, token: string }

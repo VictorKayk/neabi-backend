@@ -1,4 +1,4 @@
-import { ITokenData } from '@/use-cases/interfaces';
+import { ITokenData } from '@/use-cases/user/interfaces';
 
 export interface ITokenRepositoryReturnData extends ITokenData {
   createdAt: Date,

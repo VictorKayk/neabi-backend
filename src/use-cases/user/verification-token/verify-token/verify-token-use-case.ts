@@ -1,10 +1,10 @@
 import { Either, success, error } from '@/shared';
 import { ExpiredTokenError, InvalidTokenError, NonExistingTokenError } from '@/use-cases/errors';
-import { IHashCompare, IUseCase, ITokenData } from '@/use-cases/interfaces';
+import { IHashCompare, IUseCase } from '@/use-cases/interfaces';
 import { NonExistingUserError } from '@/use-cases/user/errors';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
-import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
-import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
+import { ITokenData, IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/user/verification-token/errors';
+import { IVerificationTokenRepository } from '@/use-cases/user/verification-token/interfaces';
 
 type Response = Either<
   InvalidTokenError |

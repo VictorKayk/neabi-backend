@@ -9,8 +9,8 @@ import {
   forbidden,
   unauthorized,
 } from '@/adapters/utils/http';
-import { VerifyTokenUseCase } from '@/use-cases/verification-token/verify-token';
-import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
+import { VerifyTokenUseCase } from '@/use-cases/user/verification-token/verify-token';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/user/verification-token/errors';
 
 export class VerifyTokenController implements IController {
   constructor(

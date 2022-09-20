@@ -7,10 +7,10 @@ import {
   forbidden,
   unauthorized,
 } from '@/adapters/utils/http';
-import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { AddVerificationTokenUseCase } from '@/use-cases/user/verification-token/add-verification-token';
 import { ReadUserUseCase } from '@/use-cases/user/read-user';
 import { SendEmailService } from '@/use-cases/services/email-service/send-email';
-import { UserIsAlreadyVerifiedError } from '@/use-cases/verification-token/errors';
+import { UserIsAlreadyVerifiedError } from '@/use-cases/user/verification-token/errors';
 
 export class SendVerificationTokenToUserController implements IController {
   constructor(

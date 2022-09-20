@@ -1,5 +1,5 @@
 import { makeVerificationTokenRepository, makeUniversallyUniqueIdentifierGenerator, makeHasher } from '@/test/stubs';
-import { AddVerificationTokenUseCase } from '@/use-cases/verification-token/add-verification-token';
+import { AddVerificationTokenUseCase } from '@/use-cases/user/verification-token/add-verification-token';
 
 export const makeAddVerificationTokenUseCase = (): AddVerificationTokenUseCase => {
   const VerificationTokenRepositoryStub = makeVerificationTokenRepository();

@@ -1,13 +1,13 @@
-import { makeSendVerificationTokenToUserController } from '@/main/factories/verification-token';
+import { makeVerifyTokenValidationFactory } from '@/main/factories/user/verification-token';
 import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/controllers/utils/validations';
 
 jest.mock('@/adapters/controllers/utils/validations/validation-composite');
 
-describe('SendVerificationTokenToUser validation Factory', () => {
+describe('VerifyToken validation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {
-    makeSendVerificationTokenToUserController();
+    makeVerifyTokenValidationFactory();
     expect(ValidationComposite).toHaveBeenCalledWith([
-      new RequiredFieldsValidation(['id']),
+      new RequiredFieldsValidation(['userId', 'token']),
     ]);
   });
 });

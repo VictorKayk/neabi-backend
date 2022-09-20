@@ -1,7 +1,6 @@
 import { getUserRoles } from '@/infra/repositories/utils';
 import { IResetUserPasswordTokenRepository } from '@/use-cases/user/reset-user-password/interfaces';
-import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IUserRepositoryReturnData, ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
 import { IAddResetUserPasswordToken } from '@/use-cases/user/reset-user-password/add-reset-user-password-token/interfaces';
 

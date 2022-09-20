@@ -1,9 +1,8 @@
 import { getUserRoles } from '@/infra/repositories/utils';
-import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
-import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/user/verification-token/interfaces';
+import { IUserRepositoryReturnData, ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
-import { IAddVerificationToken } from '@/use-cases/verification-token/add-verification-token/interfaces';
+import { IAddVerificationToken } from '@/use-cases/user/verification-token/add-verification-token/interfaces';
 
 export class VerificationTokenRepository implements IVerificationTokenRepository {
   async findUserById(userId: string): Promise<IUserRepositoryReturnData | null> {

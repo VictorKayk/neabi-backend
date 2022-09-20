@@ -6,7 +6,7 @@ import {
   IUserDataQuery,
 } from '@/use-cases/user/interfaces';
 import prisma from '@/main/config/prisma';
-import { getUserRoles } from './utils';
+import { getUserRoles } from '../utils';
 
 export class UserRepository implements IUserRepository {
   async add(userData: IUserRepositoryData): Promise<IUserRepositoryReturnData> {

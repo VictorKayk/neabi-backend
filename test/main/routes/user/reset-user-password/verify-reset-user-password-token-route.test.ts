@@ -27,6 +27,8 @@ const makeSut = (): SutTypes => {
       expiresAt: new Date(Date.now() + 1000000000000),
       isDeleted: false,
     });
+  jest.spyOn(prisma.token, 'updateMany')
+    .mockResolvedValue({ count: 1 });
 
   jest.spyOn(prisma.resetUserPasswordToken, 'findFirst')
     .mockResolvedValue({

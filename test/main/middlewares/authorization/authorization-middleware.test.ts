@@ -17,6 +17,7 @@ const makeSut = (): SutTypes => {
     isDeleted: false,
     isVerified: false,
   });
+  jest.spyOn(prisma.userHasRoles, 'findMany').mockResolvedValue([]);
 
   return {
     user,

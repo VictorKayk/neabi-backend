@@ -85,13 +85,10 @@ describe('ResetUserPasswordTokenRepository Implementation', () => {
   it('Should return void on deleteResetUserPasswordTokenByUserId success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.resetUserPasswordToken, 'update').mockResolvedValue({
-      id: 'any_id',
-      token: 'any_token',
-    });
+    jest.spyOn(prisma.token, 'updateMany').mockResolvedValue({ count: 1 });
 
-    const resetUserPasswordToken = sut.deleteResetUserPasswordTokenByUserId('any_userId');
-    expect(resetUserPasswordToken).toBeTruthy();
+    const resetUserPasswordToken = await sut.deleteResetUserPasswordTokenByUserId('any_userId');
+    expect(resetUserPasswordToken).toBeUndefined();
   });
 
   it('Should return an ResetUserPasswordToken on add success', async () => {

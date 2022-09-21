@@ -37,6 +37,24 @@ jest.spyOn(prisma.userHasRoles, 'create')
     isDeleted: false,
   });
 
+jest.spyOn(prisma.role, 'findFirst').mockResolvedValue(null);
+jest.spyOn(prisma.role, 'create')
+  .mockResolvedValue({
+    id: 'any_id',
+    role: 'any_role',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  });
+jest.spyOn(prisma.userHasRoles, 'create')
+  .mockResolvedValue({
+    userId: 'any_userId',
+    roleId: 'any_roleId',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+  });
+
 describe('SignUp Route', () => {
   it('Should return 201 on sign up route success', async () => {
     const { user } = makeSut();

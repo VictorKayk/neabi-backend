@@ -13,3 +13,15 @@ services:
       - POSTGRES_DB=neabi
     volumes:
       - ./data:/data/db
+  api:
+    build: .
+    container_name: api
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://user:123@db-postgres:5432/neabi?schema=public 
+    ports:
+      - "5000:5000"
+    links:
+      - db
+    depends_on:
+      - db

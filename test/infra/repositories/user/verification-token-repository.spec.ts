@@ -85,13 +85,10 @@ describe('VerificationTokenRepository Implementation', () => {
   it('Should return void on deleteVerificationTokenByUserId success', async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(prisma.verificationToken, 'update').mockResolvedValue({
-      id: 'any_id',
-      token: 'any_token',
-    });
+    jest.spyOn(prisma.token, 'updateMany').mockResolvedValue({ count: 1 });
 
-    const verificationToken = sut.deleteVerificationTokenByUserId('any_userId');
-    expect(verificationToken).toBeTruthy();
+    const verificationToken = await sut.deleteVerificationTokenByUserId('any_userId');
+    expect(verificationToken).toBeUndefined();
   });
 
   it('Should return an VerificationToken on add success', async () => {

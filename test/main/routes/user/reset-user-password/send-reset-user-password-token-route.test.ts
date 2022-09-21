@@ -17,6 +17,21 @@ const makeSut = (): SutTypes => {
     isDeleted: false,
     isVerified: false,
   });
+  jest.spyOn(prisma.token, 'findFirst')
+    .mockResolvedValue({
+      userId: user.build().id,
+      token: 'any_token',
+      createdAt: new Date(),
+      expiresAt: new Date(),
+      isDeleted: false,
+    });
+  jest.spyOn(prisma.token, 'updateMany')
+    .mockResolvedValue({ count: 1 });
+  jest.spyOn(prisma.resetUserPasswordToken, 'findFirst')
+    .mockResolvedValue({
+      id: 'any_id',
+      token: 'any_token',
+    });
   jest.spyOn(prisma.token, 'create')
     .mockResolvedValue({
       userId: user.build().id,

@@ -63,6 +63,16 @@ const makeSut = (): SutTypes => {
     roles: [],
   };
   jest.spyOn(readUserUseCase, 'execute').mockResolvedValue(success(useCaseReturn));
+  jest.spyOn(addVerificationTokenUseCase, 'execute').mockResolvedValue(success({
+    verificationToken: {
+      userId: 'any_userId',
+      token: 'any_token',
+      createdAt: new Date(),
+      expiresAt: new Date(),
+      isDeleted: false,
+    },
+    token: 'any_token',
+  }));
 
   return {
     sut,

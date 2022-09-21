@@ -1,8 +1,7 @@
 import { UserBuilder } from '@/test/builders/user-builder';
-import { IVerificationTokenRepository } from '@/use-cases/verification-token/interfaces';
-import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
-import { IAddVerificationToken } from '@/use-cases/verification-token/add-verification-token/interfaces';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IUserRepositoryReturnData, ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IVerificationTokenRepository } from '@/use-cases/user/verification-token/interfaces';
+import { IAddVerificationToken } from '@/use-cases/user/verification-token/add-verification-token/interfaces';
 
 export const makeVerificationTokenRepository = (): IVerificationTokenRepository => {
   class VerificationTokenRepositoryStub implements IVerificationTokenRepository {

@@ -37,6 +37,8 @@ const makeSut = (): SutTypes => {
     isDeleted: false,
     isVerified: true,
   });
+  jest.spyOn(prisma.token, 'updateMany')
+    .mockResolvedValue({ count: 1 });
 
   return {
     user,

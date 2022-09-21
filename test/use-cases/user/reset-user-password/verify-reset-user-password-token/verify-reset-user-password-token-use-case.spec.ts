@@ -40,6 +40,7 @@ const makeSut = (): SutTypes => {
     expiresAt: new Date(Date.now() + 36000000),
     isDeleted: false,
   });
+  jest.spyOn(resetUserPasswordTokenRepository, 'deleteResetUserPasswordTokenByUserId').mockResolvedValue();
 
   return {
     sut,

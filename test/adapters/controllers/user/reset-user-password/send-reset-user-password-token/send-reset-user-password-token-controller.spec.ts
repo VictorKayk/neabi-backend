@@ -61,6 +61,16 @@ const makeSut = (): SutTypes => {
     roles: [],
   };
   jest.spyOn(readUserUseCase, 'execute').mockResolvedValue(success(useCaseReturn));
+  jest.spyOn(addResetUserPasswordTokenUseCase, 'execute').mockResolvedValue(success({
+    resetUserPasswordToken: {
+      userId: 'any_userId',
+      token: 'any_token',
+      createdAt: new Date(),
+      expiresAt: new Date(),
+      isDeleted: false,
+    },
+    token: 'any_token',
+  }));
 
   return {
     sut,
@@ -117,7 +127,7 @@ describe('SendResetUserPasswordTokenToUserController ', () => {
     expect(response).toEqual(forbidden(new NonExistingUserError()));
   });
 
-  it('Should call ResetUserPasswordTokenUseCase with correct values', async () => {
+  it('Should call addResetUserPasswordTokenUseCase with correct values', async () => {
     const {
       sut, addResetUserPasswordTokenUseCase, idGenerator, user,
     } = makeSut();
@@ -133,7 +143,7 @@ describe('SendResetUserPasswordTokenToUserController ', () => {
     expect(useCaseSpy).toHaveBeenCalledWith(await idGenerator.generate(), 1);
   });
 
-  it('Should return 500 if ResetUserPasswordTokenUseCase throws', async () => {
+  it('Should return 500 if addResetUserPasswordTokenUseCase throws', async () => {
     const { sut, addResetUserPasswordTokenUseCase, user } = makeSut();
 
     jest.spyOn(addResetUserPasswordTokenUseCase, 'execute').mockImplementationOnce(() => { throw new Error(); });

@@ -1,8 +1,7 @@
 import { UserBuilder } from '@/test/builders/user-builder';
 import { IResetUserPasswordTokenRepository } from '@/use-cases/user/reset-user-password/interfaces';
-import { ITokenRepositoryReturnData } from '@/use-cases/interfaces';
 import { IAddResetUserPasswordToken } from '@/use-cases/user/reset-user-password/add-reset-user-password-token/interfaces';
-import { IUserRepositoryReturnData } from '@/use-cases/user/interfaces';
+import { IUserRepositoryReturnData, ITokenRepositoryReturnData } from '@/use-cases/user/interfaces';
 
 export const makeResetUserPasswordTokenRepository = (): IResetUserPasswordTokenRepository => {
   class ResetUserPasswordTokenRepositoryStub implements IResetUserPasswordTokenRepository {

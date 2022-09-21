@@ -42,6 +42,18 @@ const makeSut = (): SutTypes => {
 
   const user = new UserBuilder();
 
+  jest.spyOn(verifyTokenUseCase, 'execute').mockResolvedValue(success({
+    id: 'any_id',
+    name: 'any_name',
+    email: 'any_email',
+    accessToken: 'any_token',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isDeleted: false,
+    isVerified: false,
+    roles: [],
+  }));
+
   return {
     sut,
     validation,

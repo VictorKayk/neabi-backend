@@ -29,9 +29,11 @@ export class CreatePostUseCase implements IUseCase {
     const descriptionPlainText = await this.stripHmtl.strip(descriptionHtml);
 
     let slug = await this.slugGenerator.generate(title);
+    slug = slug.toLocaleLowerCase();
     let postOrNull = await this.postRepository.findBySlug(slug);
     if (postOrNull) {
       slug = `${slug}-${Math.floor(Math.random() * (1000 - 1) + 1)}`;
+      slug = slug.toLocaleLowerCase();
     }
 
     const postOrError = Post.create({ title, slug, description: descriptionPlainText });

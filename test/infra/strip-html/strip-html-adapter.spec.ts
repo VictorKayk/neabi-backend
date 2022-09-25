@@ -11,14 +11,6 @@ const makeSut = (): SutTypes => {
   };
 };
 
-jest.mock('string-strip-html', () => ({
-  stripHtml() {
-    return {
-      result: 'any_html',
-    };
-  },
-}));
-
 describe('StripHtmlAdapter Adapter', () => {
   it('Should return an slug on success', async () => {
     const { sut } = makeSut();

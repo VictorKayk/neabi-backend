@@ -14,6 +14,7 @@ import {
   userHasRoleByIdPath,
   sendVerificationTokenPath,
   verifyVerificationTokenPath,
+  createPostPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -32,4 +33,5 @@ export default {
   '/role/{roleId}': roleByIdPath,
   '/user/{userId}/role/all': readAllRolesFromUserPath,
   '/user/{userId}/role/{roleId}': userHasRoleByIdPath,
+  '/post': createPostPath,
 };

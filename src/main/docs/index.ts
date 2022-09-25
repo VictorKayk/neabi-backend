@@ -26,6 +26,10 @@ export default {
       name: 'UserHasRole',
       description: 'APIs relacionadas aos usuarios tendo funções',
     },
+    {
+      name: 'Post',
+      description: 'APIs relacionadas as publicações',
+    },
   ],
   paths,
   schemas,

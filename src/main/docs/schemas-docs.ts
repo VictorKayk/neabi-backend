@@ -9,6 +9,8 @@ import {
   createRoleParamsSchema,
   userHasRoleSchema,
   userCritialDataSchema,
+  postSchema,
+  createPostParamsSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -22,4 +24,6 @@ export default {
   createRoleParams: createRoleParamsSchema,
   userHasRole: userHasRoleSchema,
   userCritialData: userCritialDataSchema,
+  post: postSchema,
+  createPostParams: createPostParamsSchema,
 };

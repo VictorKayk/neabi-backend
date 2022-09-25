@@ -95,6 +95,25 @@ describe('CreatePostUseCase', () => {
     expect(postRepositorySpy).toHaveBeenCalledWith('any_slug');
   });
 
+  it('Should add a random number to slug if findBySlug return a post', async () => {
+    const {
+      sut, postRepository, idGenerator, slugGenerator,
+    } = makeSut();
+    jest.spyOn(postRepository, 'findBySlug').mockResolvedValue({
+      id: await idGenerator.generate(),
+      title: 'any_title',
+      slug: 'any_slug',
+      description: 'any_striped_html',
+      descriptionHtml: 'any_sanitized_html',
+      isDeleted: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    const slugGeneratorSpy = jest.spyOn(slugGenerator, 'generate');
+    await sut.execute({ title: 'any_title', description: '<strong>any_description</strong>' });
+    expect(slugGeneratorSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('Should throw if findBySlug throws', async () => {
     const { sut, postRepository } = makeSut();
     jest.spyOn(postRepository, 'findBySlug').mockReturnValueOnce(new Promise((_, reject) => reject(new Error())));

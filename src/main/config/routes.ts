@@ -1,6 +1,6 @@
 import { Express, Router } from 'express';
 import {
-  user, role, userHasRole,
+  user, role, userHasRole, post,
 } from '@/main/routes';
 
 export default (app: Express): void => {
@@ -9,4 +9,5 @@ export default (app: Express): void => {
   userHasRole(router);
   role(router);
   user(router);
+  post(router);
 };

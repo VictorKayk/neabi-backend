@@ -9,3 +9,5 @@ export * from '@/main/docs/schemas/verify-reset-user-password-token-params-schem
 export * from '@/main/docs/schemas/role-schema';
 export * from '@/main/docs/schemas/create-role-params-schema';
 export * from '@/main/docs/schemas/user-has-role-schema';
+export * from '@/main/docs/schemas/post-schema';
+export * from '@/main/docs/schemas/create-post-params-schema';

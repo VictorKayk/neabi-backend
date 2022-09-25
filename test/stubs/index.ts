@@ -8,3 +8,7 @@ export * from '@/test/stubs/user-has-role';
 export * from '@/test/stubs/validation-stub';
 export * from '@/test/stubs/email-service-stub';
 export * from '@/test/stubs/middleware-stub';
+export * from '@/test/stubs/post';
+export * from '@/test/stubs/sanitize-html-stub';
+export * from '@/test/stubs/strip-html-stub';
+export * from '@/test/stubs/slug-generator-stub';

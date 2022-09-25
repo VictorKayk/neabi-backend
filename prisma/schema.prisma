@@ -52,8 +52,8 @@ model Token {
   expiresAt DateTime
   isDeleted Boolean
 
-  User              User                @relation(fields: [userId], references: [id])
-  VerificationToken VerificationToken[]
+  User                   User                     @relation(fields: [userId], references: [id])
+  VerificationToken      VerificationToken[]
   ResetUserPasswordToken ResetUserPasswordToken[]
 }
 
@@ -69,4 +69,15 @@ model ResetUserPasswordToken {
   token String @unique
 
   Token Token @relation(fields: [token], references: [token])
+}
+
+model Post {
+  id              String   @id
+  slug            String
+  title           String
+  description     String
+  descriptionHtml String
+  createdAt       DateTime
+  updatedAt       DateTime
+  isDeleted       Boolean
 }

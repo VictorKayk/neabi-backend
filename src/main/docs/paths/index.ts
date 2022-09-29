@@ -15,3 +15,4 @@ export * from '@/main/docs/paths/send-verification-token-path';
 export * from '@/main/docs/paths/verify-verification-token-path';
 export * from '@/main/docs/paths/create-post-path';
 export * from '@/main/docs/paths/post-by-slug-path';
+export * from '@/main/docs/paths/read-all-posts-path';

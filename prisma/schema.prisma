@@ -73,7 +73,7 @@ model ResetUserPasswordToken {
 
 model Post {
   id              String   @id
-  slug            String
+  slug            String   @unique
   title           String
   description     String
   descriptionHtml String

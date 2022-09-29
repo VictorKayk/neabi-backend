@@ -1,5 +1,5 @@
 export interface IPostCreate {
-    title: string,
-    slug: string,
+    title?: string,
+    slug?: string,
     description?: string,
 }

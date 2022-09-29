@@ -42,6 +42,19 @@ export const makePostRepository = (): IPostRepository => {
         isDeleted: false,
       };
     }
+
+    async deleteById(id: string): Promise<IPostRepositoryReturnData> {
+      return {
+        id,
+        title: 'any_title',
+        slug: 'any_slug',
+        description: 'any_description',
+        descriptionHtml: 'any_descriptionHtml',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      };
+    }
   }
   return new PostRepositoryStub();
 };

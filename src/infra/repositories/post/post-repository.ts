@@ -57,4 +57,14 @@ export class PostRepository implements IPostRepository {
     });
     return post;
   }
+
+  async deleteById(id: string): Promise<IPostRepositoryReturnData> {
+    const post = await prisma.post.update({
+      where: { id },
+      data: {
+        isDeleted: true, updatedAt: new Date(),
+      },
+    });
+    return post;
+  }
 }

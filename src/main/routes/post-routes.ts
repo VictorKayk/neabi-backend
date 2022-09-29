@@ -5,6 +5,7 @@ import {
   makeReadPostBySlugController,
   makeReadAllPostsController,
   makeUpdatePostByIdController,
+  makeDeletePostByIdController,
 } from '@/main/factories/post';
 import { authentication } from '@/main/middlewares/authentication';
 import { authorization } from '@/main/middlewares/authorization';
@@ -14,4 +15,5 @@ export function post(router: Router) {
   router.get('/post/all', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeReadAllPostsController()));
   router.get('/post/:slug', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeReadPostBySlugController()));
   router.patch('/post/:postId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeUpdatePostByIdController()));
+  router.delete('/post/:postId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeletePostByIdController()));
 }

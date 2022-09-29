@@ -3,6 +3,7 @@ import {
   IPostData,
   IPostRepositoryReturnData,
   IPostDataQuery,
+  IPostEditableData,
 } from '@/use-cases/post/interfaces';
 
 export const makePostRepository = (): IPostRepository => {
@@ -26,6 +27,20 @@ export const makePostRepository = (): IPostRepository => {
 
     async readAllPosts(postDataQuery: IPostDataQuery): Promise<IPostRepositoryReturnData[] | []> {
       return [];
+    }
+
+    async updateById(id: string, postEditableData: IPostEditableData):
+      Promise<IPostRepositoryReturnData> {
+      return {
+        id: 'any_id',
+        title: 'any_title',
+        slug: 'any_slug',
+        description: 'any_description',
+        descriptionHtml: 'any_descriptionHtml',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+      };
     }
   }
   return new PostRepositoryStub();

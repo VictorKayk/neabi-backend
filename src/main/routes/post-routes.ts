@@ -6,6 +6,6 @@ import { authorization } from '@/main/middlewares/authorization';
 
 export function post(router: Router) {
   router.post('/post', authentication, authorization(['moderator', 'admin']), routerAdapter(makeCreatePostController()));
-  router.get('/post/:slug', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadPostBySlugController()));
   router.get('/post/all', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadAllPostsController()));
+  router.get('/post/:slug', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadPostBySlugController()));
 }

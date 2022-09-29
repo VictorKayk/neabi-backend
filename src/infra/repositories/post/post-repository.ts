@@ -1,6 +1,6 @@
 import prisma from '@/main/config/prisma';
 import {
-  IPostData, IPostDataQuery, IPostRepository, IPostRepositoryReturnData,
+  IPostData, IPostDataQuery, IPostEditableData, IPostRepository, IPostRepositoryReturnData,
 } from '@/use-cases/post/interfaces';
 
 export class PostRepository implements IPostRepository {
@@ -45,5 +45,16 @@ export class PostRepository implements IPostRepository {
       orderBy: { isDeleted: 'asc' },
     });
     return posts;
+  }
+
+  async updateById(id: string, postEditableData: IPostEditableData):
+  Promise<IPostRepositoryReturnData> {
+    const post = await prisma.post.update({
+      where: { id },
+      data: {
+        ...postEditableData, updatedAt: new Date(),
+      },
+    });
+    return post;
   }
 }

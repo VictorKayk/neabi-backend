@@ -17,6 +17,7 @@ import {
   createPostPath,
   postBySlugPath,
   readAllPostsPath,
+  postByIdPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -38,4 +39,5 @@ export default {
   '/post': createPostPath,
   '/post/{slug}': postBySlugPath,
   '/post/all': readAllPostsPath,
+  '/post/{postId}': postByIdPath,
 };

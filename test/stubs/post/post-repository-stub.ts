@@ -2,6 +2,7 @@ import {
   IPostRepository,
   IPostData,
   IPostRepositoryReturnData,
+  IPostDataQuery,
 } from '@/use-cases/post/interfaces';
 
 export const makePostRepository = (): IPostRepository => {
@@ -21,6 +22,10 @@ export const makePostRepository = (): IPostRepository => {
         updatedAt: new Date(),
         isDeleted: false,
       };
+    }
+
+    async readAllPosts(postDataQuery: IPostDataQuery): Promise<IPostRepositoryReturnData[] | []> {
+      return [];
     }
   }
   return new PostRepositoryStub();

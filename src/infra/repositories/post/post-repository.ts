@@ -1,5 +1,7 @@
 import prisma from '@/main/config/prisma';
-import { IPostData, IPostRepository, IPostRepositoryReturnData } from '@/use-cases/post/interfaces';
+import {
+  IPostData, IPostDataQuery, IPostRepository, IPostRepositoryReturnData,
+} from '@/use-cases/post/interfaces';
 
 export class PostRepository implements IPostRepository {
   async findBySlug(slug: string): Promise<IPostRepositoryReturnData | null> {
@@ -26,5 +28,22 @@ export class PostRepository implements IPostRepository {
       },
     });
     return post;
+  }
+
+  async readAllPosts({
+    id, title, slug, description,
+  }: IPostDataQuery):
+    Promise<IPostRepositoryReturnData[] | []> {
+    const posts = await prisma.post.findMany({
+      where: {
+        id: { contains: id, mode: 'insensitive' },
+        title: { contains: title, mode: 'insensitive' },
+        slug: { contains: slug, mode: 'insensitive' },
+        description: { contains: description, mode: 'insensitive' },
+      },
+      take: 100,
+      orderBy: { isDeleted: 'asc' },
+    });
+    return posts;
   }
 }

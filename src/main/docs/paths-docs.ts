@@ -16,6 +16,7 @@ import {
   verifyVerificationTokenPath,
   createPostPath,
   postBySlugPath,
+  readAllPostsPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -36,4 +37,5 @@ export default {
   '/user/{userId}/role/{roleId}': userHasRoleByIdPath,
   '/post': createPostPath,
   '/post/{slug}': postBySlugPath,
+  '/post/all': readAllPostsPath,
 };

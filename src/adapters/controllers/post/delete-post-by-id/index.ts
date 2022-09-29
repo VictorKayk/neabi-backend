@@ -1,1 +1,1 @@
-export * from '@/adapters/controllers/post/read-post-by-slug/read-post-by-slug-controller';
+export * from '@/adapters/controllers/post/delete-post-by-id/delete-post-by-id-controller';

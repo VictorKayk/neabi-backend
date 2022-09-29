@@ -8,4 +8,5 @@ export interface IPostRepository {
     add(postData: IPostData): Promise<IPostRepositoryReturnData>
     readAllPosts(postDataQuery: IPostDataQuery): Promise<IPostRepositoryReturnData[] | []>
     updateById(id: string, postEditableData: IPostEditableData): Promise<IPostRepositoryReturnData>
+    deleteById(id: string): Promise<IPostRepositoryReturnData>
 }

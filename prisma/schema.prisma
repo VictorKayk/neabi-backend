@@ -71,6 +71,41 @@ model ResetUserPasswordToken {
   Token Token @relation(fields: [token], references: [token])
 }
 
+model FileType {
+  id        String   @id
+  type      String
+  createdAt DateTime
+  updatedAt DateTime
+  isDeleted Boolean
+
+  FileFormat FileFormat[]
+}
+
+model FileFormat {
+  id         String   @id
+  format     String
+  fileTypeId String
+  createdAt  DateTime
+  updatedAt  DateTime
+  isDeleted  Boolean
+
+  FileType FileType @relation(fields: [fileTypeId], references: [id])
+  File     File[]
+}
+
+model File {
+  id               String   @id
+  fileName         String
+  originalFileName String
+  size             Int
+  url              String
+  fileFormatId     String
+  createdAt        DateTime
+  updatedAt        DateTime
+
+  FileFormat FileFormat @relation(fields: [fileFormatId], references: [id])
+}
+
 model Post {
   id              String   @id
   slug            String   @unique

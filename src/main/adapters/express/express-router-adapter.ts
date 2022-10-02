@@ -16,6 +16,7 @@ export function routerAdapter(controller: IController) {
       },
       params: req.params,
       query: req.query,
+      files: req.files,
     };
     const httpResponse = await controller.handle(httpRequest);
     res.status(httpResponse.statusCode).json(httpResponse.body);

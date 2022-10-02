@@ -4,4 +4,5 @@ export interface IFileData {
   originalFileName: string,
   size: number,
   url: string,
+  fileFormatId: string
 }

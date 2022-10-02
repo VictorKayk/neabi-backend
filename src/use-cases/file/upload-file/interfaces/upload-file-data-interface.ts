@@ -3,4 +3,5 @@ export interface IUploadFileData {
   originalFileName: string,
   size: number,
   url: string,
+  fileFormatId: string
 }

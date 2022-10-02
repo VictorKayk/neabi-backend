@@ -13,7 +13,7 @@ export class UploadFileUseCase implements IUseCase {
   ) { }
 
   async execute({
-    originalFileName, fileName, size, url,
+    originalFileName, fileName, size, url, fileFormatId,
   }: IUploadFileData): Promise<Response> {
     let fileOrNull = await this.fileRepository.findByFileName(fileName);
     if (fileOrNull) return error(new ExistingFileError());
@@ -25,7 +25,7 @@ export class UploadFileUseCase implements IUseCase {
     } while (fileOrNull);
 
     const fileData = await this.fileRepository.add({
-      id, originalFileName, fileName, size, url,
+      id, originalFileName, fileName, size, url, fileFormatId,
     });
 
     return success(fileData);

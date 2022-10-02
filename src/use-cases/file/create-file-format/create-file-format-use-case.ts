@@ -20,7 +20,13 @@ export class CreateFileFormatUseCase implements IUseCase {
     if (fileTypeOrNull) return error(new NonExistingFileTypeError());
 
     let fileFormatOrNull = await this.fileRepository.findFileFormatByFormat(format);
-    if (fileFormatOrNull) return error(new ExistingFileFormatError());
+    if (fileFormatOrNull) {
+      if (fileFormatOrNull.isDeleted) return error(new ExistingFileFormatError());
+
+      const fileData = await this.fileRepository
+        .updateFileFormatById(fileFormatOrNull.id, { isDeleted: false });
+      return success(fileData);
+    }
 
     let id: string;
     do {

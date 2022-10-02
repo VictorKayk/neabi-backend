@@ -13,7 +13,13 @@ export class CreateFileTypeUseCase implements IUseCase {
 
   async execute(type: string): Promise<Response> {
     let fileTypeOrNull = await this.fileRepository.findFileTypeByType(type);
-    if (fileTypeOrNull) return error(new ExistingFileTypeError());
+    if (fileTypeOrNull) {
+      if (fileTypeOrNull.isDeleted) return error(new ExistingFileTypeError());
+
+      const fileData = await this.fileRepository
+        .updateFileTypeById(fileTypeOrNull.id, { isDeleted: false });
+      return success(fileData);
+    }
 
     let id: string;
     do {

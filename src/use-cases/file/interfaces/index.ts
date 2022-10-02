@@ -5,3 +5,5 @@ export * from '@/use-cases/file/interfaces/file-type-repository-return-data-inte
 export * from '@/use-cases/file/interfaces/file-type-data-interface';
 export * from '@/use-cases/file/interfaces/file-format-repository-return-data-interface';
 export * from '@/use-cases/file/interfaces/file-format-data-interface';
+export * from '@/use-cases/file/interfaces/file-type-editable-data-interface';
+export * from '@/use-cases/file/interfaces/file-format-editable-data-interface';

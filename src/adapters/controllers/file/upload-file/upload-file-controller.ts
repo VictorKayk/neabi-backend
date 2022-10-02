@@ -34,14 +34,14 @@ export class UploadFileController implements IController {
       const [fileType, fileFormat] = mimetype.split('/');
 
       let fileTypeOrNull = await this.fileRepository.findFileTypeByType(fileType);
-      if (!fileTypeOrNull) {
+      if (!fileTypeOrNull || fileTypeOrNull.isDeleted) {
         const fileTypeOrError = await this.createFileType.execute(fileType);
         if (fileTypeOrError.isError()) return forbidden(fileTypeOrError.value);
         fileTypeOrNull = fileTypeOrError.value;
       }
 
       let fileFormatOrNull = await this.fileRepository.findFileFormatByFormat(fileFormat);
-      if (!fileFormatOrNull) {
+      if (!fileFormatOrNull || fileFormatOrNull.isDeleted) {
         const fileFormatOrError = await this.createFileFormat
           .execute({ format: fileFormat, fileTypeId: fileTypeOrNull.id });
         if (fileFormatOrError.isError()) return forbidden(fileFormatOrError.value);

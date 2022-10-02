@@ -2,6 +2,7 @@ export interface IHttpRequest {
   body?: any,
   params?: any,
   query?: any,
+  files?: any,
 }
 
 export interface IHttpRequestAuthenticated extends IHttpRequest {

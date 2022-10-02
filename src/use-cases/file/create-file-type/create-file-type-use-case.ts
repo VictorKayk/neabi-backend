@@ -1,0 +1,28 @@
+import { IUniversallyUniqueIdentifierGenerator, IUseCase } from '@/use-cases/interfaces';
+import { Either, error, success } from '@/shared';
+import { ExistingFileTypeError } from '@/use-cases/file/errors';
+import { IFileTypeRepositoryReturnData, IFileRepository } from '@/use-cases/file/interfaces';
+
+type Response = Either<ExistingFileTypeError, IFileTypeRepositoryReturnData>;
+
+export class CreateFileTypeUseCase implements IUseCase {
+  constructor(
+    private readonly fileRepository: IFileRepository,
+    private readonly idGenerator: IUniversallyUniqueIdentifierGenerator,
+  ) { }
+
+  async execute(type: string): Promise<Response> {
+    let fileTypeOrNull = await this.fileRepository.findFileTypeByType(type);
+    if (fileTypeOrNull) return error(new ExistingFileTypeError());
+
+    let id: string;
+    do {
+      id = await this.idGenerator.generate();
+      fileTypeOrNull = await this.fileRepository.findTypeById(id);
+    } while (fileTypeOrNull);
+
+    const fileData = await this.fileRepository.addFileType(id, type);
+
+    return success(fileData);
+  }
+}

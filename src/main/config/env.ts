@@ -7,7 +7,7 @@ export default {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
   googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN ?? '',
   baseUrl: process.env.BASE_URL ?? 'http://localhost:5000',
-  uploadUrl: process.env.UPLOAD_URL ?? 'http://localhost:5000/static/upload/',
+  uploadUrl: process.env.UPLOAD_URL ?? 'http://localhost:5000/static/upload',
   emailHost: process.env.EMAIL_HOST ?? '',
   emailPort: Number(process.env.EMAIL_PORT) ?? 0,
   emailFrom: process.env.EMAIL_FROM ?? '',

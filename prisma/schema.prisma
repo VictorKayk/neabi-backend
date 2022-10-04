@@ -73,7 +73,7 @@ model ResetUserPasswordToken {
 
 model FileType {
   id        String   @id
-  type      String
+  type      String   @unique
   createdAt DateTime
   updatedAt DateTime
   isDeleted Boolean
@@ -83,7 +83,7 @@ model FileType {
 
 model FileFormat {
   id         String   @id
-  format     String
+  format     String   @unique
   fileTypeId String
   createdAt  DateTime
   updatedAt  DateTime

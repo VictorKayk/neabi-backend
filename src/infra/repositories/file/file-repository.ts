@@ -8,20 +8,79 @@ import {
   IFileTypeEditableData,
   IFileTypeRepositoryReturnData,
 } from '@/use-cases/file/interfaces';
+import { getFileTypeAndFileFormat } from '@/infra/repositories/utils';
 
 export class FileRepository implements IFileRepository {
   async findByFileName(fileName: string): Promise<IFileRepositoryReturnData | null> {
     const file = await prisma.file.findFirst({
       where: { fileName },
+      select: {
+        id: true,
+        fileName: true,
+        originalFileName: true,
+        url: true,
+        size: true,
+        createdAt: true,
+        updatedAt: true,
+        FileFormat: {
+          select: {
+            id: true,
+            format: true,
+            createdAt: true,
+            updatedAt: true,
+            FileType: {
+              select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
     });
-    return file;
+    if (file) {
+      const { FileFormat, ...fileWithoutFileFormat } = file;
+      return { ...fileWithoutFileFormat, ...getFileTypeAndFileFormat(FileFormat) };
+    }
+    return null;
   }
 
   async findById(id: string): Promise<IFileRepositoryReturnData | null> {
     const file = await prisma.file.findFirst({
       where: { id },
+      select: {
+        id: true,
+        fileName: true,
+        originalFileName: true,
+        url: true,
+        size: true,
+        createdAt: true,
+        updatedAt: true,
+        FileFormat: {
+          select: {
+            id: true,
+            format: true,
+            createdAt: true,
+            updatedAt: true,
+            FileType: {
+              select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
     });
-    return file;
+    if (file) {
+      const { FileFormat, ...fileWithoutFileFormat } = file;
+      return { ...fileWithoutFileFormat, ...getFileTypeAndFileFormat(FileFormat) };
+    }
+    return null;
   }
 
   async add(fileData: IFileData): Promise<IFileRepositoryReturnData> {
@@ -31,8 +90,34 @@ export class FileRepository implements IFileRepository {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      select: {
+        id: true,
+        fileName: true,
+        originalFileName: true,
+        url: true,
+        size: true,
+        createdAt: true,
+        updatedAt: true,
+        FileFormat: {
+          select: {
+            id: true,
+            format: true,
+            createdAt: true,
+            updatedAt: true,
+            FileType: {
+              select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
     });
-    return file;
+    const { FileFormat, ...fileWithoutFileFormat } = file;
+    return { ...fileWithoutFileFormat, ...getFileTypeAndFileFormat(FileFormat) };
   }
 
   async findFileFormatByFormat(format: string): Promise<IFileFormatRepositoryReturnData | null> {

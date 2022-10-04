@@ -7,8 +7,9 @@ const storage = multer.diskStorage({
     callback(null, path.join(__dirname, '..', '..', '..', 'public/uploads'));
   },
   filename(req, file, callback) {
-    const { originalname } = file;
-    callback(null, `${v4()}-${originalname}`);
+    const { mimetype } = file;
+    const format = mimetype.split('/')[1];
+    callback(null, `${v4()}.${format}`);
   },
 });
 

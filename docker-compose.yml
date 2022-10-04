@@ -16,7 +16,6 @@ services:
   api:
     build: .
     container_name: api
-    restart: always
     environment:
       - DATABASE_URL=postgresql://user:123@db-postgres:5432/neabi?schema=public 
     ports:

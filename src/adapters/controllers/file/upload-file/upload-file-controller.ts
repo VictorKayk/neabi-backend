@@ -24,37 +24,46 @@ export class UploadFileController implements IController {
 
   async handle({ files }: IHttpRequest): Promise<IHttpResponse> {
     try {
-      const validationError = this.validation.validate(files);
-      if (validationError) return badRequest(validationError);
+      const filesData = await files.reduce(async (prev: any, file: any) => {
+        const newPrev = await prev;
+        if (newPrev[0] && (newPrev[0] instanceof Error || newPrev[0].isError())) return newPrev;
 
-      const {
-        originalname, filename, size, mimetype,
-      } = files;
+        const validationError = this.validation.validate(file);
+        if (validationError) return [validationError];
 
-      const [fileType, fileFormat] = mimetype.split('/');
+        const {
+          originalname, filename, size, mimetype,
+        } = file;
 
-      let fileTypeOrNull = await this.fileRepository.findFileTypeByType(fileType);
-      if (!fileTypeOrNull || fileTypeOrNull.isDeleted) {
-        const fileTypeOrError = await this.createFileType.execute(fileType);
-        if (fileTypeOrError.isError()) return forbidden(fileTypeOrError.value);
-        fileTypeOrNull = fileTypeOrError.value;
-      }
+        const [fileType, fileFormat] = mimetype.split('/');
 
-      let fileFormatOrNull = await this.fileRepository.findFileFormatByFormat(fileFormat);
-      if (!fileFormatOrNull || fileFormatOrNull.isDeleted) {
-        const fileFormatOrError = await this.createFileFormat
-          .execute({ format: fileFormat, fileTypeId: fileTypeOrNull.id });
-        if (fileFormatOrError.isError()) return forbidden(fileFormatOrError.value);
-        fileFormatOrNull = fileFormatOrError.value;
-      }
+        let fileTypeOrNull = await this.fileRepository.findFileTypeByType(fileType);
+        if (!fileTypeOrNull || fileTypeOrNull.isDeleted) {
+          const fileTypeOrError = await this.createFileType.execute(fileType);
 
-      const fileOrError = await this.uploadFile.execute({
-        fileName: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, fileFormatId: fileFormatOrNull.id,
-      });
-      if (fileOrError.isError()) return forbidden(fileOrError.value);
+          if (fileTypeOrError.isError()) return [fileTypeOrError];
+          fileTypeOrNull = fileTypeOrError.value;
+        }
 
-      const fileData = fileOrError.value;
-      return created(fileData);
+        let fileFormatOrNull = await this.fileRepository.findFileFormatByFormat(fileFormat);
+        if (!fileFormatOrNull || fileFormatOrNull.isDeleted) {
+          const fileFormatOrError = await this.createFileFormat
+            .execute({ format: fileFormat, fileTypeId: fileTypeOrNull.id });
+
+          if (fileFormatOrError.isError()) return [fileFormatOrError];
+          fileFormatOrNull = fileFormatOrError.value;
+        }
+
+        const fileOrError = await this.uploadFile.execute({
+          fileName: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, fileFormatId: fileFormatOrNull.id,
+        });
+        if (fileOrError.isError()) return [fileOrError];
+
+        return [...newPrev, fileOrError];
+      }, []);
+
+      if (filesData[0].isError()) return forbidden(filesData[0].value);
+      return created(filesData.map((file: any) => file.value));
     } catch (error) {
       return serverError(error as Error);
     }

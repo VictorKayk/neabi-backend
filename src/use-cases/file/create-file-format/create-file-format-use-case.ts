@@ -17,7 +17,7 @@ export class CreateFileFormatUseCase implements IUseCase {
 
   async execute({ format, fileTypeId }: Request): Promise<Response> {
     const fileTypeOrNull = await this.fileRepository.findTypeById(fileTypeId);
-    if (fileTypeOrNull) return error(new NonExistingFileTypeError());
+    if (!fileTypeOrNull) return error(new NonExistingFileTypeError());
 
     let fileFormatOrNull = await this.fileRepository.findFileFormatByFormat(format);
     if (fileFormatOrNull) {

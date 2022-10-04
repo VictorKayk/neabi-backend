@@ -62,6 +62,8 @@ export class UploadFileController implements IController {
         return [...newPrev, fileOrError];
       }, []);
 
+      if (filesData.length === 0) return badRequest(new Error('Please send a file to upload.'));
+      if (filesData[0] instanceof Error) return badRequest(filesData[0]);
       if (filesData[0].isError()) return forbidden(filesData[0].value);
       return created(filesData.map((file: any) => file.value));
     } catch (error) {

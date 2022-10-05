@@ -10,11 +10,10 @@ import { FileService } from '@/infra/services/file-service';
 export function makeDeleteFileByIdController(): IController {
   const fileRepository = new FileRepository();
   const deleteFileUseCase = new DeleteFileByIdUseCase(fileRepository);
-  const fileService = new FileService(env.uploadUrl);
+  const fileService = new FileService(env.uploadFolder);
   const deleteFileService = new DeleteFileService(fileService);
   const deleteFileController = new DeleteFileByIdController(
     makeDeleteFileByIdValidationFactory(),
-    fileRepository,
     deleteFileUseCase,
     deleteFileService,
   );

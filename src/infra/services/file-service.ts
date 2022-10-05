@@ -1,7 +1,7 @@
 import { unlinkSync } from 'fs';
-import { IDeleteFileService } from '@/use-cases/services/file-service/interfaces';
+import { IFileService } from '@/use-cases/services/file-service/interfaces';
 
-export class DeleteFileService implements IDeleteFileService {
+export class FileService implements IFileService {
   constructor(
     private readonly path: string,
   ) { }

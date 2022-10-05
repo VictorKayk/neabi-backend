@@ -1,10 +1,10 @@
 import multer from 'multer';
-import path from 'path';
 import { v4 } from 'uuid';
+import env from '@/main/config/env';
 
 const storage = multer.diskStorage({
   destination(req, file, callback) {
-    callback(null, path.join(__dirname, '..', '..', '..', 'public/uploads'));
+    callback(null, env.uploadFolder);
   },
   filename(req, file, callback) {
     const { mimetype } = file;

@@ -11,8 +11,8 @@ describe('Post Entity', () => {
 
     expect(userOrError.isSuccess()).toBe(true);
     const user = userOrError.value as Post;
-    expect(user.title.value).toEqual('any_title');
-    expect(user.slug.value).toEqual('any_slug');
+    expect(user.title?.value).toEqual('any_title');
+    expect(user.slug?.value).toEqual('any_slug');
     expect(user.description?.value).toEqual('any_description');
   });
 

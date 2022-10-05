@@ -18,6 +18,7 @@ import {
   postBySlugPath,
   readAllPostsPath,
   postByIdPath,
+  uploadFilePath,
 } from '@/main/docs/paths';
 
 export default {
@@ -40,4 +41,5 @@ export default {
   '/post/{slug}': postBySlugPath,
   '/post/all': readAllPostsPath,
   '/post/{postId}': postByIdPath,
+  '/upload': uploadFilePath,
 };

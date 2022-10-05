@@ -11,6 +11,10 @@ import {
   userCritialDataSchema,
   postSchema,
   createPostParamsSchema,
+  fileSchema,
+  fileFormatSchema,
+  fileTypeSchema,
+  uploadFileParamsSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -26,4 +30,8 @@ export default {
   userCritialData: userCritialDataSchema,
   post: postSchema,
   createPostParams: createPostParamsSchema,
+  file: fileSchema,
+  fileFormat: fileFormatSchema,
+  fileType: fileTypeSchema,
+  uploadFileParams: uploadFileParamsSchema,
 };

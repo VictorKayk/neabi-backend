@@ -30,6 +30,10 @@ export default {
       name: 'Post',
       description: 'APIs relacionadas as publicações',
     },
+    {
+      name: 'File',
+      description: 'APIs relacionadas os arquivos',
+    },
   ],
   paths,
   schemas,

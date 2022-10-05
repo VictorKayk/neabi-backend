@@ -11,3 +11,7 @@ export * from '@/main/docs/schemas/create-role-params-schema';
 export * from '@/main/docs/schemas/user-has-role-schema';
 export * from '@/main/docs/schemas/post-schema';
 export * from '@/main/docs/schemas/create-post-params-schema';
+export * from '@/main/docs/schemas/file-type-schema';
+export * from '@/main/docs/schemas/file-format-schema';
+export * from '@/main/docs/schemas/file-schema';
+export * from '@/main/docs/schemas/upload-file-params-schema';

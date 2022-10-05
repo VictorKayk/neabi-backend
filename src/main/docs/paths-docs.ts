@@ -41,5 +41,5 @@ export default {
   '/post/{slug}': postBySlugPath,
   '/post/all': readAllPostsPath,
   '/post/{postId}': postByIdPath,
-  '/upload': uploadFilePath,
+  '/file/upload': uploadFilePath,
 };

@@ -6,5 +6,5 @@ import { authorization } from '@/main/middlewares/authorization';
 import { makeUploadFileController } from '@/main/factories/file';
 
 export function file(router: Router) {
-  router.post('/upload', authentication, authorization(['moderator', 'admin']), adaptMulter, routerAdapter(makeUploadFileController()));
+  router.post('/file/upload', authentication, authorization(['moderator', 'admin']), adaptMulter, routerAdapter(makeUploadFileController()));
 }

@@ -29,7 +29,7 @@ export class DeleteFileByIdController implements IController {
       const fileServiceOrError = await this.deleteFileService.execute(fileOrError.value.fileName);
       if (fileServiceOrError.isError()) return badRequest(fileServiceOrError.value);
 
-      return ok(fileOrError);
+      return ok(fileOrError.value);
     } catch (error) {
       return serverError(error as Error);
     }

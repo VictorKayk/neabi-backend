@@ -191,14 +191,13 @@ export class FileRepository implements IFileRepository {
   }
 
   async readAllFiles({
-    id, fileName, originalFileName, size, format, page, type,
+    fileId, fileName, originalFileName, format, page, type,
   }: IFileDataQuery): Promise<IFileRepositoryReturnData[] | []> {
     const files = await prisma.file.findMany({
       where: {
-        id: { contains: id, mode: 'insensitive' },
+        id: { contains: fileId, mode: 'insensitive' },
         fileName: { contains: fileName, mode: 'insensitive' },
         originalFileName: { contains: originalFileName, mode: 'insensitive' },
-        size: { in: size },
         FileFormat: {
           format: { contains: format, mode: 'insensitive' },
           FileType: {

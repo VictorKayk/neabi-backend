@@ -49,14 +49,6 @@ export const readAllFilesPath = {
       },
       {
         in: 'query',
-        name: 'size',
-        description: 'Tamanho do arquivo',
-        schema: {
-          type: 'integer',
-        },
-      },
-      {
-        in: 'query',
         name: 'page',
         description: 'Pagina',
         schema: {

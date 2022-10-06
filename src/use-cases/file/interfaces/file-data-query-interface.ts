@@ -5,4 +5,5 @@ export interface IFileDataQuery {
   size?: number,
   format?: string,
   type?: string,
+  page?: number,
 }

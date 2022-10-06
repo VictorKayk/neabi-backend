@@ -1,5 +1,5 @@
 export interface IFileDataQuery {
-  id?: string,
+  fileId?: string,
   fileName?: string,
   originalFileName?: string,
   size?: number,

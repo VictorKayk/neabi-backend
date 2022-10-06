@@ -19,3 +19,4 @@ export * from '@/main/docs/paths/read-all-posts-path';
 export * from '@/main/docs/paths/post-by-id-path';
 export * from '@/main/docs/paths/upload-file-path';
 export * from '@/main/docs/paths/file-by-id-path';
+export * from '@/main/docs/paths/read-all-files-path';

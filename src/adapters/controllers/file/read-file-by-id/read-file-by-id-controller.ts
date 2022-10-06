@@ -19,9 +19,9 @@ export class ReadFileByIdController implements IController {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
 
-      const { id } = params;
+      const { fileId } = params;
 
-      const fileOrError = await this.readByIdFile.execute(id);
+      const fileOrError = await this.readByIdFile.execute(fileId);
       if (fileOrError.isError()) return unauthorized(fileOrError.value);
 
       return ok(fileOrError.value);

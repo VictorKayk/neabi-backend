@@ -5,6 +5,7 @@ import {
   IFileFormatRepositoryReturnData,
   IFileTypeEditableData,
   IFileFormatEditableData,
+  IFileDataQuery,
 } from '@/use-cases/file/interfaces';
 
 export interface IFileRepository {
@@ -13,6 +14,7 @@ export interface IFileRepository {
     findById(id: string): Promise<IFileRepositoryReturnData | null>
     add(fileData: IFileData): Promise<IFileRepositoryReturnData>
     deleteFileById(id: string): Promise<IFileRepositoryReturnData>
+    readAllFiles(fileDataQuery: IFileDataQuery): Promise<IFileRepositoryReturnData[] | []>
     findFileTypeByType(type: string): Promise<IFileTypeRepositoryReturnData | null>
     addFileType(id: string, type: string): Promise<IFileTypeRepositoryReturnData>
     findTypeById(id: string): Promise<IFileTypeRepositoryReturnData | null>

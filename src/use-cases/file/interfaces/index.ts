@@ -7,3 +7,4 @@ export * from '@/use-cases/file/interfaces/file-format-repository-return-data-in
 export * from '@/use-cases/file/interfaces/file-format-data-interface';
 export * from '@/use-cases/file/interfaces/file-type-editable-data-interface';
 export * from '@/use-cases/file/interfaces/file-format-editable-data-interface';
+export * from '@/use-cases/file/interfaces/file-data-query-interface';

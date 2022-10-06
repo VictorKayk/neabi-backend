@@ -1,6 +1,7 @@
 import prisma from '@/main/config/prisma';
 import {
   IFileData,
+  IFileDataQuery,
   IFileFormatEditableData,
   IFileFormatRepositoryReturnData,
   IFileRepository,
@@ -187,6 +188,57 @@ export class FileRepository implements IFileRepository {
     });
     const { FileFormat, ...fileWithoutFileFormat } = file;
     return { ...fileWithoutFileFormat, ...getFileTypeAndFileFormat(FileFormat) };
+  }
+
+  async readAllFiles({
+    id, fileName, originalFileName, size, format, page, type,
+  }: IFileDataQuery): Promise<IFileRepositoryReturnData[] | []> {
+    const files = await prisma.file.findMany({
+      where: {
+        id: { contains: id, mode: 'insensitive' },
+        fileName: { contains: fileName, mode: 'insensitive' },
+        originalFileName: { contains: originalFileName, mode: 'insensitive' },
+        size: { in: size },
+        FileFormat: {
+          format: { contains: format, mode: 'insensitive' },
+          FileType: {
+            type: { contains: type, mode: 'insensitive' },
+          },
+        },
+      },
+      select: {
+        id: true,
+        fileName: true,
+        originalFileName: true,
+        url: true,
+        size: true,
+        createdAt: true,
+        updatedAt: true,
+        FileFormat: {
+          select: {
+            id: true,
+            format: true,
+            createdAt: true,
+            updatedAt: true,
+            FileType: {
+              select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
+    });
+
+    return files.map((file: any) => {
+      const { FileFormat, ...fileWithoutFileFormat } = file;
+      return { ...fileWithoutFileFormat, ...getFileTypeAndFileFormat(FileFormat) };
+    });
   }
 
   async findFileFormatByFormat(format: string): Promise<IFileFormatRepositoryReturnData | null> {

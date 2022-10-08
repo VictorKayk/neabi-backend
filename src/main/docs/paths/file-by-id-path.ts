@@ -3,7 +3,7 @@ export const fileByIdPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['File'],
+    tags: ['Attachment', 'File'],
     summary: 'API para ler todos os dados de uma arquivo pelo id',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{

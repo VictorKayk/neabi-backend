@@ -3,7 +3,7 @@ export const readAllFilesPath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['File'],
+    tags: ['Attachment', 'File'],
     summary: 'API para ler os dados de todos os arquivos',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [
@@ -17,7 +17,7 @@ export const readAllFilesPath = {
       },
       {
         in: 'query',
-        name: 'fileName',
+        name: 'name',
         description: 'Nome do arquivo',
         schema: {
           type: 'string',

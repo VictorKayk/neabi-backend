@@ -10,9 +10,9 @@ export class DeleteFileService implements IUseCase {
     private readonly fileService: IFileService,
   ) { }
 
-  async execute(fileName: string): Promise<Response> {
+  async execute(name: string): Promise<Response> {
     try {
-      await this.fileService.delete(fileName);
+      await this.fileService.delete(name);
 
       return success(null);
     } catch (e) {

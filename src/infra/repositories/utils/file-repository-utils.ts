@@ -1,4 +1,4 @@
-import { IFileFormatRepositoryReturnData, IFileTypeRepositoryReturnData } from '@/use-cases/file/interfaces';
+import { IFileFormatRepositoryReturnData, IFileTypeRepositoryReturnData } from '@/use-cases/attachment/file/interfaces';
 
 type Response = {
   fileFormat: Omit<IFileFormatRepositoryReturnData, 'isDeleted' | 'fileTypeId'>,

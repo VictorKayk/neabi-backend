@@ -1,6 +1,6 @@
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
-import { UploadFileUseCase } from '@/use-cases/file/upload-file';
-import { } from '@/use-cases/file/errors';
+import { UploadFileUseCase } from '@/use-cases/attachment/file/upload-file';
+import { } from '@/use-cases/attachment/file/errors';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   created,
@@ -8,9 +8,9 @@ import {
   badRequest,
   forbidden,
 } from '@/adapters/utils/http';
-import { IFileRepository } from '@/use-cases/file/interfaces';
-import { CreateFileTypeUseCase } from '@/use-cases/file/create-file-type';
-import { CreateFileFormatUseCase } from '@/use-cases/file/create-file-format';
+import { IFileRepository } from '@/use-cases/attachment/file/interfaces';
+import { CreateFileTypeUseCase } from '@/use-cases/attachment/file/create-file-type';
+import { CreateFileFormatUseCase } from '@/use-cases/attachment/file/create-file-format';
 
 export class UploadFileController implements IController {
   constructor(
@@ -32,7 +32,7 @@ export class UploadFileController implements IController {
         if (validationError) return [validationError];
 
         const {
-          originalname, filename, size, mimetype,
+          originalname, name, size, mimetype,
         } = file;
 
         const [fileType, fileFormat] = mimetype.split('/');
@@ -55,7 +55,7 @@ export class UploadFileController implements IController {
         }
 
         const fileOrError = await this.uploadFile.execute({
-          fileName: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, fileFormatId: fileFormatOrNull.id,
+          name, size, originalFileName: originalname, url: `${this.uploadUrl}/${name}`, fileFormatId: fileFormatOrNull.id,
         });
         if (fileOrError.isError()) return [fileOrError];
 

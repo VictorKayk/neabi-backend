@@ -1,5 +1,5 @@
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
-import { ReadAllFilesUseCase } from '@/use-cases/file/read-all-files';
+import { ReadAllFilesUseCase } from '@/use-cases/attachment/file/read-all-files';
 import { IController } from '@/adapters/controllers/interfaces';
 import { serverError, ok } from '@/adapters/utils/http';
 

@@ -1,5 +1,5 @@
 import { IHttpRequestAuthenticated, IHttpResponse } from '@/adapters/interfaces';
-import { ReadFileByIdUseCase } from '@/use-cases/file/read-file-by-id';
+import { ReadFileByIdUseCase } from '@/use-cases/attachment/file/read-file-by-id';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
   serverError,

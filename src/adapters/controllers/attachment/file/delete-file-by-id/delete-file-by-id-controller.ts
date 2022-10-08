@@ -6,7 +6,7 @@ import {
   badRequest,
   unauthorized,
 } from '@/adapters/utils/http';
-import { DeleteFileByIdUseCase } from '@/use-cases/file/delete-file-by-id';
+import { DeleteFileByIdUseCase } from '@/use-cases/attachment/file/delete-file-by-id';
 import { DeleteFileService } from '@/use-cases/services/file-service/delete-file';
 
 export class DeleteFileByIdController implements IController {
@@ -26,7 +26,7 @@ export class DeleteFileByIdController implements IController {
       const fileOrError = await this.deleteFileById.execute(fileId);
       if (fileOrError.isError()) return unauthorized(fileOrError.value);
 
-      const fileServiceOrError = await this.deleteFileService.execute(fileOrError.value.fileName);
+      const fileServiceOrError = await this.deleteFileService.execute(fileOrError.value.name);
       if (fileServiceOrError.isError()) return badRequest(fileServiceOrError.value);
 
       return ok(fileOrError.value);

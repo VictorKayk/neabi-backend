@@ -1,8 +1,8 @@
-import { DeleteFileByIdUseCase } from '@/use-cases/file/delete-file-by-id';
+import { DeleteFileByIdUseCase } from '@/use-cases/attachment/file/delete-file-by-id';
 import { IController } from '@/adapters/controllers/interfaces';
 import { FileRepository } from '@/infra/repositories';
-import { makeDeleteFileByIdValidationFactory } from '@/main/factories/file';
-import { DeleteFileByIdController } from '@/adapters/controllers/file/delete-file-by-id';
+import { makeDeleteFileByIdValidationFactory } from '@/main/factories/attachment/file';
+import { DeleteFileByIdController } from '@/adapters/controllers/attachment/file/delete-file-by-id';
 import { DeleteFileService } from '@/use-cases/services/file-service/delete-file';
 import env from '@/main/config/env';
 import { FileService } from '@/infra/services/file-service';

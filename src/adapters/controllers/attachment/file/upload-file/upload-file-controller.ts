@@ -1,5 +1,5 @@
 import { IHttpRequest, IHttpResponse } from '@/adapters/interfaces';
-import { UploadFileUseCase } from '@/use-cases/attachment/file/upload-file';
+import { CreateFileUseCase } from '@/use-cases/attachment/file/create-file';
 import { } from '@/use-cases/attachment/file/errors';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import {
@@ -16,7 +16,7 @@ export class UploadFileController implements IController {
   constructor(
     private readonly validation: IValidation,
     private readonly fileRepository: IFileRepository,
-    private readonly uploadFile: UploadFileUseCase,
+    private readonly createFile: CreateFileUseCase,
     private readonly createFileType: CreateFileTypeUseCase,
     private readonly createFileFormat: CreateFileFormatUseCase,
     private readonly uploadUrl: string,
@@ -54,7 +54,7 @@ export class UploadFileController implements IController {
           fileFormatOrNull = fileFormatOrError.value;
         }
 
-        const fileOrError = await this.uploadFile.execute({
+        const fileOrError = await this.createFile.execute({
           name: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, fileFormatId: fileFormatOrNull.id,
         });
         if (fileOrError.isError()) return [fileOrError];

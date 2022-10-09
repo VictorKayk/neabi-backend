@@ -2,11 +2,11 @@ import { IUniversallyUniqueIdentifierGenerator, IUseCase } from '@/use-cases/int
 import { Either, error, success } from '@/shared';
 import { ExistingFileError } from '@/use-cases/attachment/file/errors';
 import { IFileRepositoryReturnData, IFileRepository } from '@/use-cases/attachment/file/interfaces';
-import { IUploadFileData } from '@/use-cases/attachment/file/upload-file/interfaces';
+import { ICreateFileData } from '@/use-cases/attachment/file/create-file/interfaces';
 
 type Response = Either<ExistingFileError, IFileRepositoryReturnData>;
 
-export class UploadFileUseCase implements IUseCase {
+export class CreateFileUseCase implements IUseCase {
   constructor(
     private readonly fileRepository: IFileRepository,
     private readonly idGenerator: IUniversallyUniqueIdentifierGenerator,
@@ -14,7 +14,7 @@ export class UploadFileUseCase implements IUseCase {
 
   async execute({
     originalFileName, name, size, url, fileFormatId,
-  }: IUploadFileData): Promise<Response> {
+  }: ICreateFileData): Promise<Response> {
     let fileOrNull = await this.fileRepository.findFileByName(name);
     if (fileOrNull) return error(new ExistingFileError());
 

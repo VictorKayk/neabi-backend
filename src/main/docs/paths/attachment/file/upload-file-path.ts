@@ -22,7 +22,10 @@ export const uploadFilePath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/file',
+              type: 'array',
+              items: {
+                $ref: '#/schemas/file',
+              },
             },
           },
         },

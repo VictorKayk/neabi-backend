@@ -31,10 +31,6 @@ export default {
       description: 'APIs relacionadas as publicações',
     },
     {
-      name: 'Attachment',
-      description: 'APIs relacionadas os anexos',
-    },
-    {
       name: 'File',
       description: 'APIs relacionadas os arquivos',
     },

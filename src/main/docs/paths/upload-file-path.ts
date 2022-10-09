@@ -3,7 +3,7 @@ export const uploadFilePath = {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Attachment', 'File'],
+    tags: ['File'],
     summary: 'API para fazer o upload de arquivos',
     description: 'Essa rota pode ser executada por **qualquer usuário**',
     requestBody: {

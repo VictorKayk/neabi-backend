@@ -32,7 +32,11 @@ export default {
     },
     {
       name: 'File',
-      description: 'APIs relacionadas os arquivos',
+      description: 'APIs relacionadas aos arquivos que são anexos',
+    },
+    {
+      name: 'Url',
+      description: 'APIs relacionadas as urls que são anexos',
     },
   ],
   paths,

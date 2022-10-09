@@ -15,3 +15,5 @@ export * from '@/main/docs/schemas/file-type-schema';
 export * from '@/main/docs/schemas/file-format-schema';
 export * from '@/main/docs/schemas/file-schema';
 export * from '@/main/docs/schemas/upload-file-params-schema';
+export * from '@/main/docs/schemas/url-schema';
+export * from '@/main/docs/schemas/create-url-params-schema';

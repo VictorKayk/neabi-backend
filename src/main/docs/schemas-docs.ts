@@ -15,6 +15,8 @@ import {
   fileFormatSchema,
   fileTypeSchema,
   uploadFileParamsSchema,
+  urlSchema,
+  createUrlParamsSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -34,4 +36,6 @@ export default {
   fileFormat: fileFormatSchema,
   fileType: fileTypeSchema,
   uploadFileParams: uploadFileParamsSchema,
+  url: urlSchema,
+  createUrlParams: createUrlParamsSchema,
 };

@@ -22,6 +22,7 @@ import {
   readAllFilesPath,
   fileByIdPath,
   createUrlPath,
+  urlByIdPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -48,4 +49,5 @@ export default {
   '/attachment/file/all': readAllFilesPath,
   '/attachment/file/{fileId}': fileByIdPath,
   '/attachment/url': createUrlPath,
+  '/attachment/url/{urlId}': urlByIdPath,
 };

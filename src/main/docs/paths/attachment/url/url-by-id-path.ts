@@ -40,6 +40,54 @@ export const urlByIdPath = {
       },
     },
   },
+  patch: {
+    security: [{
+      apiKeyAuth: [],
+    }],
+    tags: ['Url'],
+    summary: 'API para editar os dados do anexo de uma url',
+    description: 'Essa rota só pode ser executada por **usuários autenticados**',
+    parameters: [{
+      in: 'path',
+      name: 'urlId',
+      description: 'ID da url',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    }],
+    requestBody: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/schemas/createUrlParams',
+          },
+        },
+      },
+    },
+    responses: {
+      200: {
+        description: 'Sucesso',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/url',
+            },
+          },
+        },
+      },
+      400: {
+        $ref: '#/components/badRequest',
+      },
+      404: {
+        $ref: '#/components/notFound',
+      },
+      500: {
+        $ref: '#/components/serverError',
+      },
+    },
+  },
   delete: {
     security: [{
       apiKeyAuth: [],

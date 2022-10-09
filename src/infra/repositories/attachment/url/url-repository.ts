@@ -1,7 +1,15 @@
 import prisma from '@/main/config/prisma';
 import { IUrlData, IUrlRepository, IUrlRepositoryReturnData } from '@/use-cases/attachment/url/interfaces';
+import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
 
 export class UrlRepository implements IUrlRepository {
+  async findAttachmentById(id: string): Promise<IAttachmentRepositoryReturnData | null> {
+    const attachment = await prisma.attachment.findFirst({
+      where: { id },
+    });
+    return attachment;
+  }
+
   async findById(id: string): Promise<IUrlRepositoryReturnData | null> {
     const url = await prisma.url.findFirst({
       where: { id },

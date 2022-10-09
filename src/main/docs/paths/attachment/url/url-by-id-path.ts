@@ -40,4 +40,42 @@ export const urlByIdPath = {
       },
     },
   },
+  delete: {
+    security: [{
+      apiKeyAuth: [],
+    }],
+    tags: ['Url'],
+    summary: 'API para apagar um anexo de url',
+    description: 'Essa rota só pode ser executada por **usuários autenticados**',
+    parameters: [{
+      in: 'path',
+      name: 'urlId',
+      description: 'ID do arquivo',
+      required: true,
+      schema: {
+        type: 'string',
+      },
+    }],
+    responses: {
+      200: {
+        description: 'Sucesso',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/url',
+            },
+          },
+        },
+      },
+      401: {
+        $ref: '#/components/unauthorized',
+      },
+      404: {
+        $ref: '#/components/notFound',
+      },
+      500: {
+        $ref: '#/components/serverError',
+      },
+    },
+  },
 };

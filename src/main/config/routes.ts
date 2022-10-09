@@ -1,6 +1,6 @@
 import { Express, Router } from 'express';
 import {
-  user, role, userHasRole, post, file,
+  user, role, userHasRole, post, file, url,
 } from '@/main/routes';
 
 export default (app: Express): void => {
@@ -11,4 +11,5 @@ export default (app: Express): void => {
   user(router);
   post(router);
   file(router);
+  url(router);
 };

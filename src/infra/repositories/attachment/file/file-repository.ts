@@ -200,6 +200,7 @@ export class FileRepository implements IFileRepository {
         size: true,
         Attachment: {
           select: {
+            id: true,
             name: true,
             url: true,
             createdAt: true,
@@ -225,7 +226,17 @@ export class FileRepository implements IFileRepository {
       },
     });
     const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
-    return { ...fileWithoutFileFormat, ...Attachment, ...getFileTypeAndFileFormat(FileFormat) };
+    const { id: attachmentId, ...attachmentWithoutId } = Attachment;
+
+    await prisma.attachment.delete({
+      where: { id: attachmentId },
+    });
+
+    return {
+      ...fileWithoutFileFormat,
+      ...attachmentWithoutId,
+      ...getFileTypeAndFileFormat(FileFormat),
+    };
   }
 
   async readAllFiles({

@@ -4,7 +4,7 @@ export const fileSchema = {
     id: {
       type: 'string',
     },
-    fileName: {
+    name: {
       type: 'string',
     },
     originalFileName: {
@@ -35,5 +35,5 @@ export const fileSchema = {
       },
     },
   },
-  required: ['id', 'fileName', 'originalFileName', 'url', 'size', 'createdAt', 'updatedAt', 'fileFormat', 'fileType'],
+  required: ['id', 'name', 'originalFileName', 'url', 'size', 'createdAt', 'updatedAt', 'fileFormat', 'fileType'],
 };

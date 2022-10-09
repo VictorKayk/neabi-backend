@@ -1,3 +1,3 @@
 export interface IFileService {
-  delete(fileName: string): Promise<null>
+  delete(name: string): Promise<null>
 }

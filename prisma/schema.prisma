@@ -94,16 +94,23 @@ model FileFormat {
 }
 
 model File {
-  id               String   @id
-  fileName         String
+  id               String @id
   originalFileName String
   size             Int
-  url              String
   fileFormatId     String
-  createdAt        DateTime
-  updatedAt        DateTime
+  attachmentId     String
 
   FileFormat FileFormat @relation(fields: [fileFormatId], references: [id])
+  Attachment Attachment @relation(fields: [attachmentId], references: [id])
+}
+
+model Attachment {
+  id        String   @id
+  name      String
+  url       String
+  createdAt DateTime
+  updatedAt DateTime
+  files     File[]
 }
 
 model Post {

@@ -6,8 +6,8 @@ export class FileService implements IFileService {
     private readonly path: string,
   ) { }
 
-  async delete(fileName: string): Promise<null> {
-    unlinkSync(`${this.path}/${fileName}`);
+  async delete(name: string): Promise<null> {
+    unlinkSync(`${this.path}/${name}`);
     return null;
   }
 }

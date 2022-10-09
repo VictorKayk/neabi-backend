@@ -43,7 +43,7 @@ export default {
   '/post/{slug}': postBySlugPath,
   '/post/all': readAllPostsPath,
   '/post/{postId}': postByIdPath,
-  '/file/upload': uploadFilePath,
-  '/file/all': readAllFilesPath,
-  '/file/{fileId}': fileByIdPath,
+  '/attachment/file/upload': uploadFilePath,
+  '/attachment/file/all': readAllFilesPath,
+  '/attachment/file/{fileId}': fileByIdPath,
 };

@@ -19,13 +19,22 @@ export class CreateUrlUseCase implements IUseCase {
     let urlOrNull = await this.urlRepository.findByUrl(url);
     if (urlOrNull && urlOrNull.name === name) return error(new ExistingUrlError());
 
+    let attachmentId: string;
+    let attachmentOrNull;
+    do {
+      attachmentId = await this.idGenerator.generate();
+      attachmentOrNull = await this.urlRepository.findAttachmentById(attachmentId);
+    } while (attachmentOrNull);
+
     let id: string;
     do {
       id = await this.idGenerator.generate();
       urlOrNull = await this.urlRepository.findById(id);
     } while (urlOrNull);
 
-    const urlData = await this.urlRepository.add({ id, name, url });
+    const urlData = await this.urlRepository.add({
+      id, name, url, attachmentId,
+    });
 
     return success(urlData);
   }

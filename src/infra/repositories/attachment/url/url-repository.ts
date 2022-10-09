@@ -116,4 +116,31 @@ export class UrlRepository implements IUrlRepository {
       return { id, ...Attachment };
     });
   }
+
+  async deleteUrlById(id: string): Promise<IUrlRepositoryReturnData> {
+    const urlData = await prisma.url.delete({
+      where: { id },
+      select: {
+        id: true,
+        Attachment: {
+          select: {
+            id: true,
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+    });
+
+    const { id: urlId, Attachment } = urlData;
+    const { id: attachmentId, ...attachmentWithoutId } = Attachment;
+
+    await prisma.attachment.delete({
+      where: { id: attachmentId },
+    });
+
+    return { id: urlId, ...attachmentWithoutId };
+  }
 }

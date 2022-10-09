@@ -98,7 +98,7 @@ model File {
   originalFileName String
   size             Int
   fileFormatId     String
-  attachmentId     String
+  attachmentId     String @unique
 
   FileFormat FileFormat @relation(fields: [fileFormatId], references: [id])
   Attachment Attachment @relation(fields: [attachmentId], references: [id])
@@ -106,7 +106,7 @@ model File {
 
 model Url {
   id           String @id
-  attachmentId String
+  attachmentId String @unique
 
   Attachment Attachment @relation(fields: [attachmentId], references: [id])
 }
@@ -117,8 +117,8 @@ model Attachment {
   url       String
   createdAt DateTime
   updatedAt DateTime
-  files     File[]
-  urls      Url[]
+  files     File?
+  urls      Url?
 }
 
 model Post {

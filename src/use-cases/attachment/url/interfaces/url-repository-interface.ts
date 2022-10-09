@@ -7,4 +7,5 @@ export interface IUrlRepository {
   findById(id: string): Promise<IUrlRepositoryReturnData | null>
   add(urlData: IUrlData): Promise<IUrlRepositoryReturnData>
   readAllUrls(urlDataQuery: IUrlDataQuery): Promise<IUrlRepositoryReturnData[] | []>
+  deleteUrlById(id: string): Promise<IUrlRepositoryReturnData>
 }

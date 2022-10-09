@@ -1,5 +1,7 @@
 import prisma from '@/main/config/prisma';
-import { IUrlData, IUrlRepository, IUrlRepositoryReturnData } from '@/use-cases/attachment/url/interfaces';
+import {
+  IUrlData, IUrlDataQuery, IUrlRepository, IUrlRepositoryReturnData,
+} from '@/use-cases/attachment/url/interfaces';
 import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
 
 export class UrlRepository implements IUrlRepository {
@@ -81,5 +83,37 @@ export class UrlRepository implements IUrlRepository {
     });
     const { id: urlId, Attachment } = urlData;
     return { id: urlId, ...Attachment };
+  }
+
+  async readAllUrls({
+    urlId, name, url, page,
+  }: IUrlDataQuery): Promise<IUrlRepositoryReturnData[] | []> {
+    const urls = await prisma.url.findMany({
+      where: {
+        id: { contains: urlId, mode: 'insensitive' },
+        Attachment: {
+          name: { contains: name, mode: 'insensitive' },
+          url: { contains: url, mode: 'insensitive' },
+        },
+      },
+      select: {
+        id: true,
+        Attachment: {
+          select: {
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
+    });
+
+    return urls.map((urlData) => {
+      const { id, Attachment } = urlData;
+      return { id, ...Attachment };
+    });
   }
 }

@@ -7,7 +7,7 @@ export const createUrlParamsSchema = {
     },
     url: {
       type: 'string',
-      default: 'any_url',
+      default: 'https://www.any_url.com',
     },
   },
   required: ['name', 'url'],

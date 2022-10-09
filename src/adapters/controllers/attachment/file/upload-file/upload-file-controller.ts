@@ -32,7 +32,7 @@ export class UploadFileController implements IController {
         if (validationError) return [validationError];
 
         const {
-          originalname, name, size, mimetype,
+          originalname, filename, size, mimetype,
         } = file;
 
         const [fileType, fileFormat] = mimetype.split('/');
@@ -55,7 +55,7 @@ export class UploadFileController implements IController {
         }
 
         const fileOrError = await this.uploadFile.execute({
-          name, size, originalFileName: originalname, url: `${this.uploadUrl}/${name}`, fileFormatId: fileFormatOrNull.id,
+          name: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, fileFormatId: fileFormatOrNull.id,
         });
         if (fileOrError.isError()) return [fileOrError];
 

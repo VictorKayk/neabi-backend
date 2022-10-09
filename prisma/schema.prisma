@@ -104,6 +104,13 @@ model File {
   Attachment Attachment @relation(fields: [attachmentId], references: [id])
 }
 
+model Url {
+  id           String @id
+  attachmentId String
+
+  Attachment Attachment @relation(fields: [attachmentId], references: [id])
+}
+
 model Attachment {
   id        String   @id
   name      String
@@ -111,6 +118,7 @@ model Attachment {
   createdAt DateTime
   updatedAt DateTime
   files     File[]
+  urls      Url[]
 }
 
 model Post {

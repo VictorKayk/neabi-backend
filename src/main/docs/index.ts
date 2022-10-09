@@ -31,12 +31,12 @@ export default {
       description: 'APIs relacionadas as publicações',
     },
     {
-      name: 'Attachment',
-      description: 'APIs relacionadas os anexos',
+      name: 'File',
+      description: 'APIs relacionadas aos arquivos que são anexos',
     },
     {
-      name: 'File',
-      description: 'APIs relacionadas os arquivos',
+      name: 'Url',
+      description: 'APIs relacionadas as urls que são anexos',
     },
   ],
   paths,

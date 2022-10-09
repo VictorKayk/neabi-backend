@@ -1,17 +1,17 @@
-export const uploadFilePath = {
+export const createUrlPath = {
   post: {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['File'],
-    summary: 'API para fazer o upload de arquivos',
-    description: 'Essa rota pode ser executada por **qualquer usuário**',
+    tags: ['Url'],
+    summary: 'API para criar uma url que é um anexo',
+    description: 'Essa rota só pode ser executada por **usuários autenticados**',
     requestBody: {
       required: true,
       content: {
-        'multipart/form-data': {
+        'application/json': {
           schema: {
-            $ref: '#/schemas/uploadFileParams',
+            $ref: '#/schemas/createUrlParams',
           },
         },
       },
@@ -22,7 +22,7 @@ export const uploadFilePath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/file',
+              $ref: '#/schemas/url',
             },
           },
         },
@@ -32,9 +32,6 @@ export const uploadFilePath = {
       },
       401: {
         $ref: '#/components/unauthorized',
-      },
-      403: {
-        $ref: '#/components/forbidden',
       },
       404: {
         $ref: '#/components/notFound',

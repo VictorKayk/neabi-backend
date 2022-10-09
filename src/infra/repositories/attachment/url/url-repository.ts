@@ -1,6 +1,6 @@
 import prisma from '@/main/config/prisma';
 import {
-  IUrlData, IUrlDataQuery, IUrlRepository, IUrlRepositoryReturnData,
+  IUrlData, IUrlDataQuery, IUrlEditableData, IUrlRepository, IUrlRepositoryReturnData,
 } from '@/use-cases/attachment/url/interfaces';
 import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
 
@@ -142,5 +142,26 @@ export class UrlRepository implements IUrlRepository {
     });
 
     return { id: urlId, ...attachmentWithoutId };
+  }
+
+  async updateById(id: string, urlEditableData: IUrlEditableData):
+    Promise<IUrlRepositoryReturnData> {
+    const urlData = await prisma.url.update({
+      where: { id },
+      data: { Attachment: { update: { ...urlEditableData, updatedAt: new Date() } } },
+      select: {
+        id: true,
+        Attachment: {
+          select: {
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+    });
+    const { id: urlId, Attachment } = urlData;
+    return { id: urlId, ...Attachment };
   }
 }

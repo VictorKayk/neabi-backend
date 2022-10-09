@@ -1,4 +1,6 @@
-import { IUrlRepositoryReturnData, IUrlData, IUrlDataQuery } from '@/use-cases/attachment/url/interfaces';
+import {
+  IUrlRepositoryReturnData, IUrlData, IUrlDataQuery, IUrlEditableData,
+} from '@/use-cases/attachment/url/interfaces';
 import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
 
 export interface IUrlRepository {
@@ -8,4 +10,5 @@ export interface IUrlRepository {
   add(urlData: IUrlData): Promise<IUrlRepositoryReturnData>
   readAllUrls(urlDataQuery: IUrlDataQuery): Promise<IUrlRepositoryReturnData[] | []>
   deleteUrlById(id: string): Promise<IUrlRepositoryReturnData>
+  updateById(id: string, urlEditableData: IUrlEditableData): Promise<IUrlRepositoryReturnData>
 }

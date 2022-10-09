@@ -1,4 +1,4 @@
-export interface IUploadFileData {
+export interface ICreateFileData {
   name: string,
   originalFileName: string,
   size: number,

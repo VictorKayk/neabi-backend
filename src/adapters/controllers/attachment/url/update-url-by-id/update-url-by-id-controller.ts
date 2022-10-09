@@ -14,10 +14,10 @@ export class UpdateUrlByIdController implements IController {
       const validationError = this.validation.validate({ ...body, ...params });
       if (validationError) return badRequest(validationError);
 
-      const { id } = params;
+      const { urlId } = params;
       const { name, url } = body;
 
-      const urlOrError = await this.updateUrlById.execute({ id, urlData: { name, url } });
+      const urlOrError = await this.updateUrlById.execute({ id: urlId, urlData: { name, url } });
       if (urlOrError.isError()) return badRequest(urlOrError.value);
 
       return ok(urlOrError.value);

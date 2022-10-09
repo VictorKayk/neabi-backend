@@ -21,3 +21,4 @@ export * from '@/main/docs/paths/upload-file-path';
 export * from '@/main/docs/paths/file-by-id-path';
 export * from '@/main/docs/paths/read-all-files-path';
 export * from '@/main/docs/paths/create-url-path';
+export * from '@/main/docs/paths/url-by-id-path';

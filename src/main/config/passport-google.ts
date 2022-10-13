@@ -5,7 +5,7 @@ import env from '@/main/config/env';
 const options: StrategyOptions = {
   clientID: env.googleClientId,
   clientSecret: env.googleClientSecret,
-  callbackURL: 'http://localhost:5000/api/user/google/auth',
+  callbackURL: env.googleCallBackUrl,
   scope: ['profile', 'email'],
 };
 

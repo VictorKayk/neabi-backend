@@ -21,32 +21,36 @@ export class FileRepository implements IFileRepository {
   }
 
   async findFileById(id: string): Promise<IFileRepositoryReturnData | null> {
-    const file = await prisma.file.findFirst({
-      where: { id },
+    const file = await prisma.localFile.findFirst({
+      where: { fileId: id },
       select: {
-        id: true,
-        originalFileName: true,
-        size: true,
-        Attachment: {
-          select: {
-            name: true,
-            url: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        FileFormat: {
+        File: {
           select: {
             id: true,
-            format: true,
-            createdAt: true,
-            updatedAt: true,
-            FileType: {
+            originalFileName: true,
+            size: true,
+            Attachment: {
               select: {
-                id: true,
-                type: true,
+                name: true,
+                url: true,
                 createdAt: true,
                 updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
               },
             },
           },
@@ -54,39 +58,43 @@ export class FileRepository implements IFileRepository {
       },
     });
     if (file) {
-      const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
+      const { FileFormat, Attachment, ...fileWithoutFileFormat } = file.File;
       return { ...fileWithoutFileFormat, ...Attachment, ...getFileTypeAndFileFormat(FileFormat) };
     }
     return null;
   }
 
   async findFileByName(name: string): Promise<IFileRepositoryReturnData | null> {
-    const file = await prisma.file.findFirst({
-      where: { Attachment: { name } },
+    const file = await prisma.localFile.findFirst({
+      where: { File: { Attachment: { name } } },
       select: {
-        id: true,
-        originalFileName: true,
-        size: true,
-        Attachment: {
-          select: {
-            name: true,
-            url: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        FileFormat: {
+        File: {
           select: {
             id: true,
-            format: true,
-            createdAt: true,
-            updatedAt: true,
-            FileType: {
+            originalFileName: true,
+            size: true,
+            Attachment: {
               select: {
-                id: true,
-                type: true,
+                name: true,
+                url: true,
                 createdAt: true,
                 updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
               },
             },
           },
@@ -94,39 +102,43 @@ export class FileRepository implements IFileRepository {
       },
     });
     if (file) {
-      const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
+      const { FileFormat, Attachment, ...fileWithoutFileFormat } = file.File;
       return { ...fileWithoutFileFormat, ...Attachment, ...getFileTypeAndFileFormat(FileFormat) };
     }
     return null;
   }
 
   async findById(id: string): Promise<IFileRepositoryReturnData | null> {
-    const file = await prisma.file.findFirst({
-      where: { id },
+    const file = await prisma.localFile.findFirst({
+      where: { fileId: id },
       select: {
-        id: true,
-        originalFileName: true,
-        size: true,
-        Attachment: {
-          select: {
-            name: true,
-            url: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        FileFormat: {
+        File: {
           select: {
             id: true,
-            format: true,
-            createdAt: true,
-            updatedAt: true,
-            FileType: {
+            originalFileName: true,
+            size: true,
+            Attachment: {
               select: {
-                id: true,
-                type: true,
+                name: true,
+                url: true,
                 createdAt: true,
                 updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
               },
             },
           },
@@ -134,7 +146,7 @@ export class FileRepository implements IFileRepository {
       },
     });
     if (file) {
-      const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
+      const { FileFormat, Attachment, ...fileWithoutFileFormat } = file.File;
       return { ...fileWithoutFileFormat, ...Attachment, ...getFileTypeAndFileFormat(FileFormat) };
     }
     return null;
@@ -187,11 +199,16 @@ export class FileRepository implements IFileRepository {
         },
       },
     });
+
+    await prisma.localFile.create({ data: { fileId: file.id } });
+
     const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
     return { ...fileWithoutFileFormat, ...Attachment, ...getFileTypeAndFileFormat(FileFormat) };
   }
 
   async deleteFileById(id: string): Promise<IFileRepositoryReturnData> {
+    await prisma.localFile.delete({ where: { fileId: id } });
+
     const file = await prisma.file.delete({
       where: { id },
       select: {
@@ -242,44 +259,50 @@ export class FileRepository implements IFileRepository {
   async readAllFiles({
     fileId, name, originalFileName, format, page, type,
   }: IFileDataQuery): Promise<IFileRepositoryReturnData[] | []> {
-    const files = await prisma.file.findMany({
+    const files = await prisma.localFile.findMany({
       where: {
-        id: { contains: fileId, mode: 'insensitive' },
-        originalFileName: { contains: originalFileName, mode: 'insensitive' },
-        Attachment: {
-          name: { contains: name, mode: 'insensitive' },
-        },
-        FileFormat: {
-          format: { contains: format, mode: 'insensitive' },
-          FileType: {
-            type: { contains: type, mode: 'insensitive' },
+        File: {
+          id: { contains: fileId, mode: 'insensitive' },
+          originalFileName: { contains: originalFileName, mode: 'insensitive' },
+          Attachment: {
+            name: { contains: name, mode: 'insensitive' },
+          },
+          FileFormat: {
+            format: { contains: format, mode: 'insensitive' },
+            FileType: {
+              type: { contains: type, mode: 'insensitive' },
+            },
           },
         },
       },
       select: {
-        id: true,
-        originalFileName: true,
-        size: true,
-        Attachment: {
-          select: {
-            name: true,
-            url: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        FileFormat: {
+        File: {
           select: {
             id: true,
-            format: true,
-            createdAt: true,
-            updatedAt: true,
-            FileType: {
+            originalFileName: true,
+            size: true,
+            Attachment: {
               select: {
-                id: true,
-                type: true,
+                name: true,
+                url: true,
                 createdAt: true,
                 updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
               },
             },
           },
@@ -290,7 +313,7 @@ export class FileRepository implements IFileRepository {
     });
 
     return files.map((file: any) => {
-      const { FileFormat, ...fileWithoutFileFormat } = file;
+      const { FileFormat, ...fileWithoutFileFormat } = file.File;
       return { ...fileWithoutFileFormat, ...getFileTypeAndFileFormat(FileFormat) };
     });
   }

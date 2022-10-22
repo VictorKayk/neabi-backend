@@ -1,5 +1,5 @@
 import { IUseCase } from '@/use-cases/interfaces';
-import { IReadExternalFileData, IExternalFileRepository } from '@/use-cases/attachment/external-file/interfaces';
+import { IReadExternalFileData, IExternalFileRepository, IExternalUserCredentials } from '@/use-cases/attachment/external-file/interfaces';
 
 type Response = IReadExternalFileData[] | [];
 
@@ -8,7 +8,9 @@ export class ReadAllExternalFilesUseCase implements IUseCase {
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }
 
-  async execute(): Promise<Response> {
+  async execute(credentials: IExternalUserCredentials): Promise<Response> {
+    this.externalFilesRepository.setCredentialToDrive(credentials);
+
     const externalFiles = await this.externalFilesRepository
       .readAllExternalFiles();
     return externalFiles;

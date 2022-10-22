@@ -1,11 +1,21 @@
 export const readAllExternalFilesPath = {
-  get: {
+  post: {
     security: [{
       apiKeyAuth: [],
     }],
     tags: ['ExternalFile'],
     summary: 'API para ler os dados de todos os arquivos externos',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
+    requestBody: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/schemas/readAllExternalFilesParams',
+          },
+        },
+      },
+    },
     responses: {
       200: {
         description: 'Sucesso',
@@ -19,6 +29,9 @@ export const readAllExternalFilesPath = {
             },
           },
         },
+      },
+      400: {
+        $ref: '#/components/badRequest',
       },
       401: {
         $ref: '#/components/unauthorized',

@@ -1,6 +1,7 @@
 export * from '@/main/factories/user/sign-up';
 export * from '@/main/factories/user/sign-in';
 export * from '@/main/factories/user/external-sign-in';
+export * from '@/main/factories/user/read-external-user-data';
 export * from '@/main/factories/user/read-user';
 export * from '@/main/factories/user/read-all-users';
 export * from '@/main/factories/user/read-user-by-id';

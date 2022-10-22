@@ -1,4 +1,5 @@
 export * from '@/main/docs/schemas/user/sign-in-params-schema';
+export * from '@/main/docs/schemas/user/external-sign-in-params-schema';
 export * from '@/main/docs/schemas/user/user-schema';
 export * from '@/main/docs/schemas/user/user-critical-data-schema';
 export * from '@/main/docs/schemas/user/sign-up-params-schema';

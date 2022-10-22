@@ -14,7 +14,7 @@ import {
 export const userPathsDocs = {
   '/signup': signUpPath,
   '/signin': signInPath,
-  '/user/google': externalSignInPath,
+  '/signin/google': externalSignInPath,
   '/user': userPath,
   '/user/{userId}': userByIdPath,
   '/user/all': readAllUsersPath,

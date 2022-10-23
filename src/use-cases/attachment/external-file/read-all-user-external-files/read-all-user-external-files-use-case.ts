@@ -12,7 +12,7 @@ export class ReadAllUserExternalFilesUseCase implements IUseCase {
     this.externalFilesRepository.setCredentialToDrive(credentials);
 
     const externalFiles = await this.externalFilesRepository
-      .readUserAllExternalFiles();
+      .readAllUserExternalFiles();
     return externalFiles;
   }
 }

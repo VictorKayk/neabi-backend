@@ -4,3 +4,4 @@ export * from '@/use-cases/attachment/external-file/interfaces/external-user-cre
 export * from '@/use-cases/attachment/external-file/interfaces/user-external-file-permission-return-data-interface';
 export * from '@/use-cases/attachment/external-file/interfaces/user-external-file-interface';
 export * from '@/use-cases/attachment/external-file/interfaces/public-user-external-file-data-interface';
+export * from '@/use-cases/attachment/external-file/interfaces/external-file-data-interface';

@@ -9,7 +9,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
     this.drive = drive;
   }
 
-  async readAllExternalFiles(): Promise<IReadExternalFileData[] | []> {
+  async readAllUserExternalFiles(): Promise<IReadExternalFileData[] | []> {
     const files = await this.drive.files.list({
       corpora: 'allDrives',
       includeItemsFromAllDrives: true,

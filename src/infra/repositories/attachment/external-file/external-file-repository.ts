@@ -1,5 +1,17 @@
-import { IExternalUserCredentials, IExternalFileRepository, IReadExternalFileData } from '@/use-cases/attachment/external-file/interfaces';
+import prisma from '@/main/config/prisma';
+import {
+  IExternalUserCredentials,
+  IExternalFileRepository,
+  IReadExternalFileData,
+  IUserExternalFilePermissionReturnData,
+  IUserExternalFile,
+  IPublicUserExternalFileData,
+  IExternalFileRepositoryReturnData,
+  IExternalFileData,
+} from '@/use-cases/attachment/external-file/interfaces';
 import driveConfig from '@/main/config/google-drive';
+import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
+import { getFileTypeAndFileFormat } from '@/infra/repositories/utils';
 
 export class ExternalFileRepository implements IExternalFileRepository {
   private drive: any;
@@ -20,5 +32,225 @@ export class ExternalFileRepository implements IExternalFileRepository {
     const filesWithCorrectMimeTypeFormat = files.data.files?.map((file: any) => ({ ...file, mimeType: file.mimeType?.replace('vnd.google-apps.', '') }));
     const filesWithoutFolderMimeType = filesWithCorrectMimeTypeFormat?.filter((file: any) => file.mimeType?.split('/')[1] !== 'folder');
     return filesWithoutFolderMimeType || [];
+  }
+
+  async addPublicVisibilityToUserExternalFile(fileId: string):
+    Promise<IUserExternalFilePermissionReturnData> {
+    const permission = await this.drive.permissions.create({
+      fileId,
+      requestBody: {
+        role: 'reader',
+        type: 'anyone',
+      },
+      fields: 'id, type, role',
+    });
+    return permission;
+  }
+
+  async copyUserExternalFile(fileId: string): Promise<IUserExternalFile> {
+    const copyExternalFile = await this.drive.files.copy({
+      fileId,
+      fields: 'id, name, mimeType',
+    });
+    const { id, name, mimeType } = copyExternalFile;
+    return { externalId: id, name, mimeType };
+  }
+
+  async readPublicUserExternalFileData(fileId: string): Promise<IPublicUserExternalFileData> {
+    const externalFile = await this.drive.files.get({
+      fileId,
+      fields: 'id, name, mimeType, size, originalFilename, webViewLink, webContentLink',
+    });
+    const {
+      id, name, mimeType, size, originalFilename, webViewLink, webContentLink,
+    } = externalFile;
+    return {
+      externalId: id,
+      name,
+      mimeType,
+      size,
+      originalFileName: originalFilename,
+      url: webViewLink,
+      downloadUrl: webContentLink,
+    };
+  }
+
+  async findExternalFileByFileId(fileId: string):
+    Promise<IExternalFileRepositoryReturnData | null> {
+    const externalFile = await prisma.externalFile.findFirst({
+      where: { fileId },
+      select: {
+        downloadUrl: true,
+        externalId: true,
+        File: {
+          select: {
+            id: true,
+            originalFileName: true,
+            size: true,
+            Attachment: {
+              select: {
+                name: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (externalFile) {
+      const { File, downloadUrl, externalId } = externalFile;
+      const { FileFormat, Attachment, ...fileWithoutFileFormat } = File;
+      return {
+        ...fileWithoutFileFormat,
+        size: fileWithoutFileFormat.size?.toString(),
+        ...Attachment,
+        ...getFileTypeAndFileFormat(FileFormat),
+        downloadUrl,
+        externalId,
+      };
+    }
+    return null;
+  }
+
+  async findAttachmentById(id: string): Promise<IAttachmentRepositoryReturnData | null> {
+    const attachment = await prisma.attachment.findFirst({
+      where: { id },
+    });
+    return attachment;
+  }
+
+  async findExternalFileById(id: string): Promise<IExternalFileRepositoryReturnData | null> {
+    const externalFile = await prisma.externalFile.findFirst({
+      where: { File: { id } },
+      select: {
+        downloadUrl: true,
+        externalId: true,
+        File: {
+          select: {
+            id: true,
+            originalFileName: true,
+            size: true,
+            Attachment: {
+              select: {
+                name: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (externalFile) {
+      const { File, downloadUrl, externalId } = externalFile;
+      const { FileFormat, Attachment, ...fileWithoutFileFormat } = File;
+      return {
+        ...fileWithoutFileFormat,
+        size: fileWithoutFileFormat.size?.toString(),
+        ...Attachment,
+        ...getFileTypeAndFileFormat(FileFormat),
+        downloadUrl,
+        externalId,
+      };
+    }
+    return null;
+  }
+
+  async addExternalFile({
+    attachmentId, externalId, fileFormatId, id, name, originalFileName, downloadUrl, size, url,
+  }: IExternalFileData):
+    Promise<IExternalFileRepositoryReturnData> {
+    const attachment = await prisma.attachment.create({
+      data: {
+        id: attachmentId, name, url, createdAt: new Date(), updatedAt: new Date(),
+      },
+    });
+
+    const file = await prisma.file.create({
+      data: {
+        id,
+        originalFileName,
+        size: size ? parseInt(size, 10) : undefined,
+        fileFormatId,
+        attachmentId: attachment.id,
+      },
+      select: {
+        id: true,
+        originalFileName: true,
+        size: true,
+        Attachment: {
+          select: {
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        FileFormat: {
+          select: {
+            id: true,
+            format: true,
+            createdAt: true,
+            updatedAt: true,
+            FileType: {
+              select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    await prisma.externalFile
+      .create({ data: { fileId: file.id, downloadUrl, externalId } });
+
+    const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
+    return {
+      ...fileWithoutFileFormat,
+      size: fileWithoutFileFormat.size?.toString(),
+      ...Attachment,
+      ...getFileTypeAndFileFormat(FileFormat),
+      downloadUrl,
+      externalId,
+    };
   }
 }

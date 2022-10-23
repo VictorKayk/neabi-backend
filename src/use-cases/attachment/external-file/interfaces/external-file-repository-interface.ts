@@ -3,6 +3,7 @@ import {
   IExternalUserCredentials,
   IUserExternalFilePermissionReturnData,
   IUserExternalFile,
+  IPublicUserExternalFileData,
 } from '@/use-cases/attachment/external-file/interfaces';
 
 export interface IExternalFileRepository {
@@ -11,4 +12,5 @@ export interface IExternalFileRepository {
   addPublicVisibilityToUserExternalFile(fileId: string):
     Promise<IUserExternalFilePermissionReturnData>
   copyUserExternalFile(fileId: string): Promise<IUserExternalFile>
+  readPublicUserExternalFileData(fileId: string): Promise<IPublicUserExternalFileData>
 }

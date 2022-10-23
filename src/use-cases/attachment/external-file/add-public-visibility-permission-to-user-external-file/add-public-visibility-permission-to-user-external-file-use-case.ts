@@ -22,8 +22,8 @@ export class AddPublicVisibilityPermissitionToUserExternalFileUseCase implements
         .addPublicVisibilityToUserExternalFile(fileId);
 
       return success(externalFile);
-    } catch (e) {
-      return error(new UserExternalFilePermissionError());
+    } catch (e: any) {
+      return error(new UserExternalFilePermissionError(e.message));
     }
   }
 }

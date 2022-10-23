@@ -21,8 +21,8 @@ export class CopyUserExternalFileUseCase implements IUseCase {
       const externalFile = await this.externalFilesRepository.copyUserExternalFile(fileId);
 
       return success(externalFile);
-    } catch (e) {
-      return error(new CopyUserExternalFileError());
+    } catch (e: any) {
+      return error(new CopyUserExternalFileError(e.message));
     }
   }
 }

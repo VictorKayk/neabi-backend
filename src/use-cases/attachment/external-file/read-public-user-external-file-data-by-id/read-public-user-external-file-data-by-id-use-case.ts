@@ -22,8 +22,8 @@ export class ReadPublicUserExternalFileDataByIdUseCase implements IUseCase {
         .readPublicUserExternalFileData(fileId);
 
       return success(externalFile);
-    } catch (e) {
-      return error(new ReadPublicUserExternalFileDataError());
+    } catch (e: any) {
+      return error(new ReadPublicUserExternalFileDataError(e.message));
     }
   }
 }

@@ -1,9 +1,9 @@
 import { IUniversallyUniqueIdentifierGenerator, IUseCase } from '@/use-cases/interfaces';
 import { Either, error, success } from '@/shared';
 import { ExistingExternalFileError } from '@/use-cases/attachment/external-file/errors';
-import { IExternalFileRepository, IExternalFileData } from '@/use-cases/attachment/external-file/interfaces';
+import { IExternalFileRepository, IExternalFileRepositoryReturnData, IExternalFileData } from '@/use-cases/attachment/external-file/interfaces';
 
-type Response = Either<ExistingExternalFileError, IExternalFileData>;
+type Response = Either<ExistingExternalFileError, IExternalFileRepositoryReturnData>;
 
 export class CreateExternalFileUseCase implements IUseCase {
   constructor(
@@ -12,9 +12,9 @@ export class CreateExternalFileUseCase implements IUseCase {
   ) { }
 
   async execute({
-    name, size, url, fileId, downloadUrl, originalFileName, fileFormatId,
+    name, size, url, externalId, downloadUrl, originalFileName, fileFormatId,
   }: Omit<IExternalFileData, 'attachmentId' | 'id'>): Promise<Response> {
-    let fileOrNull = await this.externalFileRepository.findExternalFileByFileId(fileId);
+    let fileOrNull = await this.externalFileRepository.findExternalFileByFileId(externalId);
     if (fileOrNull) return error(new ExistingExternalFileError());
 
     let attachmentId: string;
@@ -31,7 +31,7 @@ export class CreateExternalFileUseCase implements IUseCase {
     } while (fileOrNull);
 
     const fileData = await this.externalFileRepository.addExternalFile({
-      id, fileId, originalFileName, name, size, url, downloadUrl, fileFormatId, attachmentId,
+      id, externalId, originalFileName, name, size, url, downloadUrl, fileFormatId, attachmentId,
     });
 
     return success(fileData);

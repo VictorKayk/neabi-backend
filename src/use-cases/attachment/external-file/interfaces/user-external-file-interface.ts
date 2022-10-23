@@ -1,5 +1,5 @@
 export interface IUserExternalFile {
-  fileId: string,
+  externalId: string,
   name: string,
   mimeType: string,
 }

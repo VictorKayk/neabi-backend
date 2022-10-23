@@ -9,7 +9,7 @@ type Request = {
   fileId: string,
 };
 
-export class AddPublicVisibilityPermissitionToUserExternalFilesUseCase implements IUseCase {
+export class AddPublicVisibilityPermissitionToUserExternalFileUseCase implements IUseCase {
   constructor(
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }

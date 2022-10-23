@@ -9,7 +9,7 @@ type Request = {
   fileId: string,
 };
 
-export class CopyUserExternalFilesUseCase implements IUseCase {
+export class CopyUserExternalFileUseCase implements IUseCase {
   constructor(
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }

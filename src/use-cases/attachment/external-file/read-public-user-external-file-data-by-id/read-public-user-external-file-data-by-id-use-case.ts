@@ -1,9 +1,9 @@
 import { IUseCase } from '@/use-cases/interfaces';
-import { IUserExternalFile, IExternalFileRepository, IExternalUserCredentials } from '@/use-cases/attachment/external-file/interfaces';
+import { IPublicUserExternalFileData, IExternalFileRepository, IExternalUserCredentials } from '@/use-cases/attachment/external-file/interfaces';
 import { Either, error, success } from '@/shared';
 import { ReadPublicUserExternalFileDataError } from '@/use-cases/attachment/external-file/errors';
 
-type Response = Either<ReadPublicUserExternalFileDataError, IUserExternalFile>;
+type Response = Either<ReadPublicUserExternalFileDataError, IPublicUserExternalFileData>;
 type Request = {
   credentials: IExternalUserCredentials,
   fileId: string,

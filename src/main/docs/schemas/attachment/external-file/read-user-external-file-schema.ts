@@ -1,4 +1,4 @@
-export const readExternalFileSchema = {
+export const readUserExternalFileSchema = {
   type: 'object',
   properties: {
     id: {

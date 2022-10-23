@@ -1,6 +1,6 @@
-import { readExternalFileSchema, readAllExternalFilesParamsSchema } from '@/main/docs/schemas/attachment/external-file';
+import { readUserExternalFileSchema, readAllUserExternalFilesParamsSchema } from '@/main/docs/schemas/attachment/external-file';
 
 export const externalFileSchemasDocs = {
-  readExternalFile: readExternalFileSchema,
-  readAllExternalFilesParams: readAllExternalFilesParamsSchema,
+  readUserExternalFile: readUserExternalFileSchema,
+  readAllUserExternalFilesParams: readAllUserExternalFilesParamsSchema,
 };

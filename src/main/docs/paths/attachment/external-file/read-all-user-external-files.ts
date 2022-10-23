@@ -1,4 +1,4 @@
-export const readAllExternalFilesPath = {
+export const readAllUserExternalFilesPath = {
   post: {
     security: [{
       apiKeyAuth: [],
@@ -11,7 +11,7 @@ export const readAllExternalFilesPath = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/readAllExternalFilesParams',
+            $ref: '#/schemas/readAllUserExternalFilesParams',
           },
         },
       },
@@ -24,7 +24,7 @@ export const readAllExternalFilesPath = {
             schema: {
               type: 'array',
               items: {
-                $ref: '#/schemas/readExternalFile',
+                $ref: '#/schemas/readUserExternalFile',
               },
             },
           },

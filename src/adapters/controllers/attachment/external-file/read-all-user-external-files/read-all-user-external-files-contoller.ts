@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 import { IHttpResponse, IHttpRequestAuthenticated } from '@/adapters/interfaces';
-import { ReadAllExternalFilesUseCase } from '@/use-cases/attachment/external-file/read-all-external-files';
+import { ReadAllUserExternalFilesUseCase } from '@/use-cases/attachment/external-file/read-all-user-external-files';
 import { IController, IValidation } from '@/adapters/controllers/interfaces';
 import { serverError, ok, badRequest } from '@/adapters/utils/http';
 import { IExternalUserCredentials } from '@/use-cases/attachment/external-file/interfaces';
 
-export class ReadAllExternalFilesController implements IController {
+export class ReadAllUserExternalFilesController implements IController {
   constructor(
     private readonly validation: IValidation,
-    private readonly readAllExternalFiles: ReadAllExternalFilesUseCase,
+    private readonly readAllUserExternalFiles: ReadAllUserExternalFilesUseCase,
   ) { }
 
   async handle({ body }: IHttpRequestAuthenticated): Promise<IHttpResponse> {
@@ -20,7 +20,7 @@ export class ReadAllExternalFilesController implements IController {
         access_token, expires_in, id_token, scope, token_type, refresh_token,
       }: IExternalUserCredentials = body;
 
-      const externalFiles = await this.readAllExternalFiles.execute({
+      const externalFiles = await this.readAllUserExternalFiles.execute({
         access_token, expires_in, id_token, scope, token_type, refresh_token,
       });
       return ok(externalFiles);

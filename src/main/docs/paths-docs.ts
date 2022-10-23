@@ -4,6 +4,7 @@ import {
   userHasRolePathsDocs,
   postPathsDocs,
   filePathsDocs,
+  externalFilePathsDocs,
   urlPathsDocs,
 } from '@/main/docs/paths';
 
@@ -13,5 +14,6 @@ export default {
   ...userHasRolePathsDocs,
   ...postPathsDocs,
   ...filePathsDocs,
+  ...externalFilePathsDocs,
   ...urlPathsDocs,
 };

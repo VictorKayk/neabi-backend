@@ -6,6 +6,7 @@ import {
   makeDeleteUserByIdController,
   makeDeleteUserController,
   makeExternalSignInController,
+  makeReadExternalUserDataController,
   makeReadUserByIdController,
   makeReadUserController,
   makeSignInController,
@@ -23,8 +24,9 @@ import { authorization } from '@/main/middlewares/authorization';
 export function user(router: Router) {
   router.post('/signup', routerAdapter(makeSignUpController()));
   router.post('/signin', routerAdapter(makeSignInController()));
+  router.post('/signin/google', routerAdapter(makeExternalSignInController()));
   router.get('/user/google', googleLoginAuth);
-  router.get('/user/google/auth', googleLoginAuthCb, routerAdapter(makeExternalSignInController()));
+  router.get('/user/google/auth', googleLoginAuthCb, routerAdapter((makeReadExternalUserDataController())));
   router.get('/user', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeReadUserController()));
   router.get('/user/all', authentication, authorization(['moderator', 'admin']), routerAdapter(makeAllReadUsersController()));
   router.get('/user/:userId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadUserByIdController()));

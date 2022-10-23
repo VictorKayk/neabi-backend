@@ -5,6 +5,7 @@ import {
   userHasRoleSchemasDocs,
   postSchemasDocs,
   fileSchemasDocs,
+  externalFileSchemasDocs,
   urlSchemasDocs,
 } from '@/main/docs/schemas';
 
@@ -15,5 +16,6 @@ export default {
   ...userHasRoleSchemasDocs,
   ...postSchemasDocs,
   ...fileSchemasDocs,
+  ...externalFileSchemasDocs,
   ...urlSchemasDocs,
 };

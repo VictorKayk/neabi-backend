@@ -1,8 +1,18 @@
 export const externalSignInPath = {
-  get: {
+  post: {
     tags: ['User'],
     summary: 'API para entrar conta de um usuário pelo email do google',
     description: 'Essa rota pode ser executada por **qualquer usuário**',
+    requestBody: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/schemas/externalSignInParams',
+          },
+        },
+      },
+    },
     responses: {
       200: {
         description: 'Sucesso',

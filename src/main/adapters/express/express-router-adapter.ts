@@ -8,12 +8,14 @@ export function routerAdapter(controller: IController) {
     const httpRequest: IHttpRequestAuthenticated = {
       body: {
         ...req.body,
-        ...req.user?._json,
       },
       user: {
         id: req.id,
         accessToken: req.accessToken,
+        data: req.user?._json,
+        credentials: req.user?.credentials,
       },
+
       params: req.params,
       query: req.query,
       files: req.files,

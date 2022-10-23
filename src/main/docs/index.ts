@@ -35,6 +35,10 @@ export default {
       description: 'APIs relacionadas aos arquivos que são anexos',
     },
     {
+      name: 'ExternalFile',
+      description: 'APIs relacionadas aos arquivos externos que são anexos',
+    },
+    {
       name: 'Url',
       description: 'APIs relacionadas as urls que são anexos',
     },

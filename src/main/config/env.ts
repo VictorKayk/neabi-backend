@@ -8,6 +8,7 @@ export default {
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? '',
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
   googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN ?? '',
+  googleCallBackUrl: process.env.GOOGLE_CALLBACK_URL ?? 'http://localhost:5000/api/user/google/auth',
   baseUrl: process.env.BASE_URL ?? 'http://localhost:5000',
   uploadUrl: process.env.UPLOAD_URL ?? 'http://localhost:5000/static/upload',
   uploadFolder: process.env.UPLOAD_FOLDER ?? path.join(__dirname, '..', '..', '..', 'public/uploads'),

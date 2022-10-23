@@ -100,8 +100,24 @@ model File {
   fileFormatId     String
   attachmentId     String @unique
 
-  FileFormat FileFormat @relation(fields: [fileFormatId], references: [id])
-  Attachment Attachment @relation(fields: [attachmentId], references: [id])
+  FileFormat   FileFormat    @relation(fields: [fileFormatId], references: [id])
+  Attachment   Attachment    @relation(fields: [attachmentId], references: [id])
+  LocalFile    LocalFile?
+  ExternalFile ExternalFile?
+}
+
+model LocalFile {
+  fileId String @unique
+
+  File File @relation(fields: [fileId], references: [id])
+}
+
+model ExternalFile {
+  externalId  String
+  downloadUrl String
+  fileId      String @unique
+
+  File File @relation(fields: [fileId], references: [id])
 }
 
 model Url {
@@ -117,8 +133,8 @@ model Attachment {
   url       String
   createdAt DateTime
   updatedAt DateTime
-  files     File?
-  urls      Url?
+  File      File?
+  Url       Url?
 }
 
 model Post {

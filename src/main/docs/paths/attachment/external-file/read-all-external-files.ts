@@ -4,7 +4,7 @@ export const readAllExternalFilesPath = {
       apiKeyAuth: [],
     }],
     tags: ['ExternalFile'],
-    summary: 'API para ler os dados de todos os arquivos externos',
+    summary: 'API para ler os dados de todos os arquivos externos do usuario',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     requestBody: {
       required: true,

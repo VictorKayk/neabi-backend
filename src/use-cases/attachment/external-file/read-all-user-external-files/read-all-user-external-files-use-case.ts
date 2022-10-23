@@ -3,7 +3,7 @@ import { IReadExternalFileData, IExternalFileRepository, IExternalUserCredential
 
 type Response = IReadExternalFileData[] | [];
 
-export class ReadAllExternalFilesUseCase implements IUseCase {
+export class ReadAllUserExternalFilesUseCase implements IUseCase {
   constructor(
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }
@@ -12,7 +12,7 @@ export class ReadAllExternalFilesUseCase implements IUseCase {
     this.externalFilesRepository.setCredentialToDrive(credentials);
 
     const externalFiles = await this.externalFilesRepository
-      .readAllExternalFiles();
+      .readUserAllExternalFiles();
     return externalFiles;
   }
 }

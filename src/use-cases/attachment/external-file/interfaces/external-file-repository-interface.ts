@@ -2,5 +2,5 @@ import { IReadExternalFileData, IExternalUserCredentials } from '@/use-cases/att
 
 export interface IExternalFileRepository {
   setCredentialToDrive(credentials?: IExternalUserCredentials): void;
-  readAllExternalFiles(): Promise<IReadExternalFileData[] | []>
+  readAllUserExternalFiles(): Promise<IReadExternalFileData[] | []>
 }

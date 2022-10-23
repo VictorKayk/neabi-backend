@@ -53,7 +53,7 @@ export class CreateExternalFileController implements IController {
               error: copyExternalFileOrError.value,
             };
           }
-          newFileId = copyExternalFileOrError.value.fileId;
+          newFileId = copyExternalFileOrError.value.externalId;
 
           permissionOrError = await
           this.addPublicVisibilityPermissitionToUserExternalFileUseCase
@@ -108,7 +108,7 @@ export class CreateExternalFileController implements IController {
 
         const externalFile = await this.createExternalFileUseCase
           .execute({ ...publicUserExternalFileData, fileFormatId: fileFormatOrNull.id });
-        return externalFile;
+        return externalFile.value;
       });
 
       return ok(externalFiles);

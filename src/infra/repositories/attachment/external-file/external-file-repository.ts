@@ -44,7 +44,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
       },
       fields: 'id, type, role',
     });
-    return permission;
+    return permission.data;
   }
 
   async copyUserExternalFile(fileId: string): Promise<IUserExternalFile> {
@@ -52,7 +52,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
       fileId,
       fields: 'id, name, mimeType',
     });
-    const { id, name, mimeType } = copyExternalFile;
+    const { id, name, mimeType } = copyExternalFile.data;
     return { externalId: id, name, mimeType };
   }
 
@@ -63,7 +63,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
     });
     const {
       id, name, mimeType, size, originalFilename, webViewLink, webContentLink,
-    } = externalFile;
+    } = externalFile.data;
     return {
       externalId: id,
       name,

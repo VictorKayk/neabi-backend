@@ -3,7 +3,7 @@ export interface IFileData {
   name: string,
   url: string,
   id: string,
-  originalFileName: string,
-  size: number,
+  originalFileName: string | null,
+  size: number | null,
   fileFormatId: string
 }

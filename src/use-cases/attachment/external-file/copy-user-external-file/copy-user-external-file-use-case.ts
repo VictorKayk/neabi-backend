@@ -6,7 +6,7 @@ import { CopyUserExternalFileError } from '@/use-cases/attachment/external-file/
 type Response = Either<CopyUserExternalFileError, IUserExternalFile>;
 type Request = {
   credentials: IExternalUserCredentials,
-  fileId: string,
+  externalId: string,
 };
 
 export class CopyUserExternalFileUseCase implements IUseCase {
@@ -14,11 +14,11 @@ export class CopyUserExternalFileUseCase implements IUseCase {
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }
 
-  async execute({ credentials, fileId }: Request): Promise<Response> {
+  async execute({ credentials, externalId }: Request): Promise<Response> {
     try {
       this.externalFilesRepository.setCredentialToDrive(credentials);
 
-      const externalFile = await this.externalFilesRepository.copyUserExternalFile(fileId);
+      const externalFile = await this.externalFilesRepository.copyUserExternalFile(externalId);
 
       return success(externalFile);
     } catch (e: any) {

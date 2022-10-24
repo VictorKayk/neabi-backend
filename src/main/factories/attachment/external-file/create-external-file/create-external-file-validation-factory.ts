@@ -2,5 +2,5 @@ import { ValidationComposite, RequiredFieldsValidation } from '@/adapters/contro
 
 export const makeCreateExternalFileValidationFactory = ():
   ValidationComposite => new ValidationComposite([
-  new RequiredFieldsValidation(['fileId', 'access_token']),
+  new RequiredFieldsValidation(['externalId', 'access_token']),
 ]);

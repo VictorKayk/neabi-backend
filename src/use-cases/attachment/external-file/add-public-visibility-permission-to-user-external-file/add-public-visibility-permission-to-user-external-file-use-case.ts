@@ -6,7 +6,7 @@ import { UserExternalFilePermissionError } from '@/use-cases/attachment/external
 type Response = Either<UserExternalFilePermissionError, IUserExternalFilePermissionReturnData>;
 type Request = {
   credentials: IExternalUserCredentials,
-  fileId: string,
+  externalId: string,
 };
 
 export class AddPublicVisibilityPermissitionToUserExternalFileUseCase implements IUseCase {
@@ -14,12 +14,12 @@ export class AddPublicVisibilityPermissitionToUserExternalFileUseCase implements
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }
 
-  async execute({ credentials, fileId }: Request): Promise<Response> {
+  async execute({ credentials, externalId }: Request): Promise<Response> {
     try {
       this.externalFilesRepository.setCredentialToDrive(credentials);
 
       const externalFile = await this.externalFilesRepository
-        .addPublicVisibilityToUserExternalFile(fileId);
+        .addPublicVisibilityToUserExternalFile(externalId);
 
       return success(externalFile);
     } catch (e: any) {

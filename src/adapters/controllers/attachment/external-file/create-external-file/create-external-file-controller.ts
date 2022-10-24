@@ -27,11 +27,11 @@ export class CreateExternalFileController implements IController {
   async handle({ body: { filesIds, access_token } }: IHttpRequestAuthenticated):
     Promise<IHttpResponse> {
     try {
-      const externalFiles = filesIds.map(async (fileId: string) => {
-        const validationError = this.validation.validate({ fileId, access_token });
+      const externalFiles = filesIds.map(async (externalId: string) => {
+        const validationError = this.validation.validate({ externalId, access_token });
         if (validationError) {
           return {
-            fileId,
+            externalId,
             error: {
               name: validationError.name,
               message: validationError.message,
@@ -39,17 +39,17 @@ export class CreateExternalFileController implements IController {
           };
         }
 
-        let newFileId = fileId;
+        let newFileId = externalId;
         let permissionOrError = await
         this.addPublicVisibilityPermissitionToUserExternalFileUseCase
-          .execute({ credentials: { access_token }, fileId });
+          .execute({ credentials: { access_token }, externalId });
         if (permissionOrError.isError()) {
           const copyExternalFileOrError = await this.copyUserExternalFileUseCase.execute({
-            credentials: { access_token }, fileId,
+            credentials: { access_token }, externalId,
           });
           if (copyExternalFileOrError.isError()) {
             return {
-              fileId,
+              externalId,
               error: copyExternalFileOrError.value,
             };
           }
@@ -57,10 +57,10 @@ export class CreateExternalFileController implements IController {
 
           permissionOrError = await
           this.addPublicVisibilityPermissitionToUserExternalFileUseCase
-            .execute({ credentials: { access_token }, fileId });
+            .execute({ credentials: { access_token }, externalId });
           if (permissionOrError.isError()) {
             return {
-              fileId,
+              externalId,
               error: permissionOrError.value,
             };
           }
@@ -68,10 +68,10 @@ export class CreateExternalFileController implements IController {
 
         const publicUserExternalFileDataOrError = await
         this.readPublicUserExternalFileDataByIdUseCase
-          .execute({ credentials: { access_token }, fileId: newFileId });
+          .execute({ credentials: { access_token }, externalId: newFileId });
         if (publicUserExternalFileDataOrError.isError()) {
           return {
-            fileId,
+            externalId,
             error: publicUserExternalFileDataOrError.value,
           };
         }
@@ -85,7 +85,7 @@ export class CreateExternalFileController implements IController {
 
           if (fileTypeOrError.isError()) {
             return {
-              fileId,
+              externalId,
               error: fileTypeOrError.value,
             };
           }
@@ -99,7 +99,7 @@ export class CreateExternalFileController implements IController {
 
           if (fileFormatOrError.isError()) {
             return {
-              fileId,
+              externalId,
               error: fileFormatOrError.value,
             };
           }
@@ -111,7 +111,7 @@ export class CreateExternalFileController implements IController {
         return externalFile.value;
       });
 
-      return ok(externalFiles);
+      return ok(await Promise.all(externalFiles));
     } catch (error) {
       return serverError(error as Error);
     }

@@ -6,7 +6,7 @@ import { ReadPublicUserExternalFileDataError } from '@/use-cases/attachment/exte
 type Response = Either<ReadPublicUserExternalFileDataError, IPublicUserExternalFileData>;
 type Request = {
   credentials: IExternalUserCredentials,
-  fileId: string,
+  externalId: string,
 };
 
 export class ReadPublicUserExternalFileDataByIdUseCase implements IUseCase {
@@ -14,12 +14,12 @@ export class ReadPublicUserExternalFileDataByIdUseCase implements IUseCase {
     private readonly externalFilesRepository: IExternalFileRepository,
   ) { }
 
-  async execute({ credentials, fileId }: Request): Promise<Response> {
+  async execute({ credentials, externalId }: Request): Promise<Response> {
     try {
       this.externalFilesRepository.setCredentialToDrive(credentials);
 
       const externalFile = await this.externalFilesRepository
-        .readPublicUserExternalFileData(fileId);
+        .readPublicUserExternalFileData(externalId);
 
       return success(externalFile);
     } catch (e: any) {

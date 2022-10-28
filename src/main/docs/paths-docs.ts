@@ -6,6 +6,7 @@ import {
   filePathsDocs,
   externalFilePathsDocs,
   urlPathsDocs,
+  createExternalFilePath,
 } from '@/main/docs/paths';
 
 export default {
@@ -15,5 +16,6 @@ export default {
   ...postPathsDocs,
   ...filePathsDocs,
   ...externalFilePathsDocs,
+  '/attachment/external/file': createExternalFilePath,
   ...urlPathsDocs,
 };

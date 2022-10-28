@@ -1,4 +1,4 @@
-export const readAllUserExternalFilesParamsSchema = {
+export const externalUserCredentialsParamsSchema = {
   type: 'object',
   properties: {
     access_token: {

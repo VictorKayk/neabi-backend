@@ -6,6 +6,8 @@ import {
   postSchemasDocs,
   fileSchemasDocs,
   externalFileSchemasDocs,
+  createExternalFileParamsSchema,
+  externalFileSchema,
   urlSchemasDocs,
 } from '@/main/docs/schemas';
 
@@ -17,5 +19,7 @@ export default {
   ...postSchemasDocs,
   ...fileSchemasDocs,
   ...externalFileSchemasDocs,
+  createExternalFileParams: createExternalFileParamsSchema,
+  externalFile: externalFileSchema,
   ...urlSchemasDocs,
 };

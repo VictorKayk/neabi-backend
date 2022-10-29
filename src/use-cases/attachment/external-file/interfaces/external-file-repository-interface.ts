@@ -23,4 +23,5 @@ export interface IExternalFileRepository {
   addExternalFile(externalFileData: IExternalFileData): Promise<IExternalFileRepositoryReturnData>
   readAllExternalFiles(externalFileDataQuery: IExternalFileDataQuery):
     Promise<IExternalFileRepositoryReturnData[] | []>
+  deleteExternalFileById(fileId: string):Promise<IExternalFileRepositoryReturnData>
 }

@@ -8,6 +8,7 @@ import {
   IPublicUserExternalFileData,
   IExternalFileRepositoryReturnData,
   IExternalFileData,
+  IExternalFileDataQuery,
 } from '@/use-cases/attachment/external-file/interfaces';
 import driveConfig from '@/main/config/google-drive';
 import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
@@ -252,5 +253,76 @@ export class ExternalFileRepository implements IExternalFileRepository {
       downloadUrl,
       externalId,
     };
+  }
+
+  async readAllExternalFiles({
+    fileId, name, originalFileName, format, page, type,
+  }: IExternalFileDataQuery):
+  Promise<IExternalFileRepositoryReturnData[] | []> {
+    const externalFiles = await prisma.externalFile.findMany({
+      where: {
+        File: {
+          id: { contains: fileId, mode: 'insensitive' },
+          originalFileName: { contains: originalFileName, mode: 'insensitive' },
+          Attachment: {
+            name: { contains: name, mode: 'insensitive' },
+          },
+          FileFormat: {
+            format: { contains: format, mode: 'insensitive' },
+            FileType: {
+              type: { contains: type, mode: 'insensitive' },
+            },
+          },
+        },
+      },
+      select: {
+        File: {
+          select: {
+            id: true,
+            originalFileName: true,
+            size: true,
+            Attachment: {
+              select: {
+                name: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
+    });
+
+    return externalFiles.map((externalFile: any) => {
+      const { File, downloadUrl, externalId } = externalFile;
+      const { FileFormat, Attachment, ...fileWithoutFileFormat } = File;
+      return {
+        ...fileWithoutFileFormat,
+        size: fileWithoutFileFormat.size?.toString(),
+        ...Attachment,
+        ...getFileTypeAndFileFormat(FileFormat),
+        downloadUrl,
+        externalId,
+      };
+    });
   }
 }

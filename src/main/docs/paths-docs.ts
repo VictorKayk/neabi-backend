@@ -9,6 +9,8 @@ import {
   readAllExternalFilesPath,
   externalFileByIdPath,
   createExternalFilePath,
+  postHasAttachmentPathsDocs,
+  postHasAttachmentByIdPath,
 } from '@/main/docs/paths';
 
 export default {
@@ -22,4 +24,6 @@ export default {
   '/attachment/external/file/{fileId}': externalFileByIdPath,
   '/attachment/external/file': createExternalFilePath,
   ...urlPathsDocs,
+  ...postHasAttachmentPathsDocs,
+  '/post/{postId}/attachment/{attachmentId}': postHasAttachmentByIdPath,
 };

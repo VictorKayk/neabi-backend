@@ -9,6 +9,8 @@ import {
   createExternalFileParamsSchema,
   externalFileSchema,
   urlSchemasDocs,
+  postHasAttachmentSchemasDocs,
+  postHasAttachmentSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -22,4 +24,6 @@ export default {
   createExternalFileParams: createExternalFileParamsSchema,
   externalFile: externalFileSchema,
   ...urlSchemasDocs,
+  ...postHasAttachmentSchemasDocs,
+  postHasAttachment: postHasAttachmentSchema,
 };

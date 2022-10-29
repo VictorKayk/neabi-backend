@@ -6,3 +6,4 @@ export * from '@/use-cases/attachment/external-file/interfaces/user-external-fil
 export * from '@/use-cases/attachment/external-file/interfaces/public-user-external-file-data-interface';
 export * from '@/use-cases/attachment/external-file/interfaces/external-file-data-interface';
 export * from '@/use-cases/attachment/external-file/interfaces/external-file-repository-return-data-interface';
+export * from '@/use-cases/attachment/external-file/interfaces/external-file-data-query-interface';

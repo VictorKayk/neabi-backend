@@ -6,6 +6,7 @@ import {
   IPublicUserExternalFileData,
   IExternalFileRepositoryReturnData,
   IExternalFileData,
+  IExternalFileDataQuery,
 } from '@/use-cases/attachment/external-file/interfaces';
 import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
 
@@ -20,4 +21,6 @@ export interface IExternalFileRepository {
   findAttachmentById(id: string): Promise<IAttachmentRepositoryReturnData | null>
   findExternalFileById(id: string): Promise<IExternalFileRepositoryReturnData | null>
   addExternalFile(externalFileData: IExternalFileData): Promise<IExternalFileRepositoryReturnData>
+  readAllExternalFiles(externalFileDataQuery: IExternalFileDataQuery):
+    Promise<IExternalFileRepositoryReturnData[] | []>
 }

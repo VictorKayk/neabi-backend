@@ -9,4 +9,6 @@ export interface IPostHasAttachmentRepository {
     Promise<IPostHasAttachmentRepositoryReturnData | null>
   addAttachmentToPost(postHasAttachment: IPostHasAttachmentData):
     Promise<IPostHasAttachmentRepositoryReturnData>
+  removeAttachmentFromPost(postHasAttachment: IPostHasAttachmentData):
+  Promise<IPostHasAttachmentRepositoryReturnData>
 }

@@ -7,6 +7,7 @@ import {
   externalFilePathsDocs,
   urlPathsDocs,
   readAllExternalFilesPath,
+  externalFileByIdPath,
   createExternalFilePath,
 } from '@/main/docs/paths';
 
@@ -18,6 +19,7 @@ export default {
   ...filePathsDocs,
   ...externalFilePathsDocs,
   '/attachment/external/file/all': readAllExternalFilesPath,
+  '/attachment/external/file/{fileId}': externalFileByIdPath,
   '/attachment/external/file': createExternalFilePath,
   ...urlPathsDocs,
 };

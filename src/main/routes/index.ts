@@ -5,3 +5,4 @@ export * from '@/main/routes/post-routes';
 export * from '@/main/routes/attachment/file-routes';
 export * from '@/main/routes/attachment/url-routes';
 export * from '@/main/routes/attachment/external-file-routes';
+export * from '@/main/routes/post-has-attachment-routes';

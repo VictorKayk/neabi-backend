@@ -7,3 +7,4 @@ export * from '@/main/docs/schemas/post';
 export * from '@/main/docs/schemas/attachment/file';
 export * from '@/main/docs/schemas/attachment/external-file';
 export * from '@/main/docs/schemas/attachment/url';
+export * from '@/main/docs/schemas/post-has-attachment';

@@ -135,6 +135,8 @@ model Attachment {
   updatedAt DateTime
   File      File?
   Url       Url?
+
+  PostHasAttachment PostHasAttachment[]
 }
 
 model Post {
@@ -146,4 +148,18 @@ model Post {
   createdAt       DateTime
   updatedAt       DateTime
   isDeleted       Boolean
+
+  PostHasAttachment PostHasAttachment[]
+}
+
+model PostHasAttachment {
+  postId       String
+  attachmentId String
+  createdAt    DateTime
+  updatedAt    DateTime
+
+  Post       Post       @relation(fields: [postId], references: [id])
+  Attachment Attachment @relation(fields: [attachmentId], references: [id])
+
+  @@id([postId, attachmentId])
 }

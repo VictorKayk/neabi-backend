@@ -42,6 +42,10 @@ export default {
       name: 'Url',
       description: 'APIs relacionadas as urls que são anexos',
     },
+    {
+      name: 'PostHasAttachment',
+      description: 'APIs relacionadas as publicações tendo anexos',
+    },
   ],
   paths,
   schemas,

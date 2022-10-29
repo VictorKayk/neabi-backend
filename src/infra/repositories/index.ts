@@ -5,3 +5,4 @@ export * from '@/infra/repositories/post';
 export * from '@/infra/repositories/attachment/file';
 export * from '@/infra/repositories/attachment/url';
 export * from '@/infra/repositories/attachment/external-file';
+export * from '@/infra/repositories/post-has-attachment';

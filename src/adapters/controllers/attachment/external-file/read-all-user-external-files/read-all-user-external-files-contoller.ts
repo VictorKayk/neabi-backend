@@ -16,13 +16,9 @@ export class ReadAllUserExternalFilesController implements IController {
       const validationError = this.validation.validate(body);
       if (validationError) return badRequest(validationError);
 
-      const {
-        access_token, expires_in, id_token, scope, token_type, refresh_token,
-      }: IExternalUserCredentials = body;
+      const { access_token }: IExternalUserCredentials = body;
 
-      const externalFiles = await this.readAllUserExternalFiles.execute({
-        access_token, expires_in, id_token, scope, token_type, refresh_token,
-      });
+      const externalFiles = await this.readAllUserExternalFiles.execute({ access_token });
       return ok(externalFiles);
     } catch (error) {
       return serverError(error as Error);

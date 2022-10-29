@@ -11,7 +11,7 @@ export const readAllUserExternalFilesPath = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/readAllUserExternalFilesParams',
+            $ref: '#/schemas/externalUserCredentialsParams',
           },
         },
       },

@@ -41,4 +41,12 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
     });
     return postHasAttachment;
   }
+
+  async removeAttachmentFromPost(postHasAttachment: IPostHasAttachmentData):
+    Promise<IPostHasAttachmentRepositoryReturnData> {
+    const postHasAttachmentData = prisma.postHasAttachment.delete({
+      where: { postId_attachmentId: postHasAttachment },
+    });
+    return postHasAttachmentData;
+  }
 }

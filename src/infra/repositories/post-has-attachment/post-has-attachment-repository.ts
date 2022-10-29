@@ -3,9 +3,13 @@ import {
   IPostHasAttachmentRepository,
   IPostHasAttachmentRepositoryReturnData,
 } from '@/use-cases/post-has-attachment/interfaces';
-import { IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
+import { IAttachmentDataQuery, IAttachmentRepositoryReturnData } from '@/use-cases/attachment/interfaces';
 import { IPostRepositoryReturnData } from '@/use-cases/post/interfaces';
 import prisma from '@/main/config/prisma';
+import { IExternalFileRepositoryReturnData } from '@/use-cases/attachment/external-file/interfaces';
+import { IFileFormatRepositoryReturnData } from '@/use-cases/attachment/file/interfaces';
+import { IUrlRepositoryReturnData } from '@/use-cases/attachment/url/interfaces';
+import { getFileTypeAndFileFormat } from '@/infra/repositories/utils';
 
 export class PostHasAttachmentRepository implements IPostHasAttachmentRepository {
   async findPostById(postId: string): Promise<IPostRepositoryReturnData | null> {
@@ -48,5 +52,99 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
       where: { postId_attachmentId: postHasAttachment },
     });
     return postHasAttachmentData;
+  }
+
+  async readAllAttachmentsFromPost(postId: string, {
+    id, name, originalFileName, url, type, format, page,
+  }: IAttachmentDataQuery):
+  Promise<{
+    url: IUrlRepositoryReturnData[] | [];
+    file: [] | IFileFormatRepositoryReturnData[];
+    externalFile: [] | IExternalFileRepositoryReturnData[];
+  }> {
+    const attachments = await prisma.attachment.findMany({
+      where: {
+        id: { contains: id, mode: 'insensitive' },
+        name: { contains: name, mode: 'insensitive' },
+        url: { contains: url, mode: 'insensitive' },
+        File: {
+          originalFileName: { contains: originalFileName, mode: 'insensitive' },
+          FileFormat: {
+            format: { contains: format, mode: 'insensitive' },
+            FileType: {
+              type: { contains: type, mode: 'insensitive' },
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        url: true,
+        createdAt: true,
+        updatedAt: true,
+        Url: {
+          select: {
+            id: true,
+          },
+        },
+        File: {
+          select: {
+            id: true,
+            originalFileName: true,
+            size: true,
+            FileFormat: {
+              select: {
+                id: true,
+                format: true,
+                createdAt: true,
+                updatedAt: true,
+                FileType: {
+                  select: {
+                    id: true,
+                    type: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
+              },
+            },
+            ExternalFile: {
+              select: {
+                downloadUrl: true,
+                externalId: true,
+              },
+            },
+            LocalFile: {
+              select: {
+                fileId: true,
+              },
+            },
+          },
+        },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
+    });
+
+    return attachments.reduce((prev: any, attachment: any) => {
+      const { Url, File, ...attachmentData } = attachment;
+      const {
+        LocalFile, ExternalFile, FileFormat, ...fileData
+      } = File;
+      return {
+        url: Url ? [...prev.url, { ...attachmentData }] : prev.url,
+        file: LocalFile ? [...prev.file, {
+          ...fileData,
+          ...getFileTypeAndFileFormat(FileFormat),
+        }] : prev.file,
+        externalFile: ExternalFile ? [...prev.externalFile, {
+          ...fileData,
+          size: fileData.size?.toString(),
+          ...getFileTypeAndFileFormat(FileFormat),
+          ...ExternalFile,
+        }] : prev.externalFile,
+      };
+    }, { url: [], file: [], externalFile: [] });
   }
 }

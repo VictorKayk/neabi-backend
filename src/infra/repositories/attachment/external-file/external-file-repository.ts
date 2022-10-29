@@ -325,4 +325,64 @@ export class ExternalFileRepository implements IExternalFileRepository {
       };
     });
   }
+
+  async deleteExternalFileById(fileId: string): Promise<IExternalFileRepositoryReturnData> {
+    const externalFile = await prisma.externalFile.delete({
+      where: { fileId },
+      select: {
+        downloadUrl: true,
+        externalId: true,
+        File: true,
+      },
+    });
+
+    const file = await prisma.file.delete({
+      where: { id: fileId },
+      select: {
+        id: true,
+        originalFileName: true,
+        size: true,
+        Attachment: {
+          select: {
+            id: true,
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        FileFormat: {
+          select: {
+            id: true,
+            format: true,
+            createdAt: true,
+            updatedAt: true,
+            FileType: {
+              select: {
+                id: true,
+                type: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const { downloadUrl, externalId } = externalFile;
+    const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
+
+    await prisma.attachment.delete({
+      where: { id: Attachment.id },
+    });
+
+    return {
+      ...fileWithoutFileFormat,
+      size: fileWithoutFileFormat.size?.toString(),
+      ...Attachment,
+      ...getFileTypeAndFileFormat(FileFormat),
+      downloadUrl,
+      externalId,
+    };
+  }
 }

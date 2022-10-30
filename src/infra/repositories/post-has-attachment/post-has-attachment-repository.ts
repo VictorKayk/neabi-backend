@@ -55,7 +55,7 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
   }
 
   async readAllAttachmentsFromPost(postId: string, {
-    id, name, originalFileName, url, type, format, page,
+    id, name, url, page,
   }: IAttachmentDataQuery):
   Promise<{
     url: IUrlRepositoryReturnData[] | [];
@@ -64,18 +64,10 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
   }> {
     const attachments = await prisma.attachment.findMany({
       where: {
+        PostHasAttachment: { some: { postId } },
         id: { contains: id, mode: 'insensitive' },
         name: { contains: name, mode: 'insensitive' },
         url: { contains: url, mode: 'insensitive' },
-        File: {
-          originalFileName: { contains: originalFileName, mode: 'insensitive' },
-          FileFormat: {
-            format: { contains: format, mode: 'insensitive' },
-            FileType: {
-              type: { contains: type, mode: 'insensitive' },
-            },
-          },
-        },
       },
       select: {
         id: true,
@@ -86,6 +78,7 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
         Url: {
           select: {
             id: true,
+            attachmentId: true,
           },
         },
         File: {
@@ -129,21 +122,30 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
 
     return attachments.reduce((prev: any, attachment: any) => {
       const { Url, File, ...attachmentData } = attachment;
-      const {
-        LocalFile, ExternalFile, FileFormat, ...fileData
-      } = File;
+
+      if (File) {
+        const {
+          LocalFile, ExternalFile, FileFormat, ...fileData
+        } = File;
+        return {
+          url: Url ? [...prev.url, { ...attachmentData }] : prev.url,
+          file: LocalFile ? [...prev.file, {
+            ...fileData,
+            ...getFileTypeAndFileFormat(FileFormat),
+          }] : prev.file,
+          externalFile: ExternalFile ? [...prev.externalFile, {
+            ...fileData,
+            size: fileData.size?.toString(),
+            ...getFileTypeAndFileFormat(FileFormat),
+            ...ExternalFile,
+          }] : prev.externalFile,
+        };
+      }
+
       return {
         url: Url ? [...prev.url, { ...attachmentData }] : prev.url,
-        file: LocalFile ? [...prev.file, {
-          ...fileData,
-          ...getFileTypeAndFileFormat(FileFormat),
-        }] : prev.file,
-        externalFile: ExternalFile ? [...prev.externalFile, {
-          ...fileData,
-          size: fileData.size?.toString(),
-          ...getFileTypeAndFileFormat(FileFormat),
-          ...ExternalFile,
-        }] : prev.externalFile,
+        file: prev.file,
+        externalFile: prev.externalFile,
       };
     }, { url: [], file: [], externalFile: [] });
   }

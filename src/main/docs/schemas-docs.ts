@@ -11,6 +11,7 @@ import {
   urlSchemasDocs,
   postHasAttachmentSchemasDocs,
   postHasAttachmentSchema,
+  attachmentsSchema,
 } from '@/main/docs/schemas';
 
 export default {
@@ -26,4 +27,5 @@ export default {
   ...urlSchemasDocs,
   ...postHasAttachmentSchemasDocs,
   postHasAttachment: postHasAttachmentSchema,
+  attachments: attachmentsSchema,
 };

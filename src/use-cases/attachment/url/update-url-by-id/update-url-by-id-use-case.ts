@@ -1,5 +1,5 @@
 import { IUrlRepositoryReturnData, IUrlEditableData, IUrlRepository } from '@/use-cases/attachment/url/interfaces';
-import { NonExistingUrlError } from '@/use-cases/attachment/url/errors';
+import { NonExistingUrlError, ExistingUrlError } from '@/use-cases/attachment/url/errors';
 import { Either, error, success } from '@/shared';
 import { IUseCase } from '@/use-cases/interfaces';
 
@@ -18,6 +18,8 @@ export class UpdateUrlByIdUseCase implements IUseCase {
   async execute({ id, urlData: { name, url } }: Request): Promise<Response> {
     const urlOrNull = await this.urlRepository.findById(id);
     if (!urlOrNull) return error(new NonExistingUrlError());
+
+    if (urlOrNull.name === name) return error(new ExistingUrlError());
 
     const urlUpdated = await this.urlRepository.updateById(id, { name, url });
     return success(urlUpdated);

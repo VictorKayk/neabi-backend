@@ -1,7 +1,7 @@
 import { IExternalFileData } from '@/use-cases/attachment/external-file/interfaces';
 import { IFileFormatRepositoryReturnData, IFileTypeRepositoryReturnData } from '@/use-cases/attachment/file/interfaces';
 
-export interface IExternalFileRepositoryReturnData extends Omit<IExternalFileData, 'fileFormatId' | 'attachmentId'> {
+export interface IExternalFileRepositoryReturnData extends Omit<IExternalFileData, 'fileFormatId'> {
   createdAt: Date,
   updatedAt: Date,
   fileFormat: Omit<IFileFormatRepositoryReturnData, 'isDeleted' | 'fileTypeId'>,

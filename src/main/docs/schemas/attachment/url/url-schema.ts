@@ -4,6 +4,9 @@ export const urlSchema = {
     id: {
       type: 'string',
     },
+    attachmentId: {
+      type: 'string',
+    },
     name: {
       type: 'string',
     },
@@ -17,5 +20,5 @@ export const urlSchema = {
       type: 'string',
     },
   },
-  required: ['id', 'name', 'url', 'createdAt', 'updatedAt'],
+  required: ['id', 'attachmentId', 'name', 'url', 'createdAt', 'updatedAt'],
 };

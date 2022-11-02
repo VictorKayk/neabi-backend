@@ -97,6 +97,7 @@ model File {
   id               String  @id
   originalFileName String?
   size             Int?
+  downloadUrl      String?
   fileFormatId     String
   attachmentId     String  @unique
 
@@ -113,9 +114,8 @@ model LocalFile {
 }
 
 model ExternalFile {
-  externalId  String
-  downloadUrl String?
-  fileId      String  @unique
+  externalId String
+  fileId     String @unique
 
   File File @relation(fields: [fileId], references: [id])
 }

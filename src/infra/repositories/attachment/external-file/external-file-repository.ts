@@ -88,6 +88,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,
@@ -149,6 +150,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,
@@ -214,6 +216,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
         id: true,
         originalFileName: true,
         size: true,
+        attachmentId: true,
         Attachment: {
           select: {
             name: true,
@@ -281,6 +284,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,
@@ -342,6 +346,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
         id: true,
         originalFileName: true,
         size: true,
+        attachmentId: true,
         Attachment: {
           select: {
             id: true,

@@ -13,6 +13,9 @@ export const externalFileSchema = {
     originalFileName: {
       type: 'string',
     },
+    attachmentId: {
+      type: 'string',
+    },
     url: {
       type: 'string',
     },
@@ -41,5 +44,5 @@ export const externalFileSchema = {
       },
     },
   },
-  required: ['id', 'externalId', 'name', 'url', 'createdAt', 'updatedAt', 'fileFormat', 'fileType'],
+  required: ['id', 'externalId', 'name', 'attachmentId', 'url', 'createdAt', 'updatedAt', 'fileFormat', 'fileType'],
 };

@@ -13,32 +13,11 @@ export class UrlRepository implements IUrlRepository {
   }
 
   async findById(id: string): Promise<IUrlRepositoryReturnData | null> {
-    const url = await prisma.url.findFirst({
+    const urlData = await prisma.url.findFirst({
       where: { id },
       select: {
         id: true,
-        Attachment: {
-          select: {
-            name: true,
-            url: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-      },
-    });
-    if (url) {
-      const { id: urlId, Attachment } = url;
-      return { id: urlId, ...Attachment };
-    }
-    return null;
-  }
-
-  async findByUrl(url: string): Promise<IUrlRepositoryReturnData | null> {
-    const urlData = await prisma.url.findFirst({
-      where: { Attachment: { url } },
-      select: {
-        id: true,
+        attachmentId: true,
         Attachment: {
           select: {
             name: true,
@@ -50,8 +29,31 @@ export class UrlRepository implements IUrlRepository {
       },
     });
     if (urlData) {
-      const { id: urlId, Attachment } = urlData;
-      return { id: urlId, ...Attachment };
+      const { id: urlId, attachmentId, Attachment } = urlData;
+      return { id: urlId, attachmentId, ...Attachment };
+    }
+    return null;
+  }
+
+  async findByUrl(url: string): Promise<IUrlRepositoryReturnData | null> {
+    const urlData = await prisma.url.findFirst({
+      where: { Attachment: { url } },
+      select: {
+        id: true,
+        attachmentId: true,
+        Attachment: {
+          select: {
+            name: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+    });
+    if (urlData) {
+      const { id: urlId, attachmentId, Attachment } = urlData;
+      return { id: urlId, attachmentId, ...Attachment };
     }
     return null;
   }
@@ -71,6 +73,7 @@ export class UrlRepository implements IUrlRepository {
       },
       select: {
         id: true,
+        attachmentId: true,
         Attachment: {
           select: {
             name: true,
@@ -82,7 +85,7 @@ export class UrlRepository implements IUrlRepository {
       },
     });
     const { id: urlId, Attachment } = urlData;
-    return { id: urlId, ...Attachment };
+    return { id: urlId, attachmentId, ...Attachment };
   }
 
   async readAllUrls({
@@ -98,6 +101,7 @@ export class UrlRepository implements IUrlRepository {
       },
       select: {
         id: true,
+        attachmentId: true,
         Attachment: {
           select: {
             name: true,
@@ -112,8 +116,8 @@ export class UrlRepository implements IUrlRepository {
     });
 
     return urls.map((urlData) => {
-      const { id, Attachment } = urlData;
-      return { id, ...Attachment };
+      const { id, attachmentId, Attachment } = urlData;
+      return { id, attachmentId, ...Attachment };
     });
   }
 
@@ -122,6 +126,7 @@ export class UrlRepository implements IUrlRepository {
       where: { id },
       select: {
         id: true,
+        attachmentId: true,
         Attachment: {
           select: {
             id: true,
@@ -141,7 +146,7 @@ export class UrlRepository implements IUrlRepository {
       where: { id: attachmentId },
     });
 
-    return { id: urlId, ...attachmentWithoutId };
+    return { id: urlId, attachmentId, ...attachmentWithoutId };
   }
 
   async updateById(id: string, urlEditableData: IUrlEditableData):
@@ -151,6 +156,7 @@ export class UrlRepository implements IUrlRepository {
       data: { Attachment: { update: { ...urlEditableData, updatedAt: new Date() } } },
       select: {
         id: true,
+        attachmentId: true,
         Attachment: {
           select: {
             name: true,
@@ -161,7 +167,7 @@ export class UrlRepository implements IUrlRepository {
         },
       },
     });
-    const { id: urlId, Attachment } = urlData;
-    return { id: urlId, ...Attachment };
+    const { id: urlId, attachmentId, Attachment } = urlData;
+    return { id: urlId, attachmentId, ...Attachment };
   }
 }

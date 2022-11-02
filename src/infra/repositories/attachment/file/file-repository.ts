@@ -29,6 +29,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,
@@ -73,6 +74,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,
@@ -117,6 +119,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,
@@ -173,6 +176,7 @@ export class FileRepository implements IFileRepository {
         id: true,
         originalFileName: true,
         size: true,
+        attachmentId: true,
         Attachment: {
           select: {
             name: true,
@@ -215,6 +219,7 @@ export class FileRepository implements IFileRepository {
         id: true,
         originalFileName: true,
         size: true,
+        attachmentId: true,
         Attachment: {
           select: {
             id: true,
@@ -281,6 +286,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            attachmentId: true,
             Attachment: {
               select: {
                 name: true,

@@ -4,6 +4,9 @@ export const fileSchema = {
     id: {
       type: 'string',
     },
+    attachmentId: {
+      type: 'string',
+    },
     name: {
       type: 'string',
     },
@@ -35,5 +38,5 @@ export const fileSchema = {
       },
     },
   },
-  required: ['id', 'name', 'originalFileName', 'url', 'size', 'createdAt', 'updatedAt', 'fileFormat', 'fileType'],
+  required: ['id', 'attachmentId', 'name', 'originalFileName', 'url', 'size', 'createdAt', 'updatedAt', 'fileFormat', 'fileType'],
 };

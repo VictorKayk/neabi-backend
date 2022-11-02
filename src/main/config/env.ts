@@ -11,7 +11,7 @@ export default {
   googleCallBackUrl: process.env.GOOGLE_CALLBACK_URL ?? 'http://localhost:5000/api/user/google/auth',
   baseUrl: process.env.BASE_URL ?? 'http://localhost:5000',
   uploadUrl: process.env.UPLOAD_URL ?? 'http://localhost:5000/static/upload',
-  uploadFolder: process.env.UPLOAD_FOLDER ?? path.join(__dirname, '..', '..', '..', 'public/uploads'),
+  uploadFolder: process.env.UPLOAD_FOLDER ?? path.join(__dirname, '..', '..', '..', 'public/upload'),
   emailHost: process.env.EMAIL_HOST ?? '',
   emailPort: Number(process.env.EMAIL_PORT) ?? 0,
   emailFrom: process.env.EMAIL_FROM ?? '',

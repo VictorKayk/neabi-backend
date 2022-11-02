@@ -81,13 +81,13 @@ export class ExternalFileRepository implements IExternalFileRepository {
     const externalFile = await prisma.externalFile.findFirst({
       where: { fileId },
       select: {
-        downloadUrl: true,
         externalId: true,
         File: {
           select: {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {
@@ -118,14 +118,13 @@ export class ExternalFileRepository implements IExternalFileRepository {
       },
     });
     if (externalFile) {
-      const { File, downloadUrl, externalId } = externalFile;
+      const { File, externalId } = externalFile;
       const { FileFormat, Attachment, ...fileWithoutFileFormat } = File;
       return {
         ...fileWithoutFileFormat,
         size: fileWithoutFileFormat.size?.toString(),
         ...Attachment,
         ...getFileTypeAndFileFormat(FileFormat),
-        downloadUrl,
         externalId,
       };
     }
@@ -143,13 +142,13 @@ export class ExternalFileRepository implements IExternalFileRepository {
     const externalFile = await prisma.externalFile.findFirst({
       where: { File: { id } },
       select: {
-        downloadUrl: true,
         externalId: true,
         File: {
           select: {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {
@@ -180,14 +179,13 @@ export class ExternalFileRepository implements IExternalFileRepository {
       },
     });
     if (externalFile) {
-      const { File, downloadUrl, externalId } = externalFile;
+      const { File, externalId } = externalFile;
       const { FileFormat, Attachment, ...fileWithoutFileFormat } = File;
       return {
         ...fileWithoutFileFormat,
         size: fileWithoutFileFormat.size?.toString(),
         ...Attachment,
         ...getFileTypeAndFileFormat(FileFormat),
-        downloadUrl,
         externalId,
       };
     }
@@ -210,12 +208,14 @@ export class ExternalFileRepository implements IExternalFileRepository {
         originalFileName,
         size: size ? parseInt(size, 10) : undefined,
         fileFormatId,
+        downloadUrl,
         attachmentId: attachment.id,
       },
       select: {
         id: true,
         originalFileName: true,
         size: true,
+        downloadUrl: true,
         attachmentId: true,
         Attachment: {
           select: {
@@ -245,7 +245,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
     });
 
     await prisma.externalFile
-      .create({ data: { fileId: file.id, downloadUrl, externalId } });
+      .create({ data: { fileId: file.id, externalId } });
 
     const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
     return {
@@ -253,7 +253,6 @@ export class ExternalFileRepository implements IExternalFileRepository {
       size: fileWithoutFileFormat.size?.toString(),
       ...Attachment,
       ...getFileTypeAndFileFormat(FileFormat),
-      downloadUrl,
       externalId,
     };
   }
@@ -334,7 +333,6 @@ export class ExternalFileRepository implements IExternalFileRepository {
     const externalFile = await prisma.externalFile.delete({
       where: { fileId },
       select: {
-        downloadUrl: true,
         externalId: true,
         File: true,
       },
@@ -346,6 +344,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
         id: true,
         originalFileName: true,
         size: true,
+        downloadUrl: true,
         attachmentId: true,
         Attachment: {
           select: {
@@ -374,7 +373,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
         },
       },
     });
-    const { downloadUrl, externalId } = externalFile;
+    const { externalId } = externalFile;
     const { FileFormat, Attachment, ...fileWithoutFileFormat } = file;
 
     await prisma.attachment.delete({
@@ -386,7 +385,6 @@ export class ExternalFileRepository implements IExternalFileRepository {
       size: fileWithoutFileFormat.size?.toString(),
       ...Attachment,
       ...getFileTypeAndFileFormat(FileFormat),
-      downloadUrl,
       externalId,
     };
   }

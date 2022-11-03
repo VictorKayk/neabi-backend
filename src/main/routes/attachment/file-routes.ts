@@ -8,6 +8,7 @@ import {
   makeDeleteFileByIdController,
   makeReadFileByIdController,
   makeReadAllFilesController,
+  makeDownloadFileByFileNameController,
 } from '@/main/factories/attachment/file';
 
 export function file(router: Router) {
@@ -15,4 +16,5 @@ export function file(router: Router) {
   router.get('/attachment/file/:fileId', authentication, authorization(['user', 'moderator', 'admin']), routerAdapter(makeReadFileByIdController()));
   router.post('/attachment/file/upload', authentication, authorization(['moderator', 'admin']), adaptMulter, routerAdapter(makeUploadFileController()));
   router.delete('/attachment/file/:fileId', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeleteFileByIdController()));
+  router.get('/attachment/file/:fileName/download', routerAdapter(makeDownloadFileByFileNameController()));
 }

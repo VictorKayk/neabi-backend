@@ -283,6 +283,7 @@ export class ExternalFileRepository implements IExternalFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {
@@ -323,7 +324,6 @@ export class ExternalFileRepository implements IExternalFileRepository {
         size: fileWithoutFileFormat.size?.toString(),
         ...Attachment,
         ...getFileTypeAndFileFormat(FileFormat),
-        downloadUrl,
         externalId,
       };
     });

@@ -15,10 +15,10 @@ export function routerAdapter(controller: IController) {
         data: req.user?._json,
         credentials: req.user?.credentials,
       },
-
       params: req.params,
       query: req.query,
       files: req.files,
+      download: res.download,
     };
     const httpResponse = await controller.handle(httpRequest);
     res.status(httpResponse.statusCode).json(httpResponse.body);

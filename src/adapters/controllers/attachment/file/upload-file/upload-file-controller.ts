@@ -20,6 +20,7 @@ export class UploadFileController implements IController {
     private readonly createFileType: CreateFileTypeUseCase,
     private readonly createFileFormat: CreateFileFormatUseCase,
     private readonly uploadUrl: string,
+    private readonly downloadUrl: string,
   ) { }
 
   async handle({ files }: IHttpRequest): Promise<IHttpResponse> {
@@ -55,7 +56,7 @@ export class UploadFileController implements IController {
         }
 
         const fileOrError = await this.createFile.execute({
-          name: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, fileFormatId: fileFormatOrNull.id,
+          name: filename, size, originalFileName: originalname, url: `${this.uploadUrl}/${filename}`, downloadUrl: `${this.downloadUrl}/${filename}/download`, fileFormatId: fileFormatOrNull.id,
         });
         if (fileOrError.isError()) return [fileOrError];
 

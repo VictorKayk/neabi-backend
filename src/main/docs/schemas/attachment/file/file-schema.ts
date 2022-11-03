@@ -16,6 +16,9 @@ export const fileSchema = {
     url: {
       type: 'string',
     },
+    downloadUrl: {
+      type: 'string',
+    },
     size: {
       type: 'number',
     },

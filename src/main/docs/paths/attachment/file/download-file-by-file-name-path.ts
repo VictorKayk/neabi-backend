@@ -12,6 +12,8 @@ export const downloadFileByFileNamePath = {
       },
     }],
     responses: {
+      200: {
+      },
       400: {
         $ref: '#/components/badRequest',
       },

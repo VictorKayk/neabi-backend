@@ -86,6 +86,7 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             FileFormat: {
               select: {
                 id: true,
@@ -104,7 +105,6 @@ export class PostHasAttachmentRepository implements IPostHasAttachmentRepository
             },
             ExternalFile: {
               select: {
-                downloadUrl: true,
                 externalId: true,
               },
             },

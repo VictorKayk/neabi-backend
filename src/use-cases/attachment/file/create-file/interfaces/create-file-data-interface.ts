@@ -3,5 +3,6 @@ export interface ICreateFileData {
   originalFileName: string,
   size: number,
   url: string,
+  downloadUrl: string,
   fileFormatId: string
 }

@@ -29,6 +29,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {
@@ -74,6 +75,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {
@@ -119,6 +121,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {
@@ -156,7 +159,7 @@ export class FileRepository implements IFileRepository {
   }
 
   async add({
-    id, name, url, originalFileName, size, fileFormatId, attachmentId,
+    id, name, url, downloadUrl, originalFileName, size, fileFormatId, attachmentId,
   }: IFileData): Promise<IFileRepositoryReturnData> {
     const attachment = await prisma.attachment.create({
       data: {
@@ -170,12 +173,14 @@ export class FileRepository implements IFileRepository {
         originalFileName,
         size,
         fileFormatId,
+        downloadUrl,
         attachmentId: attachment.id,
       },
       select: {
         id: true,
         originalFileName: true,
         size: true,
+        downloadUrl: true,
         attachmentId: true,
         Attachment: {
           select: {
@@ -219,6 +224,7 @@ export class FileRepository implements IFileRepository {
         id: true,
         originalFileName: true,
         size: true,
+        downloadUrl: true,
         attachmentId: true,
         Attachment: {
           select: {
@@ -286,6 +292,7 @@ export class FileRepository implements IFileRepository {
             id: true,
             originalFileName: true,
             size: true,
+            downloadUrl: true,
             attachmentId: true,
             Attachment: {
               select: {

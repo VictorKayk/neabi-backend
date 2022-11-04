@@ -15,7 +15,6 @@ export function routerAdapter(controller: IController) {
         data: req.user?._json,
         credentials: req.user?.credentials,
       },
-
       params: req.params,
       query: req.query,
       files: req.files,

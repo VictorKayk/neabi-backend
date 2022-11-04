@@ -13,7 +13,7 @@ export class CreateFileUseCase implements IUseCase {
   ) { }
 
   async execute({
-    originalFileName, name, size, url, fileFormatId,
+    originalFileName, name, size, url, downloadUrl, fileFormatId,
   }: ICreateFileData): Promise<Response> {
     let fileOrNull = await this.fileRepository.findFileByName(name);
     if (fileOrNull) return error(new ExistingFileError());
@@ -32,7 +32,7 @@ export class CreateFileUseCase implements IUseCase {
     } while (fileOrNull);
 
     const fileData = await this.fileRepository.add({
-      id, originalFileName, name, size, url, fileFormatId, attachmentId,
+      id, originalFileName, name, size, url, downloadUrl, fileFormatId, attachmentId,
     });
 
     return success(fileData);

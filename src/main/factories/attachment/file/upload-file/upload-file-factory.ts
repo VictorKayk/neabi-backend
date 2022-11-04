@@ -21,6 +21,7 @@ export function makeUploadFileController(): IController {
     createTypeUseCase,
     createFormatUseCase,
     env.uploadUrl,
+    env.downloadUrl,
   );
   return uploadFileController;
 }

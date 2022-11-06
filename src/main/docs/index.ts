@@ -31,6 +31,10 @@ export default {
       description: 'APIs relacionadas as publicações',
     },
     {
+      name: 'Tag',
+      description: 'APIs relacionadas as tags das publicações',
+    },
+    {
       name: 'File',
       description: 'APIs relacionadas aos arquivos que são anexos',
     },

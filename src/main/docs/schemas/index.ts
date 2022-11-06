@@ -4,6 +4,7 @@ export * from '@/main/docs/schemas/user';
 export * from '@/main/docs/schemas/role';
 export * from '@/main/docs/schemas/user-has-role';
 export * from '@/main/docs/schemas/post';
+export * from '@/main/docs/schemas/tag';
 export * from '@/main/docs/schemas/attachment/file';
 export * from '@/main/docs/schemas/attachment/external-file';
 export * from '@/main/docs/schemas/attachment/url';

@@ -163,3 +163,11 @@ model PostHasAttachment {
 
   @@id([postId, attachmentId])
 }
+
+model Tag {
+  id        String   @id
+  tag       String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  isDeleted Boolean
+}

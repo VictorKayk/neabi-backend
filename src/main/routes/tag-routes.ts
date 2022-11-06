@@ -5,6 +5,7 @@ import {
   makeReadAllTagsController,
   makeReadTagByIdController,
   makeUpdateTagByIdController,
+  makeDeleteTagByIdController,
 } from '@/main/factories/tag';
 import { authentication } from '@/main/middlewares/authentication';
 import { authorization } from '@/main/middlewares/authorization';
@@ -14,4 +15,5 @@ export function tag(router: Router) {
   router.get('/tag/all', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadAllTagsController()));
   router.get('/tag/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeReadTagByIdController()));
   router.patch('/tag/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeUpdateTagByIdController()));
+  router.delete('/tag/:id', authentication, authorization(['moderator', 'admin']), routerAdapter(makeDeleteTagByIdController()));
 }

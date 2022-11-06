@@ -1,5 +1,5 @@
 import {
-  ITagRepositoryReturnData, ITagData, ITagRepository, ITagEditableData,
+  ITagRepositoryReturnData, ITagData, ITagRepository, ITagEditableData, ITagDataQuery,
 } from '@/use-cases/tag/interfaces';
 import prisma from '@/main/config/prisma';
 
@@ -37,5 +37,17 @@ export class TagRepository implements ITagRepository {
       data: { tag, isDeleted, updatedAt: new Date() },
     });
     return tagUpdated;
+  }
+
+  async readAllTags({ id, tag }: ITagDataQuery): Promise<ITagRepositoryReturnData[] | []> {
+    const tags = await prisma.tag.findMany({
+      where: {
+        id: { contains: id, mode: 'insensitive' },
+        tag: { contains: tag, mode: 'insensitive' },
+      },
+      take: 100,
+      orderBy: { isDeleted: 'asc' },
+    });
+    return tags;
   }
 }

@@ -21,9 +21,9 @@ export class UpdateTagByIdController implements IController {
       if (validationError) return badRequest(validationError);
 
       const { tag } = body;
-      const { id } = params;
+      const { tagId } = params;
 
-      const tagOrError = await this.updateTagByIdUseCase.execute({ id, tag });
+      const tagOrError = await this.updateTagByIdUseCase.execute({ id: tagId, tag });
       if (tagOrError.isError()) {
         if (
           tagOrError.value instanceof ExistingTagError

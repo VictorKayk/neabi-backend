@@ -39,11 +39,13 @@ export class TagRepository implements ITagRepository {
     return tagUpdated;
   }
 
-  async readAllTags({ id, tag }: ITagDataQuery): Promise<ITagRepositoryReturnData[] | []> {
+  async readAllTags({ id, tag, isDeleted }: ITagDataQuery):
+  Promise<ITagRepositoryReturnData[] | []> {
     const tags = await prisma.tag.findMany({
       where: {
         id: { contains: id, mode: 'insensitive' },
         tag: { contains: tag, mode: 'insensitive' },
+        isDeleted: { equals: isDeleted },
       },
       take: 100,
       orderBy: { isDeleted: 'asc' },

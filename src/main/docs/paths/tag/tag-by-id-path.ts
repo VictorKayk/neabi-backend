@@ -8,7 +8,7 @@ export const tagByIdPath = {
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{
       in: 'path',
-      name: 'id',
+      name: 'tagId',
       description: 'ID da tag',
       required: true,
       schema: {
@@ -49,7 +49,7 @@ export const tagByIdPath = {
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{
       in: 'path',
-      name: 'id',
+      name: 'tagId',
       description: 'ID da tag',
       required: true,
       schema: {
@@ -100,7 +100,7 @@ export const tagByIdPath = {
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [{
       in: 'path',
-      name: 'id',
+      name: 'tagId',
       description: 'ID da tag',
       required: true,
       schema: {

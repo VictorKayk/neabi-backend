@@ -19,9 +19,9 @@ export class ReadTagByIdController implements IController {
       const validationError = this.validation.validate(params);
       if (validationError) return badRequest(validationError);
 
-      const { id } = params;
+      const { tagId } = params;
 
-      const tagOrError = await this.readByIdTagUseCase.execute(id);
+      const tagOrError = await this.readByIdTagUseCase.execute(tagId);
       if (tagOrError.isError()) return unauthorized(tagOrError.value);
 
       return ok(tagOrError.value);

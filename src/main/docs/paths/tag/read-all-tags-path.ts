@@ -23,6 +23,14 @@ export const readAllTagsPath = {
           type: 'string',
         },
       },
+      {
+        in: 'query',
+        name: 'isDeleted',
+        description: 'Se foi excluido',
+        schema: {
+          type: 'boolean',
+        },
+      },
     ],
     responses: {
       200: {

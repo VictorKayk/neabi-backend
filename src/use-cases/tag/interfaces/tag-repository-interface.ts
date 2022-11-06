@@ -8,4 +8,5 @@ export interface ITagRepository {
   updateById(id: string, tagEditableData: ITagEditableData): Promise<ITagRepositoryReturnData>
   add(tagData: ITagData): Promise<ITagRepositoryReturnData>
   readAllTags(roleDataQuery: ITagDataQuery): Promise<ITagRepositoryReturnData[] | []>
+  deleteById(id: string): Promise<ITagRepositoryReturnData>
 }

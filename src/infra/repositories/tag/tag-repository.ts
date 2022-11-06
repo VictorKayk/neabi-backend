@@ -50,4 +50,12 @@ export class TagRepository implements ITagRepository {
     });
     return tags;
   }
+
+  async deleteById(id: string): Promise<ITagRepositoryReturnData> {
+    const tags = await prisma.tag.update({
+      where: { id },
+      data: { isDeleted: true, updatedAt: new Date() },
+    });
+    return tags;
+  }
 }

@@ -71,6 +71,20 @@ model ResetUserPasswordToken {
   Token Token @relation(fields: [token], references: [token])
 }
 
+model Post {
+  id              String   @id
+  slug            String   @unique
+  title           String
+  description     String
+  descriptionHtml String
+  createdAt       DateTime
+  updatedAt       DateTime
+  isDeleted       Boolean
+
+  PostHasAttachment PostHasAttachment[]
+  PostHasTag PostHasTag[]
+}
+
 model FileType {
   id        String   @id
   type      String   @unique
@@ -139,19 +153,6 @@ model Attachment {
   PostHasAttachment PostHasAttachment[]
 }
 
-model Post {
-  id              String   @id
-  slug            String   @unique
-  title           String
-  description     String
-  descriptionHtml String
-  createdAt       DateTime
-  updatedAt       DateTime
-  isDeleted       Boolean
-
-  PostHasAttachment PostHasAttachment[]
-}
-
 model PostHasAttachment {
   postId       String
   attachmentId String
@@ -170,4 +171,18 @@ model Tag {
   createdAt DateTime
   updatedAt DateTime
   isDeleted Boolean
+  
+  PostHasTag PostHasTag[]
+}
+
+model PostHasTag {
+  postId       String
+  tagId String
+  createdAt    DateTime
+  updatedAt    DateTime
+
+  Post       Post       @relation(fields: [postId], references: [id])
+  Tag Tag @relation(fields: [tagId], references: [id])
+
+  @@id([postId, tagId])
 }

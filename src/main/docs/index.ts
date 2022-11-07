@@ -35,6 +35,10 @@ export default {
       description: 'APIs relacionadas as tags das publicações',
     },
     {
+      name: 'PostHasTag',
+      description: 'APIs relacionadas as publicações tendo tags',
+    },
+    {
       name: 'File',
       description: 'APIs relacionadas aos arquivos que são anexos',
     },

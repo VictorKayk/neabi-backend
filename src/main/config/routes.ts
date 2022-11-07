@@ -1,6 +1,6 @@
 import { Express, Router } from 'express';
 import {
-  user, role, userHasRole, post, file, url, externalFiles, postHasAttachment, tag,
+  user, role, userHasRole, post, file, url, externalFiles, postHasAttachment, tag, postHasTag,
 } from '@/main/routes';
 
 export default (app: Express): void => {
@@ -10,6 +10,7 @@ export default (app: Express): void => {
   role(router);
   user(router);
   postHasAttachment(router);
+  postHasTag(router);
   post(router);
   tag(router);
   file(router);

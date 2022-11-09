@@ -25,7 +25,13 @@ export class AddTagToPostUseCase implements IUseCase {
 
     const postAlreadyHasThisTagOrNull = await this.postHasTagRepository
       .findPostHasTag({ postId, tagId });
-    if (postAlreadyHasThisTagOrNull) return error(new PostAlreadyHaveThisTagError());
+    if (postAlreadyHasThisTagOrNull) {
+      if (!postAlreadyHasThisTagOrNull.isDeleted) return error(new PostAlreadyHaveThisTagError());
+
+      const postHasTagData = await this.postHasTagRepository
+        .updateById(postAlreadyHasThisTagOrNull, { isDeleted: false });
+      return success(postHasTagData);
+    }
 
     const postHasTagData = await this.postHasTagRepository
       .addTagToPost({ postId, tagId });

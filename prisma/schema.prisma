@@ -82,7 +82,7 @@ model Post {
   isDeleted       Boolean
 
   PostHasAttachment PostHasAttachment[]
-  PostHasTag PostHasTag[]
+  PostHasTag        PostHasTag[]
 }
 
 model FileType {
@@ -171,18 +171,19 @@ model Tag {
   createdAt DateTime
   updatedAt DateTime
   isDeleted Boolean
-  
+
   PostHasTag PostHasTag[]
 }
 
 model PostHasTag {
-  postId       String
-  tagId String
-  createdAt    DateTime
-  updatedAt    DateTime
+  postId    String
+  tagId     String
+  createdAt DateTime
+  updatedAt DateTime
+  isDeleted Boolean
 
-  Post       Post       @relation(fields: [postId], references: [id])
-  Tag Tag @relation(fields: [tagId], references: [id])
+  Post Post @relation(fields: [postId], references: [id])
+  Tag  Tag  @relation(fields: [tagId], references: [id])
 
   @@id([postId, tagId])
 }

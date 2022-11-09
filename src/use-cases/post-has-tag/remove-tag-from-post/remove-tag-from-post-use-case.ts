@@ -1,16 +1,16 @@
 import { IUseCase } from '@/use-cases/interfaces';
 import { NonExistingPostError } from '@/use-cases/post/errors';
-import { Either, error, success } from '@/shared';
 import { NonExistingTagError } from '@/use-cases/tag/errors';
-import { PostAlreadyHaveThisTagError } from '@/use-cases/post-has-tag/errors';
+import { PostDoesNotHaveThisTagError } from '@/use-cases/post-has-tag/errors';
 import { IPostHasTagData, IPostHasTagRepositoryReturnData, IPostHasTagRepository } from '@/use-cases/post-has-tag/interfaces';
+import { Either, error, success } from '@/shared';
 
 type Response = Either<
-  NonExistingPostError | NonExistingTagError | PostAlreadyHaveThisTagError,
+  NonExistingPostError | NonExistingTagError | PostDoesNotHaveThisTagError,
   IPostHasTagRepositoryReturnData
 >;
 
-export class AddTagToPostUseCase implements IUseCase {
+export class RemoveTagFromPostUseCase implements IUseCase {
   constructor(
     private readonly postHasTagRepository: IPostHasTagRepository,
   ) { }
@@ -25,16 +25,12 @@ export class AddTagToPostUseCase implements IUseCase {
 
     const postAlreadyHasThisTagOrNull = await this.postHasTagRepository
       .findPostHasTag({ postId, tagId });
-    if (postAlreadyHasThisTagOrNull) {
-      if (!postAlreadyHasThisTagOrNull.isDeleted) return error(new PostAlreadyHaveThisTagError());
-
-      const postHasTagData = await this.postHasTagRepository
-        .updateById(postAlreadyHasThisTagOrNull, { isDeleted: false });
-      return success(postHasTagData);
+    if (!postAlreadyHasThisTagOrNull || postAlreadyHasThisTagOrNull.isDeleted) {
+      return error(new PostDoesNotHaveThisTagError());
     }
 
     const postHasTagData = await this.postHasTagRepository
-      .addTagToPost({ postId, tagId });
+      .removeTagFromPost({ postId, tagId });
     return success(postHasTagData);
   }
 }

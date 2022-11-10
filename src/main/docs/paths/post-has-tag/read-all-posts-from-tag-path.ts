@@ -1,12 +1,21 @@
-export const readAllPostsPath = {
+export const readAllPostsFromTagPath = {
   get: {
     security: [{
       apiKeyAuth: [],
     }],
-    tags: ['Post'],
-    summary: 'API para ler todas as publicações',
+    tags: ['PostHasTag'],
+    summary: 'API para ler todas as publicações relacionadas a uma tag',
     description: 'Essa rota só pode ser executada por **usuários autenticados**',
     parameters: [
+      {
+        in: 'path',
+        name: 'tagId',
+        description: 'ID da tag',
+        required: true,
+        schema: {
+          type: 'string',
+        },
+      },
       {
         in: 'query',
         name: 'id',
@@ -39,6 +48,7 @@ export const readAllPostsPath = {
           type: 'string',
         },
       },
+
       {
         in: 'query',
         name: 'page',
@@ -53,17 +63,21 @@ export const readAllPostsPath = {
         description: 'Sucesso',
         content: {
           'application/json': {
-            schema: {
-              type: 'array',
-              items: {
-                $ref: '#/schemas/post',
-              },
+            type: 'array',
+            items: {
+              $ref: '#/schemas/post',
             },
           },
         },
       },
+      400: {
+        $ref: '#/components/badRequest',
+      },
       401: {
         $ref: '#/components/unauthorized',
+      },
+      403: {
+        $ref: '#/components/forbidden',
       },
       404: {
         $ref: '#/components/notFound',

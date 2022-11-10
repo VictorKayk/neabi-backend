@@ -3,4 +3,5 @@ export interface IPostDataQuery {
   slug?: string,
   title?: string,
   description?: string,
+  page?: number,
 }

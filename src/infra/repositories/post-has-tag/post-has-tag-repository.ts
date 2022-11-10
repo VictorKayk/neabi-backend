@@ -55,7 +55,7 @@ export class PostHasTagRepository implements IPostHasTagRepository {
 
   async readAllTagsFromPost(postId: string, { id, tag, page }: ITagDataQuery):
     Promise<ITagRepositoryReturnData[] | []> {
-    const postHasTag = await prisma.postHasTag.findMany({
+    const postHasTags = await prisma.postHasTag.findMany({
       where: {
         postId,
         tagId: { contains: id, mode: 'insensitive' },
@@ -77,6 +77,6 @@ export class PostHasTagRepository implements IPostHasTagRepository {
       take: 100,
       skip: page && page >= 1 ? (page - 1) * 100 : 0,
     });
-    return postHasTag.map((tag) => tag.Tag);
+    return postHasTags.map((postHasTag) => postHasTag.Tag);
   }
 }

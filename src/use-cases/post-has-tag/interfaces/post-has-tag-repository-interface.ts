@@ -1,5 +1,5 @@
 import { ITagDataQuery, ITagRepositoryReturnData } from '@/use-cases/tag/interfaces';
-import { IPostRepositoryReturnData } from '@/use-cases/post/interfaces';
+import { IPostDataQuery, IPostRepositoryReturnData } from '@/use-cases/post/interfaces';
 import { IPostHasTagData, IPostHasTagRepositoryReturnData, IPostHasTagEditableData } from '@/use-cases/post-has-tag/interfaces';
 
 export interface IPostHasTagRepository {
@@ -11,5 +11,8 @@ export interface IPostHasTagRepository {
   Promise<IPostHasTagRepositoryReturnData>
   addTagToPost(postHasTag: IPostHasTagData):
     Promise<IPostHasTagRepositoryReturnData>
-  readAllTagsFromPost(postId: string, tagDataQuery: ITagDataQuery): Promise<ITagRepositoryReturnData[] | []>
+  readAllTagsFromPost(postId: string, tagDataQuery: ITagDataQuery):
+    Promise<ITagRepositoryReturnData[] | []>
+  readAllPostsFromTag(tagId: string, postDataQuery: IPostDataQuery):
+    Promise<IPostRepositoryReturnData[] | []>
 }

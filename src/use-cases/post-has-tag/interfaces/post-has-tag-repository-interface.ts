@@ -11,6 +11,8 @@ export interface IPostHasTagRepository {
   Promise<IPostHasTagRepositoryReturnData>
   addTagToPost(postHasTag: IPostHasTagData):
     Promise<IPostHasTagRepositoryReturnData>
+  removeTagFromPost(postHasTag: IPostHasTagData):
+  Promise<IPostHasTagRepositoryReturnData>
   readAllTagsFromPost(postId: string, tagDataQuery: ITagDataQuery):
     Promise<ITagRepositoryReturnData[] | []>
   readAllPostsFromTag(tagId: string, postDataQuery: IPostDataQuery):

@@ -115,4 +115,13 @@ export class PostHasTagRepository implements IPostHasTagRepository {
     });
     return postHasTags.map((postHasTag) => postHasTag.Post);
   }
+
+  async removeTagFromPost(postHasTag: IPostHasTagData):
+    Promise<IPostHasTagRepositoryReturnData> {
+    const postHasTagData = await prisma.postHasTag.update({
+      where: { postId_tagId: postHasTag },
+      data: { isDeleted: true, updatedAt: new Date() },
+    });
+    return postHasTagData;
+  }
 }

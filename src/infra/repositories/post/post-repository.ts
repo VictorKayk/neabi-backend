@@ -31,7 +31,7 @@ export class PostRepository implements IPostRepository {
   }
 
   async readAllPosts({
-    id, title, slug, description,
+    id, title, slug, description, page,
   }: IPostDataQuery):
     Promise<IPostRepositoryReturnData[] | []> {
     const posts = await prisma.post.findMany({
@@ -42,6 +42,7 @@ export class PostRepository implements IPostRepository {
         description: { contains: description, mode: 'insensitive' },
       },
       take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
       orderBy: { isDeleted: 'asc' },
     });
     return posts;

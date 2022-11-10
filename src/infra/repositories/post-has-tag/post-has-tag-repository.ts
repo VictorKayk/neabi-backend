@@ -5,7 +5,7 @@ import {
   IPostHasTagRepositoryReturnData,
 } from '@/use-cases/post-has-tag/interfaces';
 import { ITagDataQuery, ITagRepositoryReturnData } from '@/use-cases/tag/interfaces';
-import { IPostRepositoryReturnData } from '@/use-cases/post/interfaces';
+import { IPostDataQuery, IPostRepositoryReturnData } from '@/use-cases/post/interfaces';
 import prisma from '@/main/config/prisma';
 
 export class PostHasTagRepository implements IPostHasTagRepository {
@@ -61,7 +61,7 @@ export class PostHasTagRepository implements IPostHasTagRepository {
         tagId: { contains: id, mode: 'insensitive' },
         Tag: {
           tag: { contains: tag, mode: 'insensitive' },
-        }
+        },
       },
       select: {
         Tag: {
@@ -70,13 +70,49 @@ export class PostHasTagRepository implements IPostHasTagRepository {
             tag: true,
             isDeleted: true,
             createdAt: true,
-            updatedAt: true,            
-          }
-        }
+            updatedAt: true,
+          },
+        },
       },
       take: 100,
       skip: page && page >= 1 ? (page - 1) * 100 : 0,
+      orderBy: { isDeleted: 'asc' },
     });
     return postHasTags.map((postHasTag) => postHasTag.Tag);
+  }
+
+  async readAllPostsFromTag(tagId: string, {
+    id, title, slug, description, page,
+  }: IPostDataQuery):
+    Promise<IPostRepositoryReturnData[] | []> {
+    const postHasTags = await prisma.postHasTag.findMany({
+      where: {
+        tagId,
+        postId: { contains: id, mode: 'insensitive' },
+        Post: {
+          title: { contains: title, mode: 'insensitive' },
+          slug: { contains: slug, mode: 'insensitive' },
+          description: { contains: description, mode: 'insensitive' },
+        },
+      },
+      select: {
+        Post: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            description: true,
+            descriptionHtml: true,
+            isDeleted: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+      take: 100,
+      skip: page && page >= 1 ? (page - 1) * 100 : 0,
+      orderBy: { isDeleted: 'asc' },
+    });
+    return postHasTags.map((postHasTag) => postHasTag.Post);
   }
 }

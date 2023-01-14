@@ -17,16 +17,16 @@
   },
   "homepage": "https://github.com/VictorKayk/NEABI-backend#readme",
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "scripts": {
-    "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "build": "npx tsc -p tsconfig-build.json",
     "start": "npm run build && node dist/main/server.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/main/server.ts",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
     "test": "jest --passWithNoTests --detectOpenHandles",
     "test:verbose": "jest --passWithNoTests",
     "test:all": "npm run test -- --watch",

@@ -3,13 +3,12 @@ version: '3.7'
 services:
   db:
     image: postgres
-    container_name: db-postgres
-    restart: always
+    container_name: postgres
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
       - POSTGRES_DB=neabi
     volumes:
       - ./data:/data/db
@@ -17,7 +16,7 @@ services:
     build: .
     container_name: api
     environment:
-      - DATABASE_URL=postgresql://user:123@db-postgres:5432/neabi?schema=public 
+      - DATABASE_URL=postgresql://root:root@postgres:5432/neabi?schema=public
     ports:
       - "5000:5000"
     links:

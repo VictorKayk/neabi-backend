@@ -27,7 +27,7 @@
     "lint:fix": "npm run lint -- --fix",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "test": "jest --passWithNoTests --detectOpenHandles",
+    "test": "jest --passWithNoTests --detectOpenHandles --runInBand --logHeapUsage",
     "test:verbose": "jest --passWithNoTests",
     "test:all": "npm run test -- --watch",
     "test:unit": "npm run test -- --watch -c ./jest-unit.config.js",

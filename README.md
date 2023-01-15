@@ -36,7 +36,7 @@ A API foi desenvolvida utilizando as tecnologias Node.js, Express, Typescript, D
    $ npm install
    ```
 
-   4. **Troque o nome do arquivo "env" para ".env" e preencha todas as informações necessarias.**
+   4. **Troque o nome do arquivo ".env.example" para ".env" e preencha todas as informações necessarias.**
    
    5. Inicie a api em mode desenvolvedor
    ```

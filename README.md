@@ -56,6 +56,9 @@ A API foi desenvolvida utilizando as tecnologias Node.js, Express, Typescript, D
 
 Para acessar a documentação de todas as rotas da api, acesse <a href='http://localhost:5000/docs'>http://localhost:5000/docs</a> com a aplicação rodando.
 
+## 💻 Frontend
+O repositório para o frontend da aplicação se encontra no perfil do Github de <a href='https://github.com/Thiagonox'>Thiago Gentil</a>, desenvolvedor responsável pela construção do mesmo. O repositório pode ser encontrado seguindo o link abaixo: <a href='https://github.com/Thiagonox/neabi-front'>neabi-front</a>
+
 ## 💁 Contribuição
 
 Se você tiver uma sugestão que possa melhorar isso, por favor, crie uma cópia do repositório (fork) e crie uma solicitação de pull. Você também pode simplesmente abrir uma questão com a tag "enhancement" (melhoria). Não se esqueça de dar uma estrela para o projeto! Novamente, muito obrigado!
